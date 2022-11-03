@@ -1,46 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Drawing undo, redo</title>
-    <style>
-.map_wrap {width: 100%;position: relative;}
-.modes {position: absolute;top: 10px;left: 10px;z-index: 1;}
-.edit {position: absolute;top: 62px;left: 10px;z-index: 1;}
-#drawingMap {width: 100%;height: 350px;}
-#undo.disabled, #redo.disabled {background-color:#ddd;color:#9e9e9e;}
-</style>
-</head>
-<body>
-<div class="map_wrap">
-    <div id="drawingMap"></div>
-    <p class="modes">
-        <button onclick="selectOverlay('MARKER')">마커</button>
-        <button onclick="selectOverlay('POLYLINE')">선</button>
-        <button onclick="selectOverlay('CIRCLE')">원</button>
-        <button onclick="selectOverlay('RECTANGLE')">사각형</button>
-        <button onclick="selectOverlay('POLYGON')">다각형</button>
-    </p>
-    <p class="edit">
-        <button id="undo" class="disabled" onclick="undo()" disabled>UNDO</button>
-        <button id="redo" class="disabled" onclick="redo()" disabled>REDO</button>
-    </p>
-</div>
-
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=00cb19549df691541ac9bf9f0256e498&libraries=drawing"></script>
-<script>
 // Drawing Manager로 도형을 그릴 지도 div
-var drawingMapContainer = document.getElementById('drawingMap'),
+var drawingMapContainer = document.getElementById('map'),
     drawingMap = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
+        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+                    level: 3 // 지도의 확대 레벨
     };
 
 // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
 var drawingMap = new kakao.maps.Map(drawingMapContainer, drawingMap);
 
 var options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
-    map: drawingMap, // Drawing Manager로 그리기 요소를 그릴 map 객체입니다
+    map: map, // Drawing Manager로 그리기 요소를 그릴 map 객체입니다
     drawingMode: [ // Drawing Manager로 제공할 그리기 요소 모드입니다
         kakao.maps.Drawing.OverlayType.MARKER,
         kakao.maps.Drawing.OverlayType.POLYLINE,
@@ -126,23 +95,12 @@ manager.addListener('state_changed', function() {
 // 버튼 클릭 시 호출되는 핸들러 입니다
 function selectOverlay(type) {
     // 그리기 중이면 그리기를 취소합니다
+    console.log("123");
+    if(type == 'RECTANGLE'){
+        document.get
+    }
     manager.cancel();
 
     // 클릭한 그리기 요소 타입을 선택합니다
     manager.select(kakao.maps.Drawing.OverlayType[type]);
 }
-
-// undo 버튼 클릭시 호출되는 함수입니다.
-function undo() {
-	// 그리기 요소를 이전 상태로 되돌립니다
-	manager.undo();
-}
-
-// redo 버튼 클릭시 호출되는 함수입니다.
-function redo() {
-	// 이전 상태로 되돌린 상태를 취소합니다
-	manager.redo();
-}
-</script>
-</body>
-</html>

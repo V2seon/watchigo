@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>WATCHIGO</title>
+
+    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/main/main.css">
+
+</head>
+<body>
+<div th:insert="common/navbar.html"></div>
+    <button class="mygps radius_border" onclick="currentLocation()">
+        <i class="material-icons">&#xe55c;</i>
+    </button>
+    <div class="map_wrap">
+        <div id="map" style="width:100%;height:1000px;position:relative;overflow:hidden;"></div>
+        <div class="custom_zoomcontrol radius_border">
+            <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>
+            <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
+        </div>
+
+        <div id="menu_wrap" class="bg_white">
+            <div class="option">
+                <div>
+                    주소 : <input type="text" value="" id="keyword" size="15">
+                    <button onclick="searchPlaces()">검색하기</button>
+                </div>
+            </div>
+            <div id="intable">
+                <table class="table1">
+                    <thead>
+                    <tr class="table1">
+                        <td>번호</td>
+                        <td>이름</td>
+                        <td>상태</td>
+                        <td>주소</td>
+                        <td>위치보기</td>
+                        <td>내용</td>
+                    </tr>
+                    <tr class="table1">
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr class="table1">
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+                    <tr class="table1">
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                    </tr>
+                    </thead>
+                </table>
+                <div>
+                    <button onclick="inser()">서비스존 등록</button>
+                </div>
+            </div>
+            <div id="uptable" style="display:none;">
+                <img onclick="backbtn()" class="backbtn" src="/img/back.png">
+                <div>
+                    <div class="ser1">
+                        <span style="font-size:25px;">1. 서비스존 설정</span>
+
+                            <!--                    <button onclick="selectOverlay('MARKER')">마커</button>-->
+                            <!--                    <button onclick="selectOverlay('POLYLINE')">선</button>-->
+                        <div style="width:100%">
+                            <div class="boxname">
+                                <div style="float:left;">
+                                    <button style="font-size:18px;" class="drwbtn" onclick="selectOverlay('RECTANGLE')">사각형 <br>모양 버튼</button>
+                                </div>
+                                <div class="boxmas">
+                                    사각형으로 영역 설정
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width:100%">
+                            <div class="boxname">
+                                <div style="float:left;">
+                                    <button style="font-size:18px;" class="drwbtn" onclick="selectOverlay('CIRCLE')">원모양 <br>버튼</button>
+                                </div>
+                                <div class="boxmas">
+                                    원으로 영역 설정
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width:100%">
+                            <div class="boxname">
+                                <div style="float:left;">
+                                    <button style="font-size:18px;" class="drwbtn" onclick="selectOverlay('POLYGON')">다각형 <br>모양 버튼</button>
+                                </div>
+                                <div class="boxmas">
+                                    3곳 이상을 선택하여 영역 설정
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <input class="inte" type="text" placeholder="설정영역 주소">
+                            <br>
+                            <input class="inte" type="text" placeholder="설정영역 상세주소">
+                        </div>
+                        <div>
+                            <span style="font-size:25px; margin-bottom:20px;">2. 서비스존 이름</span>
+                            <div>
+                                <input class="inte" type="text" placeholder="서비스존 이름입력">
+                            </div>
+                        </div>
+                        <div>
+                            <span style="font-size:25px; margin-bottom:20px;">3. 서비스존 설명</span>
+                            <textarea class="inte1" type="text" placeholder="서비스존 설명"></textarea>
+                        </div>
+                        <div>
+                            <span style="font-size:25px; margin-bottom:20px;">4. 동영상 업로드</span>
+                            <br>
+                            <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;- 동영상은 최대 2개까지 등록 가능합니다.</span>
+                            <div class="vbox">
+                                <div id="uploadvideo1" class="uploadvideo">
+                                    <input id="realUploadvideo1"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
+                                    <video id="inv1" class="inv1" src="/img/plus.mp4"></video>
+                                </div>
+                                <div class="delete">
+                                    <button id="delbtn1" class="delbtn">삭제</button>
+                                </div>
+                                <div id="uploadvideo2" class="uploadvideo">
+                                    <input id="realUploadvideo2"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
+                                    <video id="inv2" class="inv1" src="/img/plus.mp4"></video>
+                                    <div class="delete">
+                                        <button id="delbtn2" onclick="delete1()" class="delbtn">삭제</button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button>삭제</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <span style="font-size:25px; margin-bottom:20px;">5. 이미지 업로드</span>
+                            <br>
+                            <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;- 이미지는 최대 6장까지 등록 가능합니다.</span>
+                            <div class="ibox">
+                                <div id="uploadimg1" class="uploadimg" onclick="ck1()">
+                                    <input id="upimg1" class="upimg" onchange="img1(this)" type="file" required style="display:none;" accept="image/*">
+                                    <img class="img" id="img1" src="img/plus.png">
+                                    <div class="delete">
+                                        <button id="delbtn3" class="delbtn">삭제</button>
+                                    </div>
+                                </div>
+                                <div id="uploadimg2" class="uploadimg">
+                                    <input id="upimg2" class="upimg" onchange="img2(this)" type="file" required style="display:none;" accept="image/*">
+                                    <img class="img" id="img2" src="img/plus.png">
+                                    <div class="delete">
+                                        <button id="delbtn4" class="delbtn">삭제</button>
+                                    </div>
+                                </div>
+                                <div id="uploadimg3" class="uploadimg">
+                                    <input id="upimg3" class="upimg" onchange="img3(this)" type="file" required style="display:none;" accept="image/*">
+                                    <img class="img" id="img3" src="img/plus.png">
+                                    <div class="delete">
+                                        <button id="delbtn5" class="delbtn">삭제</button>
+                                    </div>
+                                </div>
+                                <div id="uploadimg4" class="uploadimg">
+                                    <input id="upimg4" class="upimg" onchange="img4(this)" type="file" required style="display:none;" accept="image/*">
+                                    <img class="img" id="img4" src="img/plus.png">
+                                    <div class="delete">
+                                        <button id="delbtn6" class="delbtn">삭제</button>
+                                    </div>
+                                </div>
+                                <div id="uploadimg5" class="uploadimg">
+                                    <input id="upimg5" class="upimg" onchange="img5(this)" type="file" required style="display:none;" accept="image/*">
+                                    <img class="img" id="img5" src="img/plus.png">
+                                    <div class="delete">
+                                        <button id="delbtn7" class="delbtn">삭제</button>
+                                    </div>
+                                </div>
+                                <div id="uploadimg6" class="uploadimg">
+                                    <input id="upimg6" class="upimg" onchange="img6(this)" type="file" required style="display:none;" accept="image/*">
+                                    <img class="img" id="img6" src="img/plus.png">
+                                    <div class="delete">
+                                        <button id="delbtn8" class="delbtn">삭제</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div style="margin-top:10px;">
+                            <span style="font-size:25px; margin-bottom:20px;">6. 마커 선택</span>
+                        </div>
+
+                    </div>
+
+
+                    <p class="edit" style="display:none;">
+                        <button id="undo" class="disabled" onclick="undo()" disabled>UNDO</button>
+                        <button id="redo" class="disabled" onclick="redo()" disabled>REDO</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=00cb19549df691541ac9bf9f0256e498&libraries=services,drawing"></script>
+
+<!--주소 검색 및 내위치-->
+<!--영역 그리기-->
+<script src="/js/map/map.js"></script>
+<!-- 비디오 및 이미지 업로드 -->
+<script src="/js/file/file.js"></script>
+
+<script src="/js/main/sev.js"></script>
+</body>
+</html>

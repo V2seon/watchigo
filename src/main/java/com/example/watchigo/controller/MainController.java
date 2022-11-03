@@ -14,7 +14,7 @@ public class MainController {
 
     @GetMapping("/")
     public String main(Model m, HttpServletRequest request){
-        return "main.html";
+        return "test1.html";
     }
 
 }
