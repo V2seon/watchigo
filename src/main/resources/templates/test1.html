@@ -2,8 +2,6 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <title>WATCHIGO</title>
 
     <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
@@ -26,8 +24,8 @@
         <div id="menu_wrap" class="bg_white">
             <div class="option">
                 <div>
-                    주소 : <input type="text" value="" id="keyword" size="15">
-                    <button onclick="searchPlaces()">검색하기</button>
+                    <input type="text" placeholder="아파트, 지역 및 학교명으로 검색 " value="" id="keyword" size="15" onkeyup="if(window.event.keyCode==13){sss()}">
+                    <button onclick="sss()">검색하기</button>
                 </div>
             </div>
             <div id="intable">
@@ -67,7 +65,7 @@
                     </tr>
                     </thead>
                 </table>
-                <div>
+                <div style="margin:auto; margin-top:20px; width:90px;">
                     <button onclick="inser()">서비스존 등록</button>
                 </div>
             </div>
@@ -131,68 +129,81 @@
                             <div class="vbox">
                                 <div id="uploadvideo1" class="uploadvideo">
                                     <input id="realUploadvideo1"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
-                                    <video id="inv1" class="inv1" src="/img/plus.mp4"></video>
-                                </div>
-                                <div class="delete">
-                                    <button id="delbtn1" class="delbtn">삭제</button>
+                                    <div style="width:150px; height:150px; position:absolute;" onclick="video1()">
+                                        <video id="inv1" class="inv1" src="/img/plus.mp4"></video>
+                                    </div>
+                                    <div class="delete" id="delete1">
+                                        <button id="delbtn1" onclick="delete1()" class="delbtn">삭제</button>
+                                    </div>
                                 </div>
                                 <div id="uploadvideo2" class="uploadvideo">
                                     <input id="realUploadvideo2"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
-                                    <video id="inv2" class="inv1" src="/img/plus.mp4"></video>
-                                    <div class="delete">
-                                        <button id="delbtn2" onclick="delete1()" class="delbtn">삭제</button>
+                                    <div style="width:150px; height:150px; position:absolute;" onclick="video2()">
+                                        <video id="inv2" class="inv1" src="/img/plus.mp4"></video>
                                     </div>
-                                </div>
-                                <div>
-                                    <button>삭제</button>
+                                    <div class="delete" id="delete2">
+                                        <button id="delbtn2" onclick="delete2()" class="delbtn">삭제</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div>
+                        <div style="margin:auto;">
                             <span style="font-size:25px; margin-bottom:20px;">5. 이미지 업로드</span>
                             <br>
                             <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;- 이미지는 최대 6장까지 등록 가능합니다.</span>
                             <div class="ibox">
-                                <div id="uploadimg1" class="uploadimg" onclick="ck1()">
-                                    <input id="upimg1" class="upimg" onchange="img1(this)" type="file" required style="display:none;" accept="image/*">
-                                    <img class="img" id="img1" src="img/plus.png">
-                                    <div class="delete">
-                                        <button id="delbtn3" class="delbtn">삭제</button>
+                                <div id="uploadimg1" class="uploadimg">
+                                    <input id="upimg1" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                    <div style="width:150px; height:150px; position:absolute;" onclick="img1()">
+                                        <img class="img" id="img1" src="img/plus.png">
+                                    </div>
+                                    <div class="delete"  id="delete3">
+                                        <button id="delbtn3" onclick="delete3()" class="delbtn">삭제</button>
                                     </div>
                                 </div>
                                 <div id="uploadimg2" class="uploadimg">
-                                    <input id="upimg2" class="upimg" onchange="img2(this)" type="file" required style="display:none;" accept="image/*">
-                                    <img class="img" id="img2" src="img/plus.png">
-                                    <div class="delete">
-                                        <button id="delbtn4" class="delbtn">삭제</button>
+                                    <input id="upimg2" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                    <div style="width:150px; height:150px; position:absolute;" onclick="img2()">
+                                        <img class="img" id="img2" src="img/plus.png">
+                                    </div>
+                                    <div class="delete" id="delete4">
+                                        <button id="delbtn4"  onclick="delete4()" class="delbtn">삭제</button>
                                     </div>
                                 </div>
                                 <div id="uploadimg3" class="uploadimg">
-                                    <input id="upimg3" class="upimg" onchange="img3(this)" type="file" required style="display:none;" accept="image/*">
-                                    <img class="img" id="img3" src="img/plus.png">
-                                    <div class="delete">
-                                        <button id="delbtn5" class="delbtn">삭제</button>
+                                    <input id="upimg3" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                    <div style="width:150px; height:150px; position:absolute;" onclick="img3()">
+                                        <img class="img" id="img3" src="img/plus.png">
+                                    </div>
+                                    <div class="delete" id="delete5">
+                                        <button id="delbtn5"  onclick="delete5()" class="delbtn">삭제</button>
                                     </div>
                                 </div>
                                 <div id="uploadimg4" class="uploadimg">
-                                    <input id="upimg4" class="upimg" onchange="img4(this)" type="file" required style="display:none;" accept="image/*">
-                                    <img class="img" id="img4" src="img/plus.png">
-                                    <div class="delete">
-                                        <button id="delbtn6" class="delbtn">삭제</button>
+                                    <input id="upimg4" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                    <div style="width:150px; height:150px; position:absolute;" onclick="img4()">
+                                        <img class="img" id="img4" src="img/plus.png">
+                                    </div>
+                                    <div class="delete" id="delete6">
+                                        <button id="delbtn6"  onclick="delete6()" class="delbtn">삭제</button>
                                     </div>
                                 </div>
                                 <div id="uploadimg5" class="uploadimg">
-                                    <input id="upimg5" class="upimg" onchange="img5(this)" type="file" required style="display:none;" accept="image/*">
-                                    <img class="img" id="img5" src="img/plus.png">
-                                    <div class="delete">
-                                        <button id="delbtn7" class="delbtn">삭제</button>
+                                    <input id="upimg5" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                    <div style="width:150px; height:150px; position:absolute;" onclick="img5()">
+                                        <img class="img" id="img5" src="img/plus.png">
+                                    </div>
+                                    <div class="delete" id="delete7">
+                                        <button id="delbtn7"  onclick="delete7()" class="delbtn">삭제</button>
                                     </div>
                                 </div>
                                 <div id="uploadimg6" class="uploadimg">
-                                    <input id="upimg6" class="upimg" onchange="img6(this)" type="file" required style="display:none;" accept="image/*">
-                                    <img class="img" id="img6" src="img/plus.png">
-                                    <div class="delete">
-                                        <button id="delbtn8" class="delbtn">삭제</button>
+                                    <input id="upimg6" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                    <div style="width:150px; height:150px; position:absolute;" onclick="img6()">
+                                        <img class="img" id="img6" src="img/plus.png">
+                                    </div>
+                                    <div class="delete" id="delete8">
+                                        <button id="delbtn8"  onclick="delete8()" class="delbtn">삭제</button>
                                     </div>
                                 </div>
                             </div>
@@ -201,7 +212,33 @@
                         <div style="margin-top:10px;">
                             <span style="font-size:25px; margin-bottom:20px;">6. 마커 선택</span>
                         </div>
-
+                        <div class="chmarker">
+                            선택한 마커 이미지
+                        </div>
+                        <div>
+                            <a onclick="marker1()">기본 마커 선택</a>
+                        </div>
+                        <div>
+                            <a>인기 마커 선택</a>
+                        </div>
+                        <div>
+                            <a>커스텀 마커 선택</a>
+                        </div>
+                        <div style="margin-bottom:10px; margin-top:20x;">
+                            <span style="font-size:20px;">서비스존 전시/시설물 목록</span>
+                        </div>
+                        <div class="exbox">
+                            없음
+                        </div>
+                        <div style="width:80%; margin:auto;">
+                            <button class="upbtn">저장하기</button>
+                        </div>
+                        <div style="width:80%; margin:auto;">
+                            <button class="upbtn">출시요청</button>
+                        </div>
+                        <div style="width:80%; margin:auto;">
+                            <button class="upbtn">삭제</button>
+                        </div>
                     </div>
 
 
@@ -214,14 +251,14 @@
         </div>
     </div>
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=00cb19549df691541ac9bf9f0256e498&libraries=services,drawing"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02733eb431496d9133c0f58496aa64fb&libraries=services,drawing"></script>
 
 <!--주소 검색 및 내위치-->
 <!--영역 그리기-->
 <script src="/js/map/map.js"></script>
 <!-- 비디오 및 이미지 업로드 -->
 <script src="/js/file/file.js"></script>
-
+<script src="/js/marker/marker.js"></script>
 <script src="/js/main/sev.js"></script>
 </body>
 </html>

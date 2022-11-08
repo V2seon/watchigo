@@ -61,6 +61,32 @@ var keyword = document.getElementById('keyword').value;
 }
 }
 
+// 장소 검색 객체를 생성합니다
+var ps = new kakao.maps.services.Places();
+
+// 키워드로 장소를 검색합니다
+function sss(){
+var keyword = document.getElementById('keyword').value;
+ps.keywordSearch(keyword, placesSearchCB);
+}
+
+// 키워드 검색 완료 시 호출되는 콜백함수 입니다
+function placesSearchCB (data, status, pagination) {
+    if (status === kakao.maps.services.Status.OK) {
+
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+        // LatLngBounds 객체에 좌표를 추가합니다
+        var bounds = new kakao.maps.LatLngBounds();
+
+        for (var i=0; i<data.length; i++) {
+            bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+        }
+
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+        map.setBounds(bounds);
+    }
+}
+
 // 내위치이동
 function currentLocation() {
 	// HTML5의 geolocation으로 사용할 수 있는지 확인합니다
@@ -165,6 +191,7 @@ var options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
 var manager = new kakao.maps.Drawing.DrawingManager(options);
 
 manager.addListener('drawstart', function(data) {
+
 	var mapobj = manager.getOverlays();
 
     if(mapobj.marker.length > 0)
@@ -288,7 +315,6 @@ function printPolygon(polygons) {
 function selectOverlay(type) {
     // 그리기 중이면 그리기를 취소합니다
     manager.cancel();
-
     // 클릭한 그리기 요소 타입을 선택합니다
     manager.select(kakao.maps.Drawing.OverlayType[type]);
 }

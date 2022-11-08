@@ -97,7 +97,7 @@ function selectOverlay(type) {
     // 그리기 중이면 그리기를 취소합니다
     console.log("123");
     if(type == 'RECTANGLE'){
-        document.get
+        console.log("hhh");
     }
     manager.cancel();
 
