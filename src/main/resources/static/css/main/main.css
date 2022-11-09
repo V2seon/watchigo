@@ -255,6 +255,7 @@ text-align:center;
 .base:hover{
 cursor:pointer;
 color:pink;
+font-weight:bold;
 }
 
 .modal {

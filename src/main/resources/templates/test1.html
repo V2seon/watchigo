@@ -108,19 +108,19 @@
                             </div>
                         </div>
                         <div>
-                            <input class="inte" type="text" placeholder="설정영역 주소">
+                            <input id="address" class="inte" type="text" placeholder="설정영역 주소">
                             <br>
-                            <input class="inte" type="text" placeholder="설정영역 상세주소">
+                            <input id="address1" class="inte" type="text" placeholder="설정영역 상세주소">
                         </div>
                         <div>
                             <span style="font-size:25px; margin-bottom:20px;">2. 서비스존 이름</span>
                             <div>
-                                <input class="inte" type="text" placeholder="서비스존 이름입력">
+                                <input id="zonename" class="inte" type="text" placeholder="서비스존 이름">
                             </div>
                         </div>
                         <div>
                             <span style="font-size:25px; margin-bottom:20px;">3. 서비스존 설명</span>
-                            <textarea class="inte1" type="text" placeholder="서비스존 설명"></textarea>
+                            <textarea id="zoneex" class="inte1" type="text" placeholder="서비스존 설명"></textarea>
                         </div>
                         <div>
                             <span style="font-size:25px; margin-bottom:20px;">4. 동영상 업로드</span>
@@ -231,7 +231,7 @@
                             없음
                         </div>
                         <div style="width:80%; margin:auto;">
-                            <button class="upbtn">저장하기</button>
+                            <button class="upbtn" onclick="savezone()">저장하기</button>
                         </div>
                         <div style="width:80%; margin:auto;">
                             <button class="upbtn">출시요청</button>
@@ -480,5 +480,9 @@ function close_pop2(flag) {
 <script src="/js/file/file.js"></script>
 <script src="/js/marker/marker.js"></script>
 <script src="/js/main/sev.js"></script>
+
+
+<!-- swal창 띄우기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 </html>

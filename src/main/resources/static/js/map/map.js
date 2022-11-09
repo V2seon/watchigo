@@ -190,32 +190,14 @@ var options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
 // 위에 작성한 옵션으로 Drawing Manager를 생성합니다
 var manager = new kakao.maps.Drawing.DrawingManager(options);
 
-manager.addListener('drawstart', function(data) {
-
-	var mapobj = manager.getOverlays();
-
-    if(mapobj.marker.length > 0)
-    {
-    	removeOverlays(mapobj.marker);
-    }
-    else if(mapobj.polyline.length > 0)
-    {
-    	removeOverlays(mapobj.polyline);
-    }
-    else if(mapobj.rectangle.length > 0)
-    {
-    	removeOverlays(mapobj.rectangle);
-    }
-    else if(mapobj.circle.length > 0)
-    {
-    	removeOverlays(mapobj.circle);
-    }
-    else if(mapobj.polygon.length > 0)
-    {
-    	removeOverlays(mapobj.polygon);
-    }
-
-});
+//manager.addListener('drawstart', function(data) {
+//
+//	var mapobj = manager.getOverlays();
+//
+//    	removeOverlays(mapobj.rectangle);
+//    	removeOverlays(mapobj.circle);
+//    	removeOverlays(mapobj.polygon);
+//});
 
 function removeOverlays(overlays) {
 
@@ -284,14 +266,16 @@ manager.addListener('state_changed', function() {
 
 });
 
-
+var serviceszone = "";
 // Drawing Manager에서 가져온 데이터 중 사각형을 아래 지도에 표시하는 함수입니다
 function printRectangle(rects) {
     var len = rects.length, i = 0;
 	var message = "사각형";
 	console.log(message + ":" + JSON.stringify(rects));
-    console.log("시작점: " + JSON.stringify(rects[0].sPoint))
-    console.log("끝난점: " + JSON.stringify(rects[0].ePoint))
+    console.log("시작점: " + JSON.stringify(rects[0].sPoint.y) + "|" + JSON.stringify(rects[0].sPoint.x));
+    console.log("끝난점: " + JSON.stringify(rects[0].ePoint.y) + "|" + JSON.stringify(rects[0].ePoint.x));
+    serviceszone = JSON.stringify(rects[0].sPoint.y) + "|" + JSON.stringify(rects[0].sPoint.x) + "|" + JSON.stringify(rects[0].ePoint.y) + "|" + JSON.stringify(rects[0].ePoint.x);
+    console.log(serviceszone);
 }
 
 // Drawing Manager에서 가져온 데이터 중 원을 아래 지도에 표시하는 함수입니다
@@ -311,12 +295,70 @@ function printPolygon(polygons) {
 	console.log("좌표값 : " + JSON.stringify(polygons[0].points))
 }
 
+var zonetype = "";
 // 버튼 클릭 시 호출되는 핸들러 입니다
 function selectOverlay(type) {
     // 그리기 중이면 그리기를 취소합니다
-    manager.cancel();
+    // manager.cancel();
+
+    // 모양버튼 클릭시 type 담기
+    zonetype = type;
+
     // 클릭한 그리기 요소 타입을 선택합니다
     manager.select(kakao.maps.Drawing.OverlayType[type]);
+}
+
+const address = document.getElementById('address');
+const address1 = document.getElementById('address1');
+const zonename = document.getElementById('zonename');
+const zoneex = document.getElementById('zoneex');
+
+// 저장하기
+function savezone(){
+if(serviceszone == null || serviceszone == ""){
+    swal({
+          text: "서비스존 영역을 설정해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(address.value == null || address.value == ""){
+    swal({
+          text: "설정영역 주소를 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(address1.value == null || address1.value == ""){
+    swal({
+          text: "설정영역 상세주소를 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(zonename.value == null || zonename.value == ""){
+     swal({
+           text: "서비스존 이름을 입력해주세요.",
+           icon: "info" //"info,success,warning,error" 중 택1
+           });
+}else if(zoneex.value == null || zoneex.value == ""){
+      swal({
+            text: "서비스존 설명을 입력해주세요.",
+            icon: "info" //"info,success,warning,error" 중 택1
+            });
+}else{
+let sendData = {
+            "address" : address.value,
+            "address1" : address1.value,
+            "zonename" : zonename.value,
+            "zoneex" : zoneex.value,
+            "zonetype" : zonetype,
+            "serviceszone" : serviceszone
+        };
+$.ajax({
+    url : "/savezone",
+    data : sendData,
+    type : "POST",
+    success : function(result){
+    },
+    error:function(request,status,error){
+    }
+});
+}
 }
 
 
