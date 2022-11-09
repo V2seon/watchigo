@@ -229,29 +229,29 @@ function removeOverlays(overlays) {
     overlays = [];
 }
 
-manager.addListener('drawend', function(data) {
-    //console.log('drawend', manager.getOverlays().length);
-
-     var data = manager.getData();
-    //data = {marker: Array(0), polyline: Array(0), rectangle: Array(0), circle: Array(0), polygon: Array(0)}
-    //console.log("data : " + JSON.stringify(data));
-
-
-    if(data.rectangle.length > 0){
-    	printRectangle(data[kakao.maps.drawing.OverlayType.RECTANGLE]);
-    }
-    else if(data.circle.length > 0){
-    	printCircle(data[kakao.maps.drawing.OverlayType.CIRCLE]);
-    }
-    else if(data.polygon.length > 0){
-    	printPolygon(data[kakao.maps.drawing.OverlayType.POLYGON]);
-    }
-    var obj = manager.getOverlays();
-
-    //console.log("polygon : " + JSON.stringify(obj));
-    //removeOverlays();
-    console.log("...");
-});
+//manager.addListener('drawend', function(data) {
+//    //console.log('drawend', manager.getOverlays().length);
+//
+//     var data = manager.getData();
+//    //data = {marker: Array(0), polyline: Array(0), rectangle: Array(0), circle: Array(0), polygon: Array(0)}
+//    //console.log("data : " + JSON.stringify(data));
+//
+//
+//    if(data.rectangle.length > 0){
+//    	printRectangle(data[kakao.maps.drawing.OverlayType.RECTANGLE]);
+//    }
+//    else if(data.circle.length > 0){
+//    	printCircle(data[kakao.maps.drawing.OverlayType.CIRCLE]);
+//    }
+//    else if(data.polygon.length > 0){
+//    	printPolygon(data[kakao.maps.drawing.OverlayType.POLYGON]);
+//    }
+//    var obj = manager.getOverlays();
+//
+//    //console.log("polygon : " + JSON.stringify(obj));
+//    //removeOverlays();
+//    console.log("...");
+//});
 
 // undo, redo 버튼의 disabled 속성을 설정하기 위해 엘리먼트를 변수에 설정합니다
 var undoBtn = document.getElementById('undo');
