@@ -243,7 +243,7 @@ var redoBtn = document.getElementById('redo');
 // state_changed 이벤트는 그리기 요소의 생성/수정/이동/삭제 동작
 // 또는 Drawing Manager의 undo, redo 메소드가 실행됐을 때 발생합니다
 manager.addListener('state_changed', function() {
-
+    serviceszone = "";
 	var data = manager.getData();
         //data = {marker: Array(0), polyline: Array(0), rectangle: Array(0), circle: Array(0), polygon: Array(0)}
         //console.log("data : " + JSON.stringify(data));
@@ -274,7 +274,7 @@ function printRectangle(rects) {
 	console.log(message + ":" + JSON.stringify(rects));
     console.log("시작점: " + JSON.stringify(rects[0].sPoint.y) + "|" + JSON.stringify(rects[0].sPoint.x));
     console.log("끝난점: " + JSON.stringify(rects[0].ePoint.y) + "|" + JSON.stringify(rects[0].ePoint.x));
-    serviceszone = JSON.stringify(rects[0].sPoint.y) + "|" + JSON.stringify(rects[0].sPoint.x) + "|" + JSON.stringify(rects[0].ePoint.y) + "|" + JSON.stringify(rects[0].ePoint.x);
+    serviceszone = JSON.stringify(rects[0].sPoint.y) + "," + JSON.stringify(rects[0].sPoint.x) + "|" + JSON.stringify(rects[0].ePoint.y) + "," + JSON.stringify(rects[0].ePoint.x);
     console.log(serviceszone);
 }
 
@@ -285,6 +285,8 @@ function printCircle(circles) {
 	console.log(message + ":" + JSON.stringify(circles));
     console.log("중앙점: " + JSON.stringify(circles[0].center))
     console.log("반지름: " + JSON.stringify(circles[0].radius))
+    serviceszone = JSON.stringify(circles[0].center.y)+","+ +JSON.stringify(circles[0].center.x)+"|"+JSON.stringify(circles[0].radius);
+    console.log(serviceszone);
 }
 
 // Drawing Manager에서 가져온 데이터 중 다각형을 아래 지도에 표시하는 함수입니다
@@ -303,7 +305,8 @@ function selectOverlay(type) {
 
     // 모양버튼 클릭시 type 담기
     zonetype = type;
-
+    // 좌표값 초기화
+    serviceszone = "";
     // 클릭한 그리기 요소 타입을 선택합니다
     manager.select(kakao.maps.Drawing.OverlayType[type]);
 }
@@ -312,6 +315,7 @@ const address = document.getElementById('address');
 const address1 = document.getElementById('address1');
 const zonename = document.getElementById('zonename');
 const zoneex = document.getElementById('zoneex');
+
 
 // 저장하기
 function savezone(){
@@ -340,20 +344,107 @@ if(serviceszone == null || serviceszone == ""){
             text: "서비스존 설명을 입력해주세요.",
             icon: "info" //"info,success,warning,error" 중 택1
             });
+}else if(realUploadvideo1.files[0] == null && realUploadvideo2.files[0] == null){
+    swal({
+          text: "동영상을 등록해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+         });
+}else if(realUpload1.files[0] == null && realUpload2.files[0] == null && realUpload3.files[0] == null && realUpload4.files[0] == null && realUpload5.files[0] == null && realUpload6.files[0] == null){
+     swal({
+           text: "이미지를 등록해주세요.",
+           icon: "info" //"info,success,warning,error" 중 택1
+          });
 }else{
+$('#load').show();
+// 파일여부 확인
+var videotype1 = ""; var videotype2 = ""; var imgtype1 = ""; var imgtype2 = "";
+var imgtype3 = ""; var imgtype4 = ""; var imgtype5 = ""; var imgtype6 = "";
+if(realUploadvideo1.files[0] != null ){
+videotype1 = realUploadvideo1.files[0].name}
+if(realUploadvideo2.files[0] != null ){
+videotype2 = realUploadvideo2.files[0].name}
+if(realUpload1.files[0] != null){
+imgtype1 = realUpload1.files[0].name}
+if(realUpload2.files[0] != null){
+imgtype2 = realUpload2.files[0].name}
+if(realUpload3.files[0] != null){
+imgtype3 = realUpload3.files[0].name}
+if(realUpload4.files[0] != null){
+imgtype4 = realUpload4.files[0].name}
+if(realUpload5.files[0] != null){
+imgtype5 = realUpload5.files[0].name}
+if(realUpload6.files[0] != null){
+imgtype6 = realUpload6.files[0].name}
+
 let sendData = {
             "address" : address.value,
             "address1" : address1.value,
             "zonename" : zonename.value,
             "zoneex" : zoneex.value,
             "zonetype" : zonetype,
-            "serviceszone" : serviceszone
+            "serviceszone" : serviceszone,
+            "inv1" : videotype1,
+            "inv2" : videotype2,
+            "ini1" : imgtype1,
+            "ini2" : imgtype2,
+            "ini3" : imgtype3,
+            "ini4" : imgtype4,
+            "ini5" : imgtype5,
+            "ini6" : imgtype6
         };
 $.ajax({
     url : "/savezone",
     data : sendData,
     type : "POST",
     success : function(result){
+        var formData = new FormData();
+        if(realUploadvideo1.files[0] != null){
+            formData.append('files', realUploadvideo1.files[0]);
+        }
+        if(realUploadvideo2.files[0] != null){
+            formData.append('files', realUploadvideo2.files[0]);
+        }
+        if(realUpload1.files[0] != null){
+            formData.append('files', realUpload1.files[0]);
+        }
+        if(realUpload2.files[0] != null){
+            formData.append('files', realUpload2.files[0]);
+        }
+        if(realUpload3.files[0] != null){
+            formData.append('files', realUpload3.files[0]);
+        }
+        if(realUpload4.files[0] != null){
+            formData.append('files', realUpload4.files[0]);
+        }
+        if(realUpload5.files[0] != null){
+            formData.append('files', realUpload5.files[0]);
+        }
+        if(realUpload6.files[0] != null){
+            formData.append('files', realUpload6.files[0]);
+        }
+
+        $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "/upload",
+                data: formData,
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function (data) {
+                    $('#load').hide();
+                   swal({
+                            text: "성공",
+                            icon: "success" //"info,success,warning,error" 중 택1
+                        });
+                },
+                error: function (e) {
+                    swal({
+                             text: "사진 업로드 실패",
+                             icon: "warning" //"info,success,warning,error" 중 택1
+                         });
+                }
+            });
     },
     error:function(request,status,error){
     }
