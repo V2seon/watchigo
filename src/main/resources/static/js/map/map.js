@@ -274,7 +274,7 @@ function printRectangle(rects) {
 	console.log(message + ":" + JSON.stringify(rects));
     console.log("시작점: " + JSON.stringify(rects[0].sPoint.y) + "|" + JSON.stringify(rects[0].sPoint.x));
     console.log("끝난점: " + JSON.stringify(rects[0].ePoint.y) + "|" + JSON.stringify(rects[0].ePoint.x));
-    serviceszone = JSON.stringify(rects[0].sPoint.y) + "," + JSON.stringify(rects[0].sPoint.x) + "|" + JSON.stringify(rects[0].ePoint.y) + "," + JSON.stringify(rects[0].ePoint.x);
+    serviceszone = JSON.stringify(rects[0].sPoint.y) + "," + JSON.stringify(rects[0].sPoint.x) + "&" + JSON.stringify(rects[0].ePoint.y) + "," + JSON.stringify(rects[0].ePoint.x);
     console.log(serviceszone);
 }
 
@@ -285,7 +285,7 @@ function printCircle(circles) {
 	console.log(message + ":" + JSON.stringify(circles));
     console.log("중앙점: " + JSON.stringify(circles[0].center))
     console.log("반지름: " + JSON.stringify(circles[0].radius))
-    serviceszone = JSON.stringify(circles[0].center.y)+","+ +JSON.stringify(circles[0].center.x)+"|"+JSON.stringify(circles[0].radius);
+    serviceszone = JSON.stringify(circles[0].center.y)+","+ +JSON.stringify(circles[0].center.x)+"&"+JSON.stringify(circles[0].radius);
     console.log(serviceszone);
 }
 
@@ -375,7 +375,7 @@ if(realUpload5.files[0] != null){
 imgtype5 = realUpload5.files[0].name}
 if(realUpload6.files[0] != null){
 imgtype6 = realUpload6.files[0].name}
-
+const a = 0;
 let sendData = {
             "address" : address.value,
             "address1" : address1.value,
@@ -390,7 +390,8 @@ let sendData = {
             "ini3" : imgtype3,
             "ini4" : imgtype4,
             "ini5" : imgtype5,
-            "ini6" : imgtype6
+            "ini6" : imgtype6,
+            "a" : a
         };
 $.ajax({
     url : "/savezone",
@@ -439,6 +440,7 @@ $.ajax({
                         });
                 },
                 error: function (e) {
+
                     swal({
                              text: "사진 업로드 실패",
                              icon: "warning" //"info,success,warning,error" 중 택1
@@ -451,5 +453,6 @@ $.ajax({
 });
 }
 }
+
 
 

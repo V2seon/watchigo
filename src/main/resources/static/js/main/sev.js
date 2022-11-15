@@ -7,3 +7,4 @@ function backbtn(){
     document.getElementById('intable').style.display = 'block';
     document.getElementById('uptable').style.display = 'none';
 }
+

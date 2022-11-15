@@ -1,7 +1,14 @@
 package com.example.watchigo.controller;
 
 
+import com.example.watchigo.common.SessionCheck;
+import com.example.watchigo.dto.RectangleDto;
+import com.example.watchigo.dto.ServiceZoneDto;
+import com.example.watchigo.entity.ServiceZoneEntity;
+import com.example.watchigo.repository.ServiceZoneRepository;
 import com.example.watchigo.service.FileService;
+import com.example.watchigo.service.RentangleService;
+import com.example.watchigo.service.ServiceZoneService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +22,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.*;
 
 @Controller
 @AllArgsConstructor
@@ -23,6 +30,20 @@ import java.util.Date;
 public class ServiceZoneController {
 
     private FileService fileService;
+    private ServiceZoneService serviceZoneService;
+    private ServiceZoneRepository serviceZoneRepository;
+    private RentangleService rentangleService;
+
+    @GetMapping("/servicezone")
+    public String main(Model m, HttpServletRequest request){
+        String returnValue = "";
+        if(new SessionCheck().loginSessionCheck(request)){
+            return  "test1.html";
+        }else{
+            returnValue = "login.html";
+        }
+        return returnValue;
+    }
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/savezone")
@@ -40,7 +61,8 @@ public class ServiceZoneController {
                                    @RequestParam(required = false, defaultValue = "", value = "ini3")String ini3,
                                    @RequestParam(required = false, defaultValue = "", value = "ini4")String ini4,
                                    @RequestParam(required = false, defaultValue = "", value = "ini5")String ini5,
-                                   @RequestParam(required = false, defaultValue = "", value = "ini6")String ini6){
+                                   @RequestParam(required = false, defaultValue = "", value = "ini6")String ini6,
+                                   @RequestParam(required = false, defaultValue = "", value = "a")int a){
         HttpSession session = request.getSession();
         System.out.println(address);
         System.out.println(address1);
@@ -56,6 +78,25 @@ public class ServiceZoneController {
         System.out.println(ini4);
         System.out.println(ini5);
         System.out.println(ini6);
+        int type = 0;
+        if(zonetype == "RECTANGLE"){
+            type = 0;
+        }else if(zonetype == "CIRCLE"){
+            type = 1;
+        }else if(zonetype == "POLYGON"){
+            type = 2;
+        }
+
+        String [] filedata = {inv1, inv2, ini1, ini2, ini3, ini4, ini5, ini6};
+
+        // 파일이름 재선언
+        for(int i = 0; i<filedata.length; i++){
+            String id = UUID.randomUUID().toString().replace("-","");
+            if(filedata[i].length()>1){
+                String [] token = filedata[i].split("\\.");
+                filedata[i] = id +"."+ token[1];
+            }
+        }
 
         // 폴더명 넘기기
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
@@ -63,7 +104,23 @@ public class ServiceZoneController {
         String str = sdf.format(date);
         session.setAttribute("sdf",str);
 
-        session.setAttribute("dir","/home/apache/htdocs/WatchigoAdmin/"+zonename); // 사용자아이디값
+        ServiceZoneDto serviceZoneDto = new ServiceZoneDto(null, 0L,zonename,a,address,address1,zoneex,type,str,"0",
+                filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]);
+        serviceZoneService.save(serviceZoneDto);
+
+        //좌표값 저장
+        Optional<ServiceZoneEntity> sss = serviceZoneRepository.findByzonename(zonename);
+        if(type == 0){ // 사각형
+            String redate[] = serviceszone.split("&");
+            RectangleDto rectangleDto = new RectangleDto(sss.get().getPk(),str,redate[0],redate[1]);
+            rentangleService.save(rectangleDto);
+        }else if(type == 1){ //원
+
+        }else if(type == 2){ //다각형
+
+        }
+        
+        session.setAttribute("dir","/home/apache/htdocs/WatchigoAdmin/"+"tjswo0510"); // 사용자아이디값
         return "/";
     }
 
@@ -92,9 +149,11 @@ public class ServiceZoneController {
 
         // 파일 저장
         for(MultipartFile multipartFile : file){
+            int a = 0;
             File savefile = new File(savePath, multipartFile.getOriginalFilename());
             try {
                 multipartFile.transferTo(savefile);
+                a++;
             }catch (Exception e){
                 System.out.println(e.getMessage());
             }
@@ -105,37 +164,6 @@ public class ServiceZoneController {
 //        fileService.uploadFile(file);
         System.out.println("성공");
         return "test1 :: Success";
-    }
-
-//    private final String DIR = "/home/apache/htdocs/WatchigoAdmin/";
-//
-//    @GetMapping("/file")
-//    public StreamingResponseBody img(@RequestParam("fileName")String fileName) throws Exception {
-//        File file = new File(DIR+fileName);
-//        final InputStream is = new FileInputStream(file);
-//        return os -> {
-//            readAndWrite(is,os);
-//        };
-//    }
-//
-//    private void readAndWrite(final InputStream is, OutputStream os) throws IOException {
-//        try {
-//            byte[] data = new byte[2048];
-//            int read = 0;
-//            while ((read = is.read(data)) > 0) {
-//                os.write(data, 0, read);
-//            }
-//            os.flush();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-    private String getfolder(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        String str = sdf.format(date);
-        return str.replace("-", File.separator);
     }
 
 
