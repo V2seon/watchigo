@@ -20,6 +20,9 @@ public class RentangleEntiry {
     @Column(name = "pk")
     private Long apk;
 
+    @Column(name = "userseq")
+    private Long auserseq;
+
     @Column(name = "date")
     private String adate;
 
@@ -30,8 +33,9 @@ public class RentangleEntiry {
     private String aepoint;
 
     @Builder
-    public RentangleEntiry(Long a_pk, String a_date, String a_spoint, String a_epoint) {
+    public RentangleEntiry(Long a_pk, Long a_userseq, String a_date, String a_spoint, String a_epoint) {
         this.apk = a_pk;
+        this.auserseq = a_userseq;
         this.adate = a_date;
         this.aspoint = a_spoint;
         this.aepoint = a_epoint;
@@ -40,6 +44,7 @@ public class RentangleEntiry {
     public static RentangleEntiry toSaveEntity (RectangleDto RectangleDto){
         RentangleEntiry rentangleEntiry = new RentangleEntiry();
         rentangleEntiry.setApk(RectangleDto.getA_PK());
+        rentangleEntiry.setAuserseq(RectangleDto.getA_USERSEQ());
         rentangleEntiry.setAdate(RectangleDto.getA_DATE());
         rentangleEntiry.setAspoint(RectangleDto.getA_SPOINT());
         rentangleEntiry.setAepoint(RectangleDto.getA_EPOINT());

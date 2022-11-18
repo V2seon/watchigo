@@ -1,6 +1,3 @@
-// 마커를 담을 배열입니다
-var markers = [];
-
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div
     mapOption = {
         center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
@@ -8,7 +5,11 @@ var mapContainer = document.getElementById('map'), // 지도를 표시할 div
     };
 
 // 지도를 생성합니다
-var map = new kakao.maps.Map(mapContainer, mapOption);
+//마커 클러스터러 사용하기
+var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
+  center : new kakao.maps.LatLng(36.566826, 127.9786567), // 지도의 중심좌표
+  level : 12 // 지도의 확대 레벨
+});
 
 // 장소 검색 객체를 생성합니다
 var ps = new kakao.maps.services.Places();
@@ -101,7 +102,7 @@ function currentLocation() {
 			var locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
 			var message = '<div style="padding:5px;">현위치</div>'; // 인포윈도우에 표시될 내용입니다
 
-			// 마커와 인포윈도우를 표시합니다
+			// 화면이동 표시합니다
 			map.setCenter(locPosition);
 		});
 	} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
@@ -288,13 +289,17 @@ function printCircle(circles) {
     serviceszone = JSON.stringify(circles[0].center.y)+","+ +JSON.stringify(circles[0].center.x)+"&"+JSON.stringify(circles[0].radius);
     console.log(serviceszone);
 }
-
 // Drawing Manager에서 가져온 데이터 중 다각형을 아래 지도에 표시하는 함수입니다
 function printPolygon(polygons) {
     var len = polygons.length, i = 0;
 	var message = "다각형";
 	console.log(message + ":" + JSON.stringify(polygons));
 	console.log("좌표값 : " + JSON.stringify(polygons[0].points))
+	console.log("길이 : " + JSON.stringify(polygons[0].points.length))
+	for(let i=0; i<JSON.stringify(polygons[0].points.length); i++){
+       serviceszone = serviceszone + JSON.stringify(polygons[0].points[i].y)+"," +JSON.stringify(polygons[0].points[i].x) + "&"
+	}
+//	serviceszone = JSON.stringify(polygons[0].points);
 }
 
 var zonetype = "";
@@ -434,10 +439,7 @@ $.ajax({
                 cache: false,
                 success: function (data) {
                     $('#load').hide();
-                   swal({
-                            text: "성공",
-                            icon: "success" //"info,success,warning,error" 중 택1
-                        });
+                   location.href = "/servicezone";
                 },
                 error: function (e) {
 
@@ -452,6 +454,28 @@ $.ajax({
     }
 });
 }
+}
+
+
+function selectzone(pk){
+let sendData = {
+            "pk" : pk
+        };
+$.ajax({
+    url : "/searchzone",
+    data : sendData,
+    type : "POST",
+    success : function(result){
+            let [s1, s2] =  result.center.split(',');
+            // 좌표 포지션 생성
+            var newPosition = new kakao.maps.LatLng(parseFloat(s1), parseFloat(s2))
+            // 이동
+            map.setLevel(2, {anchor: newPosition});
+            map.setCenter(newPosition);
+    },
+    error: function (e) {
+    }
+    });
 }
 
 

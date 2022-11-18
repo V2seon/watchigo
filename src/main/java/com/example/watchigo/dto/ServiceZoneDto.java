@@ -11,7 +11,8 @@ public class ServiceZoneDto {
     private Long a_pk;
     private Long a_seq;
     private String a_zonename;
-    private int a_state;
+    private String a_zonecenter;
+    private String a_state;
     private String a_address;
     private String a_address1;
     private String a_ex;
@@ -28,12 +29,13 @@ public class ServiceZoneDto {
     private String a_img6;
 
     @Builder
-    public ServiceZoneDto(Long pk, Long seq, String zonename, int state, String address, String address1,
+    public ServiceZoneDto(Long pk, Long seq, String zonename, String zonecenter, String state, String address, String address1,
                           String ex, int type, String date, String marker, String vedio1, String vedio2,
                           String img1, String img2, String img3, String img4, String img5, String img6) {
         a_pk = pk;
         a_seq = seq;
         a_zonename = zonename;
+        a_zonecenter = zonecenter;
         a_state = state;
         a_address = address;
         a_address1 = address1;
@@ -56,6 +58,7 @@ public class ServiceZoneDto {
                 .pk(a_pk)
                 .seq(a_seq)
                 .zonename(a_zonename)
+                .zonecenter(a_zonecenter)
                 .state(a_state)
                 .address(a_address)
                 .address1(a_address1)

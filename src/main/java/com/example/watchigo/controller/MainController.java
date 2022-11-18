@@ -38,7 +38,7 @@ public class MainController {
         if(loginResult == 1){
             //로그인성공
             msg.put("loginResult", "1");
-            session.setAttribute("user_signature", userid);
+            session.setAttribute("userid", userid);
         }else{
             //로그인실패
             msg.put("loginResult", "0");

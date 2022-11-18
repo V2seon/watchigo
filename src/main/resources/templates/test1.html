@@ -16,11 +16,6 @@
     </button>
     <div class="map_wrap">
         <div id="map" style="width:100%;height:1000px;position:relative;overflow:hidden;"></div>
-        <div class="custom_zoomcontrol radius_border">
-            <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>
-            <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
-        </div>
-
         <div id="menu_wrap" class="bg_white">
             <div class="option">
                 <div>
@@ -28,8 +23,25 @@
                     <button onclick="sss()">검색하기</button>
                 </div>
             </div>
+
+
             <div id="intable">
-                <table class="table1">
+                <div class="option">
+                    <div>
+                        <select class="form-control form-control-sm"
+                                name="selectKey" id="selectKey">
+                            <option selected="selected">전체</option>
+                            <!--                        <option value="번호">번호</option>-->
+                            <option value="이름">이름</option>
+                            <option value="상태">상태</option>
+                            <option value="주소">주소</option>
+                        </select>
+
+                        <input id="titleText" type="text" placeholder="검색 " value="" onkeyup="enterkey()">
+                        <button type="submit" onclick="searching()">검색하기</button>
+                    </div>
+                </div>
+                <table class="table1" >
                     <thead>
                     <tr class="table1">
                         <td>번호</td>
@@ -39,29 +51,41 @@
                         <td>위치보기</td>
                         <td>내용</td>
                     </tr>
-                    <tr class="table1">
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                    </tr>
-                    <tr class="table1">
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                    </tr>
-                    <tr class="table1">
-                        <td>2</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>2</td>
-                        <td>2</td>
+                    <tr class="table1" th:if="${userlist}!=null" th:each="Co : ${userlist}">
+                        <td>
+                            <span th:if="${Co.pk}!= null"
+                                  th:text="${Co.pk}"
+                                  th:value="${Co.pk}">
+                            </span>
+                        </td>
+                        <td>
+                            <span th:if="${Co.zonename}!= null"
+                                  th:text="${Co.zonename}"
+                                  th:value="${Co.zonename}">
+                            </span>
+                        </td>
+                        <td>
+                            <span th:if="${Co.state}!= null"
+                                  th:text="${Co.state}"
+                                  th:value="${Co.state}">
+                            </span>
+                        </td>
+                        <td>
+                            <span th:if="${Co.address}!= null"
+                                  th:text="${Co.address}"
+                                  th:value="${Co.address}">
+                            </span>
+                        </td>
+                        <td>
+                            <span class="text111" th:text="보기"
+                                  th:onclick="|javascript:selectzone(${Co.pk})|">
+                            </span>
+                        </td>
+                        <td>
+                            <span class="text111" th:text="보기"
+                                  th:onclick="|javascript:reoff(${Co.pk})|">
+                            </span>
+                        </td>
                     </tr>
                     </thead>
                 </table>
@@ -248,6 +272,10 @@
                     </p>
                 </div>
             </div>
+        </div>
+        <div class="custom_zoomcontrol radius_border">
+            <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>
+            <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
         </div>
     </div>
 <div id="load"> <img src="/img/spinner.gif" alt="loading"></div>
@@ -473,9 +501,9 @@ function close_pop2(flag) {
 
 </script>
 <!--로컬-->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02733eb431496d9133c0f58496aa64fb&libraries=services,drawing"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02733eb431496d9133c0f58496aa64fb&libraries=services,clusterer,drawing"></script>
 <!--서버-->
-<!--<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=00cb19549df691541ac9bf9f0256e498&libraries=services,drawing"></script>-->
+<!--<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=00cb19549df691541ac9bf9f0256e498&libraries=services,clusterer,drawing"></script>-->
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <!--주소 검색 및 내위치-->
 <!--영역 그리기-->
@@ -484,7 +512,46 @@ function close_pop2(flag) {
 <script src="/js/file/file.js"></script>
 <script src="/js/marker/marker.js"></script>
 <script src="/js/main/sev.js"></script>
+<script src="/js/main/servicezonelist.js"></script>
 
+<!--자동실행함수 -->
+<script type="text/javascript">
+
+// 마커 클러스터러를 생성합니다
+var clusterer = new kakao.maps.MarkerClusterer({
+    map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+    averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+    minLevel: 7 // 클러스터 할 최소 지도 레벨
+});
+
+var markers = [];
+
+window.onload=function(){
+// 마커를 담을 배열입니다
+
+  $.ajax({
+        url  : "/view",
+        type : "POST",
+        success : function(result) {
+        const keys = Object.keys(result);
+        for(let i=0; i<Object.keys(result).length; i++){
+                let key = keys[i]
+                let value = result[key]
+                let [point1,point2] = value.split(",");
+                var marker = new kakao.maps.Marker({
+                    position: new kakao.maps.LatLng(parseFloat(point1), parseFloat(point2)), // 마커의 좌표
+                    map: map // 마커를 표시할 지도 객체
+                });
+                markers.push(marker);
+        }
+        clusterer.addMarkers(markers);
+        },error:function(request,status,error){
+
+        }
+    })
+
+}
+</script>
 
 <!-- swal창 띄우기 -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

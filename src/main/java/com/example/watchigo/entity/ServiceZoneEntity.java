@@ -27,8 +27,11 @@ public class ServiceZoneEntity {
     @Column(name = "zonename")
     private String zonename;
 
+    @Column(name = "zonecenter")
+    private String zonecenter;
+
     @Column(name = "state")
-    private int state;
+    private String state;
 
     @Column(name = "address")
     private String address;
@@ -74,12 +77,13 @@ public class ServiceZoneEntity {
 
 
     @Builder
-    public ServiceZoneEntity(Long pk, Long seq, String zonename, int state, String address, String address1,
+    public ServiceZoneEntity(Long pk, Long seq, String zonename, String zonecenter, String state, String address, String address1,
                              String ex, int type, String date, String marker, String vedio1, String vedio2,
                              String img1, String img2, String img3, String img4, String img5, String img6) {
         this.pk = pk;
         this.seq = seq;
         this.zonename = zonename;
+        this.zonecenter = zonecenter;
         this.address =address;
         this.address1 =address1;
         this.ex =ex;
@@ -96,10 +100,17 @@ public class ServiceZoneEntity {
         this.img6 =img6;
     }
 
+
+
+
+
+
     public static ServiceZoneEntity toSaveEntity (ServiceZoneDto ServiceZoneDto){
         ServiceZoneEntity serviceZoneEntity = new ServiceZoneEntity();
         serviceZoneEntity.setPk(ServiceZoneDto.getA_pk());
         serviceZoneEntity.setSeq(ServiceZoneDto.getA_seq());
+        serviceZoneEntity.setZonename(ServiceZoneDto.getA_zonename());
+        serviceZoneEntity.setZonecenter(ServiceZoneDto.getA_zonecenter());
         serviceZoneEntity.setAddress(ServiceZoneDto.getA_address());
         serviceZoneEntity.setAddress1(ServiceZoneDto.getA_address1());
         serviceZoneEntity.setEx(ServiceZoneDto.getA_ex());
