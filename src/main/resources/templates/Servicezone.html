@@ -15,7 +15,7 @@
         <i class="material-icons">&#xe55c;</i>
     </button>
     <div class="map_wrap">
-        <div id="map" style="width:100%;height:1000px;position:relative;overflow:hidden;"></div>
+        <div id="map" style="width:100%;height:98%;position:relative;overflow:hidden;"></div>
         <div id="menu_wrap" class="bg_white">
             <div class="option">
                 <div>
@@ -23,8 +23,7 @@
                     <button onclick="sss()">검색하기</button>
                 </div>
             </div>
-
-
+            <h1>서비스존 리스트</h1>
             <div id="intable">
                 <div class="option">
                     <div>
@@ -83,7 +82,7 @@
                         </td>
                         <td>
                             <span class="text111" th:text="보기"
-                                  th:onclick="|javascript:reoff(${Co.pk})|">
+                                  th:onclick="|javascript:selectzoneview(${Co.pk})|">
                             </span>
                         </td>
                     </tr>
@@ -277,6 +276,18 @@
             <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>
             <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
         </div>
+        <div id="menu_wrap1" class="bg_white1">
+            <img onclick="backbtn1()" class="backbtn" src="/img/back.png">
+            <div>
+                <span id="pknum" hidden></span>
+                <span id="zonenameview"></span>
+                <br>
+                <span id="exview"></span>
+
+            </div>
+            <button id="deletezone" onclick="deletezone()">서비스존 삭제</button>
+        </div>
+
     </div>
 <div id="load"> <img src="/img/spinner.gif" alt="loading"></div>
 
@@ -514,9 +525,8 @@ function close_pop2(flag) {
 <script src="/js/main/sev.js"></script>
 <script src="/js/main/servicezonelist.js"></script>
 
-<!--자동실행함수 -->
+<!--자동실행함수 서비스존 위치마커 표시 -->
 <script type="text/javascript">
-
 // 마커 클러스터러를 생성합니다
 var clusterer = new kakao.maps.MarkerClusterer({
     map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
@@ -528,8 +538,7 @@ var markers = [];
 
 window.onload=function(){
 // 마커를 담을 배열입니다
-
-  $.ajax({
+$.ajax({
         url  : "/view",
         type : "POST",
         success : function(result) {
@@ -539,7 +548,7 @@ window.onload=function(){
                 let value = result[key]
                 let [point1,point2] = value.split(",");
                 var marker = new kakao.maps.Marker({
-                    position: new kakao.maps.LatLng(parseFloat(point1), parseFloat(point2)), // 마커의 좌표
+                    position: new kakao.maps.LatLng(point1, point2), // 마커의 좌표
                     map: map // 마커를 표시할 지도 객체
                 });
                 markers.push(marker);
@@ -549,7 +558,6 @@ window.onload=function(){
 
         }
     })
-
 }
 </script>
 

@@ -8,3 +8,8 @@ function backbtn(){
     document.getElementById('uptable').style.display = 'none';
 }
 
+function backbtn1(){
+    document.getElementById('menu_wrap1').style.display = 'none';
+}
+
+

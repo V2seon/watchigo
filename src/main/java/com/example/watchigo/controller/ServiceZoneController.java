@@ -67,7 +67,7 @@ public class ServiceZoneController {
             model.addAttribute("firstBtnIndex", pagination.getFirstBtnIndex()); //버튼 페이징 - 첫시작 인덱스
             model.addAttribute("lastBtnIndex", pagination.getLastBtnIndex()); //섹션 변경 위함
             model.addAttribute("totalPage", pagination.getTotalPages()); //끝 버튼 위함
-
+            model.addAttribute("s1",s1);
             //서비스 엔티티 추가후 주석 풀고 사용
 //            Page<GradeType1DataEntity> pageList = Gradetype1DataService.selectALLTable2(selectKey, titleText, pageable);
 
@@ -75,7 +75,7 @@ public class ServiceZoneController {
 
 //            return "gradetypedatalist0 :: #example3";
 
-            return  "test1.html";
+            return  "Servicezone.html";
         }else{
             returnValue = "login.html";
         }
@@ -252,6 +252,24 @@ public class ServiceZoneController {
         return "redirect:";
     }
 
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.POST, value = "/view")
+    public Object view(Model model, HttpServletRequest request){
+
+        HashMap<String, String> msg = new HashMap<String, String>();
+
+        HttpSession session = request.getSession();
+        Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
+
+        List<ServiceZoneEntity> sss = serviceZoneServeyRepository.findByseq(s1.get().getAseq());
+
+        for(int i=0; i<sss.size(); i++){
+            msg.put("renspoint"+i,sss.get(i).getZonecenter());
+        }
+
+        return msg;
+    }
+
     @PostMapping("/upload")
     public String uploadfile(@RequestPart("files") MultipartFile[] file, Model model,HttpServletRequest request) throws IOException {
 
@@ -312,9 +330,11 @@ public class ServiceZoneController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/searchzone")
-    public Object main(Model model, HttpServletRequest request, Pageable pageable,
-                       @RequestParam(required = false, defaultValue = "", value = "pk") Long pk){
+    public Object searchzone(Model model, HttpServletRequest request, Pageable pageable,
+                             @RequestParam(required = false, defaultValue = "", value = "pk") Long pk){
         Optional<ServiceZoneEntity> s1 = serviceZoneRepository.findById(pk);
+
+        model.addAttribute("s1",s1);
 
         HashMap<String, String> msg = new HashMap<String, String>();
 
@@ -324,22 +344,62 @@ public class ServiceZoneController {
     }
 
     @ResponseBody
-    @RequestMapping(method = RequestMethod.POST, value = "/view")
-    public Object view(Model model, HttpServletRequest request){
-
+    @RequestMapping(method = RequestMethod.POST, value = "/searchzoneview")
+    public Object searchzoneview(Model model, HttpServletRequest request,
+                                 @RequestParam(required = false, defaultValue = "", value = "pk") Long pk){
+        Optional<ServiceZoneEntity> s1 = serviceZoneRepository.findById(pk);
         HashMap<String, String> msg = new HashMap<String, String>();
 
-        HttpSession session = request.getSession();
-        Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
+        msg.put("center",s1.get().getZonecenter());
 
-        List<ServiceZoneEntity> sss = serviceZoneServeyRepository.findByseq(s1.get().getAseq());
+        msg.put("zonename",s1.get().getZonename());
+        msg.put("ex",s1.get().getEx());
+        msg.put("pk", String.valueOf(pk));
 
-        for(int i=0; i<sss.size(); i++){
-            msg.put("renspoint"+i,sss.get(i).getZonecenter());
+        String aass = String.valueOf(s1.get().getType());
+
+        if (s1.get().getType() == 0){
+            msg.put("type",String.valueOf(s1.get().getType()));
+            Optional<RentangleEntiry> r1 = rentangleRepository.findById(pk);
+            msg.put("sp",r1.get().getAspoint());
+            msg.put("ep",r1.get().getAepoint());
+        }else if(s1.get().getType() == 1){
+            msg.put("type",String.valueOf(s1.get().getType()));
+            Optional<CircleEntity> c1 = circleRepository.findById(pk);
+            msg.put("ce",c1.get().getAcenter());
+            msg.put("ra",c1.get().getAradius());
+        }else if(s1.get().getType() == 2){
+            msg.put("type",String.valueOf(s1.get().getType()));
+            List<PolygonEntity> p1 = polygonRepository.findByApk(pk);
+            String data = "";
+            for(int i =0; i<p1.size(); i++){
+                data = data + p1.get(i).getApoint1()+"&" ;
+            }
+            msg.put("data",data);
         }
 
         return msg;
     }
+
+    @PostMapping("/deletezone")
+    public String delete(@RequestParam(required = false, defaultValue = "", value = "pk")Long pk){
+        System.out.println("인덱스값");
+        System.out.println(pk);
+        Optional<ServiceZoneEntity> s1 = serviceZoneRepository.findById(pk);
+        if(s1.get().getType() == 0){
+            serviceZoneRepository.deleteById(pk);
+            rentangleRepository.deleteById(pk);
+        }else if(s1.get().getType() == 1){
+            serviceZoneRepository.deleteById(pk);
+            circleRepository.deleteById(pk);
+        }else if(s1.get().getType() == 2){
+            serviceZoneRepository.deleteById(pk);
+            polygonRepository.deleteByApk(pk);
+        }
+        return "test1 :: Success";
+    }
+
+
 
 
 

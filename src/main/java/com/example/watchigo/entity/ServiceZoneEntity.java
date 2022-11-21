@@ -75,7 +75,6 @@ public class ServiceZoneEntity {
     @Column(name = "img6")
     private String img6;
 
-
     @Builder
     public ServiceZoneEntity(Long pk, Long seq, String zonename, String zonecenter, String state, String address, String address1,
                              String ex, int type, String date, String marker, String vedio1, String vedio2,
@@ -99,11 +98,6 @@ public class ServiceZoneEntity {
         this.img5 =img5;
         this.img6 =img6;
     }
-
-
-
-
-
 
     public static ServiceZoneEntity toSaveEntity (ServiceZoneDto ServiceZoneDto){
         ServiceZoneEntity serviceZoneEntity = new ServiceZoneEntity();

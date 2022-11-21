@@ -11,6 +11,13 @@ var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표�
   level : 12 // 지도의 확대 레벨
 });
 
+var rectangle = new kakao.maps.Rectangle({
+});
+var circle = new kakao.maps.Circle({
+});
+var polygon = new kakao.maps.Polygon({
+});
+
 // 장소 검색 객체를 생성합니다
 var ps = new kakao.maps.services.Places();
 
@@ -320,7 +327,7 @@ const address = document.getElementById('address');
 const address1 = document.getElementById('address1');
 const zonename = document.getElementById('zonename');
 const zoneex = document.getElementById('zoneex');
-
+const deletezonepk = document.getElementById('pknum');
 
 // 저장하기
 function savezone(){
@@ -456,7 +463,7 @@ $.ajax({
 }
 }
 
-
+//위치보기
 function selectzone(pk){
 let sendData = {
             "pk" : pk
@@ -466,9 +473,12 @@ $.ajax({
     data : sendData,
     type : "POST",
     success : function(result){
+            rectangle.setMap(null);
+            polygon.setMap(null);
+            circle.setMap(null);
             let [s1, s2] =  result.center.split(',');
             // 좌표 포지션 생성
-            var newPosition = new kakao.maps.LatLng(parseFloat(s1), parseFloat(s2))
+            var newPosition = new kakao.maps.LatLng(s1, s2)
             // 이동
             map.setLevel(2, {anchor: newPosition});
             map.setCenter(newPosition);
@@ -477,6 +487,149 @@ $.ajax({
     }
     });
 }
+
+//내용보기
+function selectzoneview(pk){
+document.getElementById('menu_wrap1').style.display = "block";
+let sendData = {
+            "pk" : pk
+        };
+$.ajax({
+    url : "/searchzoneview",
+    data : sendData,
+    type : "POST",
+    success : function(result){
+            let [s1, s2] =  result.center.split(',');
+            // 좌표 포지션 생성
+            var newPosition = new kakao.maps.LatLng(s1, s2)
+            // 이동
+            map.setLevel(2, {anchor: newPosition});
+            map.setCenter(newPosition);
+            for ( var i = 0; i < markers.length; i++ ) {
+                    markers[i].setMap(null);
+                };
+
+            if (result.type == "0"){
+                rectangle.setMap(null);
+                polygon.setMap(null);
+                circle.setMap(null);
+
+               let [sp1, sp2] =  result.sp.split(',');
+               let [ep1, ep2] =  result.ep.split(',');
+
+               var sw = new kakao.maps.LatLng(sp1, sp2),
+                   ne = new kakao.maps.LatLng(ep1, ep2);
+
+               // 사각형을 구성하는 영역정보를 생성합니다
+               // 사각형을 생성할 때 영역정보는 LatLngBounds 객체로 넘겨줘야 합니다
+               var rectangleBounds = new kakao.maps.LatLngBounds(sw, ne);
+
+               // 지도에 표시할 사각형을 생성합니다
+               rectangle = new kakao.maps.Rectangle({
+                   bounds: rectangleBounds, // 그려질 사각형의 영역정보입니다
+                   strokeWeight: 4, // 선의 두께입니다
+                   strokeColor: '#FF3DE5', // 선의 색깔입니다
+                   strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                   strokeStyle: 'shortdashdot', // 선의 스타일입니다
+                   fillColor: '#FF8AEF', // 채우기 색깔입니다
+                   fillOpacity: 0.8 // 채우기 불투명도 입니다
+               });
+
+               // 지도에 사각형을 표시합니다
+               rectangle.setMap(map);
+            }
+            else if(result.type == "1"){
+            // 지도에 표시할 원을 생성합니다
+            rectangle.setMap(null);
+            circle.setMap(null);
+            polygon.setMap(null);
+
+            let [ce1, ce2] =  result.ce.split(',');
+
+            circle = new kakao.maps.Circle({
+                center : new kakao.maps.LatLng(ce1, ce2),  // 원의 중심좌표 입니다
+                radius: result.ra, // 미터 단위의 원의 반지름입니다
+                strokeWeight: 5, // 선의 두께입니다
+                strokeColor: '#75B8FA', // 선의 색깔입니다
+                strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                strokeStyle: 'dashed', // 선의 스타일 입니다
+                fillColor: '#CFE7FF', // 채우기 색깔입니다
+                fillOpacity: 0.7  // 채우기 불투명도 입니다
+            });
+
+            // 지도에 원을 표시합니다
+            circle.setMap(map);
+            }
+            else if(result.type == "2"){
+                rectangle.setMap(null);
+                circle.setMap(null);
+                polygon.setMap(null);
+
+                let p1 = result.data.split('&');
+                var polygonPath = [];
+                for(var i=0; i<(p1.length)-1; i++){
+                    let [p, s] = p1[i].split(',');
+                    polygonPath[i] = new kakao.maps.LatLng(p,s)
+                }
+
+                // 지도에 표시할 다각형을 생성합니다
+                polygon = new kakao.maps.Polygon({
+                    path:polygonPath, // 그려질 다각형의 좌표 배열입니다
+                    strokeWeight: 3, // 선의 두께입니다
+                    strokeColor: '#39DE2A', // 선의 색깔입니다
+                    strokeOpacity: 0.8, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                    strokeStyle: 'longdash', // 선의 스타일입니다
+                    fillColor: '#A2FF99', // 채우기 색깔입니다
+                    fillOpacity: 0.7 // 채우기 불투명도 입니다
+                });
+
+                // 지도에 다각형을 표시합니다
+                polygon.setMap(map);
+            }
+
+
+            document.getElementById('zonenameview').innerText = result.zonename;
+            document.getElementById('exview').innerText = result.ex;
+            document.getElementById('pknum').value = result.pk;
+
+
+
+
+    },
+    error: function (e) {
+    }
+    });
+}
+
+//서비스존 삭제
+function deletezone(){
+swal({
+	    title : "삭제하시겠습니까?",
+    	icon  : "warning",
+    	closeOnClickOutside : false
+}).then(function(){
+	let sendData = {
+                "pk" : deletezonepk.value
+            };
+    $.ajax({
+        url : "/deletezone",
+        data : sendData,
+        type : "POST",
+        success : function(result){
+                location.href = "/servicezone";
+        },
+        error: function (e) {
+        }
+        });
+});
+console.log(deletezonepk.value);
+
+
+
+}
+
+
+
 
 
 
