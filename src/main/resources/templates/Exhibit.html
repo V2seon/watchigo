@@ -10,12 +10,14 @@
 
 </head>
 <body>
-<div th:insert="common/navbar.html"></div>
+<div th:insert="common/navbar.html">
+</div>
     <button class="mygps radius_border" onclick="currentLocation()">
         <i class="material-icons">&#xe55c;</i>
     </button>
     <div class="map_wrap">
-        <div id="map" style="width:100%;height:98%;position:relative;overflow:hidden;"></div>
+        <div id="map" style="width:100%;height:98%;position:relative;overflow:hidden;">
+        </div>
         <div id="menu_wrap" class="bg_white">
             <div class="option">
                 <div>
@@ -36,8 +38,8 @@
                             <option value="주소">주소</option>
                         </select>
 
-                        <input id="titleText" type="text" placeholder="검색 " value="" onkeyup="enterkey()">
-                        <button type="submit" onclick="searching()">검색하기</button>
+                        <input id="titleText" type="text" placeholder="검색 " value="" onkeyup="enterkey1()">
+                        <button type="submit" onclick="searching1()">검색하기</button>
                     </div>
                 </div>
                 <table class="table1" >
@@ -96,57 +98,69 @@
                 <img onclick="backbtn()" class="backbtn" src="/img/back.png">
                 <div>
                     <div class="ser1">
-                        <span style="font-size:25px;">1. 서비스존 설정</span>
+                        <span style="font-size:25px;">1. 서비스존 선택</span>
 
-                            <!--                    <button onclick="selectOverlay('MARKER')">마커</button>-->
-                            <!--                    <button onclick="selectOverlay('POLYLINE')">선</button>-->
-                        <div style="width:100%">
-                            <div class="boxname">
-                                <div style="float:left;">
-                                    <button style="font-size:18px;" class="drwbtn" onclick="selectOverlay('RECTANGLE')">사각형 <br>모양 버튼</button>
-                                </div>
-                                <div class="boxmas">
-                                    사각형으로 영역 설정
-                                </div>
-                            </div>
-                        </div>
-                        <div style="width:100%">
-                            <div class="boxname">
-                                <div style="float:left;">
-                                    <button style="font-size:18px;" class="drwbtn" onclick="selectOverlay('CIRCLE')">원모양 <br>버튼</button>
-                                </div>
-                                <div class="boxmas">
-                                    원으로 영역 설정
-                                </div>
-                            </div>
-                        </div>
-                        <div style="width:100%">
-                            <div class="boxname">
-                                <div style="float:left;">
-                                    <button style="font-size:18px;" class="drwbtn" onclick="selectOverlay('POLYGON')">다각형 <br>모양 버튼</button>
-                                </div>
-                                <div class="boxmas">
-                                    3곳 이상을 선택하여 영역 설정
-                                </div>
-                            </div>
-                        </div>
+                        <table class="table1" >
+                            <thead>
+                            <tr class="table1">
+                                <td>번호</td>
+                                <td>서비스 지역</td>
+                                <td>서비스존 이름</td>
+                                <td>선택</td>
+                            </tr>
+                            <tr class="table1" th:if="${userlist1}!=null" th:each="Co : ${userlist1}">
+                                <td>
+                                    <span th:if="${Co.pk}!= null"
+                                          th:text="${Co.pk}"
+                                          th:value="${Co.pk}">
+                                    </span>
+                                </td>
+                                <td>
+                                    <span th:if="${Co.address}!= null"
+                                          th:text="${Co.address}"
+                                          th:value="${Co.address}">
+                                    </span>
+                                </td>
+                                <td>
+                                    <span th:if="${Co.zonename}!= null"
+                                          th:text="${Co.zonename}"
+                                          th:value="${Co.zonename}">
+                                    </span>
+                                </td>
+                                <td>
+                                    <label class="test_obj">
+                                        <input type="checkbox" class="choicebtn" style="background-color:red;"
+                                               th:onclick="|javascript:selectexzone(${Co.pk})|">
+                                        <span>선택</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            </thead>
+                        </table>
+                        <h4 onclick="view()">더보기</h4>
                         <div>
-                            <input id="address" class="inte" type="text" placeholder="설정영역 주소">
-                            <br>
-                            <input id="address1" class="inte" type="text" placeholder="설정영역 상세주소">
-                        </div>
-                        <div>
-                            <span style="font-size:25px; margin-bottom:20px;">2. 서비스존 이름</span>
+                            <span style="font-size:25px; margin-bottom:20px;">2. 전시/시설물 분류</span>
                             <div>
-                                <input id="zonename" class="inte" type="text" placeholder="서비스존 이름">
+                                <select id="lock" onchange="lock()">
+                                    <option selected="selected">전체</option>
+                                    <!--                        <option value="번호">번호</option>-->
+                                    <option value="시설물">시설물</option>
+                                    <option value="전시물">전시물</option>
+                                    <option value="기타">기타</option>
+                                </select>
+                                <input style="background-color:#8C8C8C;" id="tt11" type="text" placeholder="" readonly>
                             </div>
                         </div>
                         <div>
-                            <span style="font-size:25px; margin-bottom:20px;">3. 서비스존 설명</span>
-                            <textarea id="zoneex" class="inte1" type="text" placeholder="서비스존 설명"></textarea>
+                            <span style="font-size:25px; margin-bottom:20px;">3. 전시/시설물 이름</span>
+                            <input class="inte" type="text" placeholder="전시/시설물 이름">
                         </div>
                         <div>
-                            <span style="font-size:25px; margin-bottom:20px;">4. 동영상 업로드</span>
+                            <span style="font-size:25px; margin-bottom:20px;">4. 전시/시설물 설명</span>
+                            <textarea id="zoneex" class="inte1" type="text" placeholder="전시/시설물 설명"></textarea>
+                        </div>
+                        <div>
+                            <span style="font-size:25px; margin-bottom:20px;">5. 동영상 업로드</span>
                             <br>
                             <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;- 동영상은 최대 2개까지 등록 가능합니다.</span>
                             <div class="vbox">
@@ -171,7 +185,7 @@
                             </div>
                         </div>
                         <div style="margin:auto;">
-                            <span style="font-size:25px; margin-bottom:20px;">5. 이미지 업로드</span>
+                            <span style="font-size:25px; margin-bottom:20px;">6. 이미지 업로드</span>
                             <br>
                             <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;- 이미지는 최대 6장까지 등록 가능합니다.</span>
                             <div class="ibox">
@@ -232,39 +246,64 @@
                             </div>
                         </div>
                         <br>
+                        <div style="margin-top:10px; height:130px;">
+                            <span style="font-size:25px; margin-bottom:20px;">7. 대표 아이콘 선택</span><br>
+                            <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;-지도에 표시되는 아이콘 선택</span><br>
+                            <a class="base" onclick="up()">&nbsp;&nbsp;아이콘 선택 버튼</a>
+                            <div class="chmarker">
+                                선택한 아이콘 <br>이미지
+                            </div>
+                        </div>
+                        <div style="margin-top:10px; height:130px;">
+                            <span style="font-size:25px; margin-bottom:20px; ">8. AR 마커 선택</span><br>
+                            <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;-어플을 통해 AR로 표시되는 마커 이미지 선택</span><br>
+                            <a class="base" onclick="up1()">&nbsp;&nbsp;AR 마커 선택 버튼</a>
+                            <div class="chmarker">
+                                선택한 AR 마커 <br>이미지
+                            </div>
+                        </div>
                         <div style="margin-top:10px;">
-                            <span style="font-size:25px; margin-bottom:20px;">6. 마커 선택</span>
-                        </div>
-                        <div class="chmarker">
-                            선택한 마커 <br>이미지
-                        </div>
-                        <div>
-                            <a class="base" onclick="up()">기본 마커 선택</a>
-                        </div>
-                        <div>
-                            <a class="base" onclick="up1()">인기 마커 선택</a>
-                        </div>
-                        <div>
-                            <a class="base" onclick="up2()">커스텀 마커 선택</a>
-                        </div>
-                        <div style="margin-bottom:10px; margin-top:20px;">
-                            <span style="font-size:20px;">서비스존 전시/시설물 목록</span>
-                        </div>
-                        <div class="exbox">
-                            없음
+                            <span style="font-size:25px; margin-bottom:20px;">9. 정보 표시 방식 선택</span><br>
+                            <div id="exprinttype" onchange="test1()">
+                                <input id="gps" type="radio" class="printtype" name="printtype" value="0">
+                                <label for="gps">GPS방식</label>
+                                <input id="ved" type="radio" class="printtype" name="printtype" value="1">
+                                <label for="ved">영상인식 방식</label>
+                            </div>
+                            <div id="gpsbox" style="display:none;">
+                                ※ 서비스존 안에서 등록하는 전시/시설물의 위치를 지정해주세요.
+
+                                <div>
+                                    위도&nbsp;:&nbsp;<input type="text" readonly>
+                                </div>
+                                <div>
+                                    경도&nbsp;:&nbsp;<input type="text" readonly>
+                                </div>
+                            </div>
+                            <div id="vedbox" style="display:none;">
+                                ※ 전시 시설물을 카메라 전체에 담기는 거리에서 360도에서 2분간 촬영하여 업로드
+
+                                <div id="uploadvideo3" class="uploadvideo">
+                                    <input id="realUploadvideo3"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
+                                    <div style="width:150px; height:150px; position:absolute;" onclick="video3()">
+                                        <video id="inv3" class="inv1" src="/img/plus.mp4"></video>
+                                    </div>
+                                    <div class="delete" id="delete9">
+                                        <button id="delbtn9" onclick="delete9()" class="delbtn">삭제</button>
+                                    </div>
+                                </div>
+                                <div style="width:80%; margin:auto;">
+                                    <button class="upbtn" onclick="">영상탐지 진행보기</button>
+                                </div>
+                            </div>
                         </div>
                         <div style="width:80%; margin:auto;">
-                            <button class="upbtn" onclick="savezone()">저장하기</button>
-                        </div>
-                        <div style="width:80%; margin:auto;">
-                            <button class="upbtn">출시요청</button>
+                            <button class="upbtn" onclick="">저장하기</button>
                         </div>
                         <div style="width:80%; margin:auto;">
                             <button class="upbtn">삭제</button>
                         </div>
                     </div>
-
-
                     <p class="edit" style="display:none;">
                         <button id="undo" class="disabled" onclick="undo()" disabled>UNDO</button>
                         <button id="redo" class="disabled" onclick="redo()" disabled>REDO</button>
@@ -287,7 +326,6 @@
             </div>
             <button id="deletezone" onclick="deletezone()">서비스존 삭제</button>
         </div>
-
     </div>
 <div id="load"> <img src="/img/spinner.gif" alt="loading"></div>
 
@@ -295,8 +333,17 @@
     <!-- Modal content -->
     <div class="modal-content">
         <span class="pop_bt" style="font-size: 13pt;" onClick="close_pop();">X</span>
-        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">기본 마커</span></b></span></p>
+        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">아이콘 선택</span></b></span></p>
         <div style="margin-bottom:30px;">
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
             <div class="basemarker">
 
             </div>
@@ -359,8 +406,17 @@
     <!-- Modal content -->
     <div class="modal-content">
         <span class="pop_bt" style="font-size: 13pt;" onClick="close_pop1();">X</span>
-        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">인기 마커</span></b></span></p>
+        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">AR 마커 선택</span></b></span></p>
         <div style="margin-bottom:30px;">
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
             <div class="basemarker">
 
             </div>
@@ -483,8 +539,122 @@
         <p><br /></p>
     </div>
 </div>
+<div id="myModal3" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="pop_bt" style="font-size: 13pt;" onClick="close_pop3();">X</span>
+        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">서비스존 리스트</span></b></span></p>
+        <div id="see">
+            <select class="form-control form-control-sm"
+                    name="selectKey" id="selectKey1">
+                <option selected="selected">전체</option>
+                <!--                        <option value="번호">번호</option>-->
+                <option value="이름">이름</option>
+                <option value="상태">상태</option>
+                <option value="주소">주소</option>
+            </select>
 
+            <input id="titleText1" type="text" placeholder="검색 " value="" onkeyup="enterkey1()">
+            <button type="submit" onclick="searching1()">검색하기</button>
+            <div style="margin-bottom:30px;">
+                <table class="table1" >
+                    <thead>
+                    <tr class="table1">
+                        <td>번호</td>
+                        <td>서비스 지역</td>
+                        <td>서비스존 이름</td>
+                        <td>선택</td>
+                    </tr>
+                    <tr class="table1" th:if="${userlist1}!=null" th:each="Co : ${userlist1}">
+                        <td>
+                                    <span th:if="${Co.pk}!= null"
+                                          th:text="${Co.pk}"
+                                          th:value="${Co.pk}">
+                                    </span>
+                        </td>
+                        <td>
+                                    <span th:if="${Co.address}!= null"
+                                          th:text="${Co.address}"
+                                          th:value="${Co.address}">
+                                    </span>
+                        </td>
+                        <td>
+                                    <span th:if="${Co.zonename}!= null"
+                                          th:text="${Co.zonename}"
+                                          th:value="${Co.zonename}">
+                                    </span>
+                        </td>
+                        <td>
+                            <label class="test_obj">
+                                <input type="checkbox" class="choicebtn" style="background-color:red;"
+                                       th:onclick="|javascript:selectexzone(${Co.pk})|">
+                                <span>선택</span>
+                            </label>
+                        </td>
+                    </tr>
+                    </thead>
+                </table>
+                <div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 justify-content-center" id="pageList">
+
+
+                        <li class="page-item">
+                            <a class="page-link" aria-label="Previous"
+                               th:onclick="|javascript:paging(0)|"><span>처음</span></a>
+                        </li>
+
+                        <li class="page-item prev-page" th:if="${isPrevSection}"
+
+                            th:value="${thisSection}">
+                            <a class="page-link" aria-label="Previous"
+                               th:onclick="|javascript:paging(${firstBtnIndex}-1)|">이전</a>
+                        </li>
+
+                        <!--            <li th:each="page: ${#numbers.sequence(0,9)}" th:id="pageItem+${page}" class="page-item" th:classappend="${thisPage} ==  ${page} ?  'active'"><a class="page-link" th:href="@{/testDB(page=${page})}"><span th:text="${page+1}"></span></a></li>-->
+
+                        <!--            onclick 구현-->
+                        <li th:each="page: ${#numbers.sequence(firstBtnIndex,lastBtnIndex)}"
+                            id="pageItem" class="page-item"
+                            th:classappend="${thisPage} ==  ${page} ?  'active'" th:value="${page}"><a
+                                class="page-link" th:onclick="|javascript:paging(${page})|"><span
+                                th:text="${page+1}"></span></a></li>
+                        <!--            onclick 구현-->
+
+
+                        <!--다음버튼2-->
+                        <li class="page-item next-page" th:if="${isNextSection}"
+                            th:onclick="|javascript:paging(${lastBtnIndex}+1)|"
+                            th:value="${thisSection}">
+                            <a class="page-link" aria-label="Next">
+                                <span aria-hidden="true">다음</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                        <!--다음버튼2-->
+
+
+                        <li class="page-item">
+                            <a class="page-link" id="pageItem2"
+                               th:onclick="|javascript:paging(${totalPage})|"
+                               aria-label="Previous">끝</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <p><br /></p>
+    </div>
+</div>
+
+<!--모달-->
 <script type="text/javascript">
+function view() {
+        $('#myModal3').show();
+};
+//팝업 Close 기능
+function close_pop3(flag) {
+     $('#myModal3').hide();
+};
 
 function up() {
         $('#myModal').show();
@@ -524,9 +694,14 @@ function close_pop2(flag) {
 <script src="/js/marker/marker.js"></script>
 <script src="/js/main/sev.js"></script>
 <script src="/js/main/servicezonelist.js"></script>
+<script src="/js/exhibit/main.js"></script>
 
 <!--자동실행함수 서비스존 위치마커 표시 -->
 <script type="text/javascript">
+$(".choicebtn").change(function() {
+    $(".choicebtn").not(this).prop('checked', false);
+});
+
 // 마커 클러스터러를 생성합니다
 var clusterer = new kakao.maps.MarkerClusterer({
     map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체

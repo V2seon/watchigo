@@ -24,6 +24,9 @@ public class ExhibitEntity {
     @Column(name = "pk")
     private Long pk;
 
+    @Column(name = "userseq")
+    private Long userseq;
+
     @Column(name = "type")
     private String type;
 
@@ -70,11 +73,12 @@ public class ExhibitEntity {
     private String date;
 
     @Builder
-    public ExhibitEntity(Long pk, Long seq, String type, String name, String ex, String vedio1, String vedio2,
+    public ExhibitEntity(Long pk, Long seq,Long userseq, String type, String name, String ex, String vedio1, String vedio2,
                          String img1, String img2, String img3, String img4, String img5, String img6,
                          String mainicon,String armarker, int printtype ,String date){
         this.seq = seq;
         this.pk = pk;
+        this.userseq = userseq;
         this.type = type;
         this.name = name;
         this.ex =ex;
@@ -96,6 +100,7 @@ public class ExhibitEntity {
         ExhibitEntity exhibitEntity = new ExhibitEntity();
         exhibitEntity.setSeq(exhibitEntity.getSeq());
         exhibitEntity.setPk(exhibitEntity.getPk());
+        exhibitEntity.setUserseq(exhibitEntity.getUserseq());
         exhibitEntity.setType(exhibitEntity.getType());
         exhibitEntity.setName(exhibitEntity.getName());
         exhibitEntity.setEx(exhibitEntity.getEx());

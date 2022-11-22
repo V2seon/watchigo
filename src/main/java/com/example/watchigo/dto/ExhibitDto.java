@@ -12,6 +12,7 @@ public class ExhibitDto {
 
     private Long a_seq;
     private Long a_pk;
+    private Long a_userseq;
     private String a_type;
     private String a_name;
     private String a_ex;
@@ -30,11 +31,12 @@ public class ExhibitDto {
 
 
     @Builder
-    public ExhibitDto(Long pk, Long seq, String type, String name, String ex, String vedio1, String vedio2,
+    public ExhibitDto(Long pk, Long seq,Long userseq, String type, String name, String ex, String vedio1, String vedio2,
                           String img1, String img2, String img3, String img4, String img5, String img6,
                           String mainicon,String armarker, int printtype ,String date) {
         a_seq = seq;
         a_pk = pk;
+        a_userseq = userseq;
         a_type = type;
         a_name = name;
         a_ex = ex;
@@ -56,6 +58,7 @@ public class ExhibitDto {
         ExhibitEntity entity = ExhibitEntity.builder()
                 .seq(a_pk)
                 .pk(a_seq)
+                .userseq(a_userseq)
                 .type(a_type)
                 .name(a_name)
                 .ex(a_ex)

@@ -107,7 +107,7 @@ public class ServiceZoneController {
 
         model.addAttribute("userlist", pageList); //페이지 객체 리스트
 
-        return "test1 :: #intable";
+        return "Servicezone :: #intable";
     }
 
     @ResponseBody

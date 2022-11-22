@@ -267,3 +267,36 @@ document.getElementById('delete8').style.display='none';
 upload6.removeEventListener('mouseover',over8);
 upload6.removeEventListener('mouseout',out8);
 }
+
+const realUploadvideo3 = document.getElementById('realUploadvideo3');
+const uploadvideo3 = document.getElementById('uploadvideo3');
+const inv3 = document.getElementById('inv3');
+const over9 = function(){
+document.getElementById('delete9').style.display='block';
+}
+const out9 = function(){
+document.getElementById('delete9').style.display='none';
+}
+
+function video3(){
+    if(realUploadvideo3.files[0] == null){
+        realUploadvideo3.click();
+        realUploadvideo3.addEventListener("change", function(){
+            const file9 = realUploadvideo3.files[0];
+            const videourl9 = URL.createObjectURL(file9);
+            document.getElementById('delbtn9').style.display='block';
+            inv3.setAttribute("src", videourl9);
+            uploadvideo3.addEventListener('mouseover',over9);
+            uploadvideo3.addEventListener('mouseout',out9);
+        })
+    }
+}
+
+function delete9(){
+document.getElementById('realUploadvideo3').value ="";
+inv3.src = "/img/plus.mp4";
+document.getElementById('delbtn9').style.display='none';
+document.getElementById('delete9').style.display='none';
+uploadvideo3.removeEventListener('mouseover',over9);
+uploadvideo3.removeEventListener('mouseout',out9);
+}
