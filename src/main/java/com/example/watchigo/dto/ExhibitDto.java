@@ -14,8 +14,10 @@ public class ExhibitDto {
     private Long a_pk;
     private Long a_userseq;
     private String a_type;
+    private String a_zonename;
     private String a_name;
     private String a_ex;
+    private String a_point;
     private String a_vedio1;
     private String a_vedio2;
     private String a_img1;
@@ -31,15 +33,17 @@ public class ExhibitDto {
 
 
     @Builder
-    public ExhibitDto(Long pk, Long seq,Long userseq, String type, String name, String ex, String vedio1, String vedio2,
+    public ExhibitDto(Long seq,Long pk,Long userseq, String type,String zonename, String name, String ex, String point, String vedio1, String vedio2,
                           String img1, String img2, String img3, String img4, String img5, String img6,
                           String mainicon,String armarker, int printtype ,String date) {
         a_seq = seq;
         a_pk = pk;
         a_userseq = userseq;
         a_type = type;
+        a_zonename = zonename;
         a_name = name;
         a_ex = ex;
+        a_point = point;
         a_vedio1 = vedio1;
         a_vedio2 = vedio2;
         a_img1 = img1;
@@ -56,12 +60,14 @@ public class ExhibitDto {
 
     public ExhibitEntity toEntity(){
         ExhibitEntity entity = ExhibitEntity.builder()
-                .seq(a_pk)
-                .pk(a_seq)
+                .seq(a_seq)
+                .pk(a_pk)
                 .userseq(a_userseq)
                 .type(a_type)
+                .zonename(a_zonename)
                 .name(a_name)
                 .ex(a_ex)
+                .point(a_point)
                 .vedio1(a_vedio1)
                 .vedio2(a_vedio2)
                 .img1(a_img1)

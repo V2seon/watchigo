@@ -130,7 +130,6 @@ public class ServiceZoneController {
                                    @RequestParam(required = false, defaultValue = "", value = "a")int a){
         HttpSession session = request.getSession();
 
-
         String state = "";
         if(a == 0){
             state = "등록됨";

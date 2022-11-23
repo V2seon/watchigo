@@ -2,6 +2,7 @@ package com.example.watchigo.controller;
 
 import com.example.watchigo.common.Pagination;
 import com.example.watchigo.common.SessionCheck;
+import com.example.watchigo.dto.ExhibitDto;
 import com.example.watchigo.entity.*;
 import com.example.watchigo.repository.*;
 import com.example.watchigo.service.ExhibitService;
@@ -17,9 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @AllArgsConstructor
@@ -148,4 +148,92 @@ public class Exhibitcontroller {
 
         return msg;
     }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.POST, value = "/saveexhibit")
+    public Object saveexhibit(Model model, HttpServletRequest request,
+                              @RequestParam(required = false, defaultValue = "", value = "zonepk") Long zonepk,
+                              @RequestParam(required = false, defaultValue = "", value = "printtype") int printtype,
+                              @RequestParam(required = false, defaultValue = "", value = "exhibitname") String exhibitname,
+                              @RequestParam(required = false, defaultValue = "", value = "exhibitex") String exhibitex,
+                              @RequestParam(required = false, defaultValue = "", value = "extype") String extype,
+                              @RequestParam(required = false, defaultValue = "", value = "inv1") String inv1,
+                              @RequestParam(required = false, defaultValue = "", value = "inv2") String inv2,
+                              @RequestParam(required = false, defaultValue = "", value = "inv3") String inv3,
+                              @RequestParam(required = false, defaultValue = "", value = "ini1") String ini1,
+                              @RequestParam(required = false, defaultValue = "", value = "ini2") String ini2,
+                              @RequestParam(required = false, defaultValue = "", value = "ini3") String ini3,
+                              @RequestParam(required = false, defaultValue = "", value = "ini4") String ini4,
+                              @RequestParam(required = false, defaultValue = "", value = "ini5") String ini5,
+                              @RequestParam(required = false, defaultValue = "", value = "ini6") String ini6,
+                              @RequestParam(required = false, defaultValue = "", value = "expoint") String expoint){
+
+        HttpSession session = request.getSession();
+
+        Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
+        Optional<ServiceZoneEntity> s2 = serviceZoneRepository.findById(zonepk);
+
+        System.out.println(s2.get().getZonename());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+        Date date = new Date();
+        String str = sdf.format(date);
+
+        String [] filedata = {inv1, inv2, ini1, ini2, ini3, ini4, ini5, ini6};
+
+        // 파일이름 재선언
+        for(int i = 0; i<filedata.length; i++){
+            String id = UUID.randomUUID().toString().replace("-","");
+            if(filedata[i].length()>1){
+                String [] token = filedata[i].split("\\.");
+                filedata[i] = id +"."+ token[1];
+            }
+        }
+
+
+        ExhibitDto exhibitDto = new ExhibitDto(null,zonepk,s1.get().getAseq(),extype,s2.get().getZonename(),exhibitname,
+                exhibitex,expoint,filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]
+                ,"0","0",printtype,str);
+        exhibitService.save(exhibitDto);
+
+        return "redirect:";
+    }
+
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.POST, value = "/exhibitview")
+    public Object view(Model model, HttpServletRequest request){
+
+        HashMap<String, String> msg = new HashMap<String, String>();
+
+        HttpSession session = request.getSession();
+        Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
+
+        List<ExhibitEntity> sss = exhibitRepository.findByuserseq(s1.get().getAseq());
+
+        for(int i=0; i<sss.size(); i++){
+            msg.put("renspoint"+i,sss.get(i).getPoint());
+        }
+
+        return msg;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.POST, value = "/searchexhibit")
+    public Object searchexhibit(Model model, HttpServletRequest request, Pageable pageable,
+                             @RequestParam(required = false, defaultValue = "", value = "seq") Long seq){
+        Optional<ExhibitEntity> s1 = exhibitRepository.findById(seq);
+
+        model.addAttribute("s1",s1);
+
+        HashMap<String, String> msg = new HashMap<String, String>();
+
+        msg.put("center",s1.get().getPoint());
+
+        return msg;
+    }
+
+
+
 }

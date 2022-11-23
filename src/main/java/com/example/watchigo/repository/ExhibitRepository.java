@@ -7,8 +7,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface ExhibitRepository extends JpaRepository<ExhibitEntity, Long> {
 
     @Query(value = "SELECT * FROM exhibit where userseq =:seq" , nativeQuery = true)
     Page<ExhibitEntity> findAseq(Long seq, Pageable pageable);
+
+
+    List<ExhibitEntity> findByuserseq(Long userseq);
 }

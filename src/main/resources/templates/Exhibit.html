@@ -46,17 +46,17 @@
                     <thead>
                     <tr class="table1">
                         <td>번호</td>
-                        <td>이름</td>
-                        <td>상태</td>
-                        <td>주소</td>
+                        <td>서비스존 이름</td>
+                        <td>분류</td>
+                        <td>전시/시설물 이름</td>
                         <td>위치보기</td>
                         <td>내용</td>
                     </tr>
                     <tr class="table1" th:if="${userlist}!=null" th:each="Co : ${userlist}">
                         <td>
-                            <span th:if="${Co.pk}!= null"
-                                  th:text="${Co.pk}"
-                                  th:value="${Co.pk}">
+                            <span th:if="${Co.seq}!= null"
+                                  th:text="${Co.seq}"
+                                  th:value="${Co.seq}">
                             </span>
                         </td>
                         <td>
@@ -66,25 +66,25 @@
                             </span>
                         </td>
                         <td>
-                            <span th:if="${Co.state}!= null"
-                                  th:text="${Co.state}"
-                                  th:value="${Co.state}">
+                            <span th:if="${Co.type}!= null"
+                                  th:text="${Co.type}"
+                                  th:value="${Co.type}">
                             </span>
                         </td>
                         <td>
-                            <span th:if="${Co.address}!= null"
-                                  th:text="${Co.address}"
-                                  th:value="${Co.address}">
-                            </span>
-                        </td>
-                        <td>
-                            <span class="text111" th:text="보기"
-                                  th:onclick="|javascript:selectzone(${Co.pk})|">
+                            <span th:if="${Co.name}!= null"
+                                  th:text="${Co.name}"
+                                  th:value="${Co.name}">
                             </span>
                         </td>
                         <td>
                             <span class="text111" th:text="보기"
-                                  th:onclick="|javascript:selectzoneview(${Co.pk})|">
+                                  th:onclick="|javascript:selectexhibit(${Co.seq})|">
+                            </span>
+                        </td>
+                        <td>
+                            <span class="text111" th:text="보기"
+                                  th:onclick="|javascript:selectexhibitview(${Co.seq})|">
                             </span>
                         </td>
                     </tr>
@@ -130,7 +130,7 @@
                                 <td>
                                     <label class="test_obj">
                                         <input type="checkbox" class="choicebtn" style="background-color:red;"
-                                               th:onclick="|javascript:selectexzone(${Co.pk})|">
+                                               th:onclick="|javascript:selectexzone(${Co.pk})|" th:value = ${Co.pk}>
                                         <span>선택</span>
                                     </label>
                                 </td>
@@ -153,11 +153,11 @@
                         </div>
                         <div>
                             <span style="font-size:25px; margin-bottom:20px;">3. 전시/시설물 이름</span>
-                            <input class="inte" type="text" placeholder="전시/시설물 이름">
+                            <input id="exhibitname" class="inte" type="text" placeholder="전시/시설물 이름">
                         </div>
                         <div>
                             <span style="font-size:25px; margin-bottom:20px;">4. 전시/시설물 설명</span>
-                            <textarea id="zoneex" class="inte1" type="text" placeholder="전시/시설물 설명"></textarea>
+                            <textarea id="exhibitex" class="inte1" type="text" placeholder="전시/시설물 설명"></textarea>
                         </div>
                         <div>
                             <span style="font-size:25px; margin-bottom:20px;">5. 동영상 업로드</span>
@@ -265,19 +265,19 @@
                         <div style="margin-top:10px;">
                             <span style="font-size:25px; margin-bottom:20px;">9. 정보 표시 방식 선택</span><br>
                             <div id="exprinttype" onchange="test1()">
-                                <input id="gps" type="radio" class="printtype" name="printtype" value="0">
+                                <input id="gps" type="radio" class="printtype" name="printtype" value="0" checked>
                                 <label for="gps">GPS방식</label>
                                 <input id="ved" type="radio" class="printtype" name="printtype" value="1">
                                 <label for="ved">영상인식 방식</label>
                             </div>
-                            <div id="gpsbox" style="display:none;">
+                            <div id="gpsbox" style="display:block;">
                                 ※ 서비스존 안에서 등록하는 전시/시설물의 위치를 지정해주세요.
 
                                 <div>
-                                    위도&nbsp;:&nbsp;<input type="text" readonly>
+                                    위도&nbsp;:&nbsp;<input id="ypoint" type="text" readonly>
                                 </div>
                                 <div>
-                                    경도&nbsp;:&nbsp;<input type="text" readonly>
+                                    경도&nbsp;:&nbsp;<input id="xpoint" type="text" readonly>
                                 </div>
                             </div>
                             <div id="vedbox" style="display:none;">
@@ -298,7 +298,7 @@
                             </div>
                         </div>
                         <div style="width:80%; margin:auto;">
-                            <button class="upbtn" onclick="">저장하기</button>
+                            <button class="upbtn" onclick="saveexhibit()">저장하기</button>
                         </div>
                         <div style="width:80%; margin:auto;">
                             <button class="upbtn">삭제</button>
@@ -700,6 +700,7 @@ function close_pop2(flag) {
 <script type="text/javascript">
 $(".choicebtn").change(function() {
     $(".choicebtn").not(this).prop('checked', false);
+    zonepk = this.value;
 });
 
 // 마커 클러스터러를 생성합니다
@@ -714,14 +715,17 @@ var markers = [];
 window.onload=function(){
 // 마커를 담을 배열입니다
 $.ajax({
-        url  : "/view",
+        url  : "/exhibitview",
         type : "POST",
         success : function(result) {
+        console.log("성공");
+        console.log(result);
         const keys = Object.keys(result);
         for(let i=0; i<Object.keys(result).length; i++){
                 let key = keys[i]
                 let value = result[key]
                 let [point1,point2] = value.split(",");
+
                 var marker = new kakao.maps.Marker({
                     position: new kakao.maps.LatLng(point1, point2), // 마커의 좌표
                     map: map // 마커를 표시할 지도 객체

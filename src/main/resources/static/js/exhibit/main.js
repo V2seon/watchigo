@@ -1,3 +1,9 @@
+// 지도를 클릭한 위치에 표출할 마커입니다
+var marker = new kakao.maps.Marker({
+});
+// 지도에 마커를 표시합니다
+marker.setMap(map);
+
 // 위치보기
 function selectexzone(pk){
 let sendData = {
@@ -8,16 +14,32 @@ $.ajax({
     data : sendData,
     type : "POST",
     success : function(result){
+    for ( var i = 0; i < marker.length; i++ ) {
+           marker[i].setMap(null);
+       };
             let [s1, s2] =  result.center.split(',');
             // 좌표 포지션 생성
             var newPosition = new kakao.maps.LatLng(s1, s2)
             // 이동
             map.setLevel(2, {anchor: newPosition});
             map.setCenter(newPosition);
-            for ( var i = 0; i < markers.length; i++ ) {
-                    markers[i].setMap(null);
-                };
+            swal({
+            	    title : "서비스존 내의 전시/시설물의 위치를 클릭해주세요.",
+                	icon  : "info",
+                	closeOnClickOutside : false
+            }).then(function(){
+              	kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
 
+                    // 클릭한 위도, 경도 정보를 가져옵니다
+                    var latlng = mouseEvent.latLng;
+
+                    // 마커 위치를 클릭한 위치로 옮깁니다
+                    marker.setPosition(latlng);
+
+                    document.getElementById("ypoint").value = latlng.getLat();
+                    document.getElementById("xpoint").value = latlng.getLng();
+                });
+            });
             if (result.type == "0"){
                 rectangle.setMap(null);
                 polygon.setMap(null);
@@ -37,10 +59,10 @@ $.ajax({
                rectangle = new kakao.maps.Rectangle({
                    bounds: rectangleBounds, // 그려질 사각형의 영역정보입니다
                    strokeWeight: 4, // 선의 두께입니다
-                   strokeColor: '#FF3DE5', // 선의 색깔입니다
+                   strokeColor: '#39DE2A', // 선의 색깔입니다
                    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                   strokeStyle: 'shortdashdot', // 선의 스타일입니다
-                   fillColor: '#FF8AEF', // 채우기 색깔입니다
+                   strokeStyle: 'longdash', // 선의 스타일입니다
+                   fillColor: '#A2FF99', // 채우기 색깔입니다
                    fillOpacity: 0.8 // 채우기 불투명도 입니다
                });
 
@@ -59,10 +81,10 @@ $.ajax({
                 center : new kakao.maps.LatLng(ce1, ce2),  // 원의 중심좌표 입니다
                 radius: result.ra, // 미터 단위의 원의 반지름입니다
                 strokeWeight: 5, // 선의 두께입니다
-                strokeColor: '#75B8FA', // 선의 색깔입니다
+                strokeColor: '#39DE2A', // 선의 색깔입니다
                 strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                strokeStyle: 'dashed', // 선의 스타일 입니다
-                fillColor: '#CFE7FF', // 채우기 색깔입니다
+                strokeStyle: 'longdash', // 선의 스타일 입니다
+                fillColor: '#A2FF99', // 채우기 색깔입니다
                 fillOpacity: 0.7  // 채우기 불투명도 입니다
             });
 
@@ -211,10 +233,11 @@ function enterkey1(){
     }
 }
 
+// 정보 표현 방식
+var tt = 0;
 function test1(){
 const tes =  document.getElementsByName("printtype");
 
-var tt = 3;
 for(var i=0; i<tes.length; i++){
     if(tes[i].checked){
     tt = tes[i].value;
@@ -227,4 +250,149 @@ document.getElementById("vedbox").style.display='none';
 document.getElementById("gpsbox").style.display='none';
 document.getElementById("vedbox").style.display='block';
 }
+}
+
+// 전시/시설물 저장
+var zonepk = 0;
+let choice1 = document.getElementById("lock");
+function saveexhibit(){
+$('#load').show();
+console.log(zonepk);
+console.log(choice1.options[choice1.selectedIndex].value);
+console.log(document.getElementById("tt11").value);
+console.log(document.getElementById("exhibitname").value);
+console.log(document.getElementById("exhibitex").value);
+var expoint = document.getElementById("ypoint").value +","+ document.getElementById("xpoint").value;
+// 파일여부 확인
+var videotype1 = ""; var videotype2 = ""; var videotype3 = "";
+var imgtype1 = ""; var imgtype2 = ""; var imgtype3 = "";
+var imgtype4 = ""; var imgtype5 = ""; var imgtype6 = "";
+
+if(realUploadvideo1.files[0] != null ){
+videotype1 = realUploadvideo1.files[0].name}
+if(realUploadvideo2.files[0] != null ){
+videotype2 = realUploadvideo2.files[0].name}
+if(realUploadvideo3.files[0] != null ){
+videotype3 = realUploadvideo3.files[0].name}
+if(realUpload1.files[0] != null){
+imgtype1 = realUpload1.files[0].name}
+if(realUpload2.files[0] != null){
+imgtype2 = realUpload2.files[0].name}
+if(realUpload3.files[0] != null){
+imgtype3 = realUpload3.files[0].name}
+if(realUpload4.files[0] != null){
+imgtype4 = realUpload4.files[0].name}
+if(realUpload5.files[0] != null){
+imgtype5 = realUpload5.files[0].name}
+if(realUpload6.files[0] != null){
+imgtype6 = realUpload6.files[0].name}
+let sendData = {
+            "inv1" : videotype1,
+            "inv2" : videotype2,
+            "inv3" : videotype3,
+            "ini1" : imgtype1,
+            "ini2" : imgtype2,
+            "ini3" : imgtype3,
+            "ini4" : imgtype4,
+            "ini5" : imgtype5,
+            "ini6" : imgtype6,
+            "printtype" : tt,
+            "zonepk" : zonepk,
+            "extype" : choice1.options[choice1.selectedIndex].value,
+            "exhibitname" : document.getElementById("exhibitname").value,
+            "exhibitex" : document.getElementById("exhibitex").value,
+            "expoint" : expoint
+        };
+        console.log(sendData);
+$.ajax({
+    url : "/saveexhibit",
+    data : sendData,
+    type : "POST",
+    success : function(result){
+    location.href = "/exhibit";
+//        var formData = new FormData();
+//        if(realUploadvideo1.files[0] != null){
+//            formData.append('files', realUploadvideo1.files[0]);
+//        }
+//        if(realUploadvideo2.files[0] != null){
+//            formData.append('files', realUploadvideo2.files[0]);
+//        }
+//        if(realUploadvideo3.files[0] != null){
+//            formData.append('files', realUploadvideo3.files[0]);
+//        }
+//        if(realUpload1.files[0] != null){
+//            formData.append('files', realUpload1.files[0]);
+//        }
+//        if(realUpload2.files[0] != null){
+//            formData.append('files', realUpload2.files[0]);
+//        }
+//        if(realUpload3.files[0] != null){
+//            formData.append('files', realUpload3.files[0]);
+//        }
+//        if(realUpload4.files[0] != null){
+//            formData.append('files', realUpload4.files[0]);
+//        }
+//        if(realUpload5.files[0] != null){
+//            formData.append('files', realUpload5.files[0]);
+//        }
+//        if(realUpload6.files[0] != null){
+//            formData.append('files', realUpload6.files[0]);
+//        }
+//
+//        $.ajax({
+//                type: "POST",
+//                enctype: 'multipart/form-data',
+//                url: "/upload",
+//                data: formData,
+//                processData: false,
+//                contentType: false,
+//                cache: false,
+//                success: function (data) {
+//                    $('#load').hide();
+//                   location.href = "/exhibit";
+//                },
+//                error: function (e) {
+//
+//                    swal({
+//                             text: "사진 업로드 실패",
+//                             icon: "warning" //"info,success,warning,error" 중 택1
+//                         });
+//                }
+//            });
+
+    },
+    error:function(request,status,error){
+    }
+});
+}
+
+// 전시/시설물 위치보기
+function selectexhibit(seq){
+let sendData = {
+            "seq" : seq
+        };
+$.ajax({
+    url : "/searchexhibit",
+    data : sendData,
+    type : "POST",
+    success : function(result){
+            rectangle.setMap(null);
+            polygon.setMap(null);
+            circle.setMap(null);
+            let [s1, s2] =  result.center.split(',');
+            // 좌표 포지션 생성
+            var newPosition = new kakao.maps.LatLng(s1, s2)
+            // 이동
+            map.setLevel(2, {anchor: newPosition});
+            map.setCenter(newPosition);
+    },
+    error: function (e) {
+    }
+    });
+}
+
+// 전시/시설물 내용보기
+function selectexhibitview (seq){
+console.log(seq);
+document.getElementById('menu_wrap1').style.display = "block";
 }

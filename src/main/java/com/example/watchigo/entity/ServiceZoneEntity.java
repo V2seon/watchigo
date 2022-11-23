@@ -105,6 +105,7 @@ public class ServiceZoneEntity {
         serviceZoneEntity.setSeq(ServiceZoneDto.getA_seq());
         serviceZoneEntity.setZonename(ServiceZoneDto.getA_zonename());
         serviceZoneEntity.setZonecenter(ServiceZoneDto.getA_zonecenter());
+        serviceZoneEntity.setState(ServiceZoneDto.getA_state());
         serviceZoneEntity.setAddress(ServiceZoneDto.getA_address());
         serviceZoneEntity.setAddress1(ServiceZoneDto.getA_address1());
         serviceZoneEntity.setEx(ServiceZoneDto.getA_ex());

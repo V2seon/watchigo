@@ -30,11 +30,17 @@ public class ExhibitEntity {
     @Column(name = "type")
     private String type;
 
+    @Column(name = "zonename")
+    private String zonename;
+
     @Column(name = "name")
     private String name;
 
     @Column(name = "ex")
     private String ex;
+
+    @Column(name = "point")
+    private String point;
 
     @Column(name = "vedio1")
     private String vedio1;
@@ -73,15 +79,17 @@ public class ExhibitEntity {
     private String date;
 
     @Builder
-    public ExhibitEntity(Long pk, Long seq,Long userseq, String type, String name, String ex, String vedio1, String vedio2,
+    public ExhibitEntity(Long pk, Long seq,Long userseq, String type, String point, String zonename, String name, String ex, String vedio1, String vedio2,
                          String img1, String img2, String img3, String img4, String img5, String img6,
                          String mainicon,String armarker, int printtype ,String date){
         this.seq = seq;
         this.pk = pk;
         this.userseq = userseq;
         this.type = type;
+        this.zonename = zonename;
         this.name = name;
         this.ex =ex;
+        this.point =point;
         this.vedio1 =vedio1;
         this.vedio2 =vedio2;
         this.img1 =img1;
@@ -102,8 +110,10 @@ public class ExhibitEntity {
         exhibitEntity.setPk(exhibitEntity.getPk());
         exhibitEntity.setUserseq(exhibitEntity.getUserseq());
         exhibitEntity.setType(exhibitEntity.getType());
+        exhibitEntity.setZonename(exhibitEntity.getZonename());
         exhibitEntity.setName(exhibitEntity.getName());
         exhibitEntity.setEx(exhibitEntity.getEx());
+        exhibitEntity.setPoint(exhibitEntity.getPoint());
         exhibitEntity.setVedio1(exhibitEntity.getVedio1());
         exhibitEntity.setVedio2(exhibitEntity.getVedio2());
         exhibitEntity.setImg1(exhibitEntity.getImg1());
