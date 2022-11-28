@@ -51,11 +51,11 @@ public class ServiceZoneEntity {
     @Column(name = "marker")
     private String marker;
 
-    @Column(name = "vedio1")
-    private String vedio1;
+    @Column(name = "video1")
+    private String video1;
 
-    @Column(name = "vedio2")
-    private String vedio2;
+    @Column(name = "video2")
+    private String video2;
 
     @Column(name = "img1")
     private String img1;
@@ -77,20 +77,21 @@ public class ServiceZoneEntity {
 
     @Builder
     public ServiceZoneEntity(Long pk, Long seq, String zonename, String zonecenter, String state, String address, String address1,
-                             String ex, int type, String date, String marker, String vedio1, String vedio2,
+                             String ex, int type, String date, String marker, String video1, String video2,
                              String img1, String img2, String img3, String img4, String img5, String img6) {
         this.pk = pk;
         this.seq = seq;
         this.zonename = zonename;
         this.zonecenter = zonecenter;
+        this.state = state;
         this.address =address;
         this.address1 =address1;
         this.ex =ex;
         this.type =type;
         this.date =date;
         this.marker =marker;
-        this.vedio1 =vedio1;
-        this.vedio2 =vedio2;
+        this.video1 =video1;
+        this.video2 =video2;
         this.img1 =img1;
         this.img2 =img2;
         this.img3 =img3;
@@ -112,8 +113,8 @@ public class ServiceZoneEntity {
         serviceZoneEntity.setType(ServiceZoneDto.getA_type());
         serviceZoneEntity.setDate(ServiceZoneDto.getA_date());
         serviceZoneEntity.setMarker(ServiceZoneDto.getA_marker());
-        serviceZoneEntity.setVedio1(ServiceZoneDto.getA_vedio1());
-        serviceZoneEntity.setVedio2(ServiceZoneDto.getA_vedio2());
+        serviceZoneEntity.setVideo1(ServiceZoneDto.getA_video1());
+        serviceZoneEntity.setVideo2(ServiceZoneDto.getA_video2());
         serviceZoneEntity.setImg1(ServiceZoneDto.getA_img1());
         serviceZoneEntity.setImg2(ServiceZoneDto.getA_img2());
         serviceZoneEntity.setImg3(ServiceZoneDto.getA_img3());

@@ -4,6 +4,8 @@ import com.example.watchigo.dto.ExhibitDto;
 import com.example.watchigo.dto.ServiceZoneDto;
 import com.example.watchigo.entity.ExhibitEntity;
 import com.example.watchigo.entity.ServiceZoneEntity;
+import com.example.watchigo.predicate.ExhibitPredicate;
+import com.example.watchigo.predicate.ServiceZonePredicate;
 import com.example.watchigo.repository.ExhibitRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,10 @@ public class ExhibitService {
         return exhibitEntity.getSeq();
     }
 
+    @Transactional
+    public Page <ExhibitEntity> selectALLTable(String selectKey,String titleText, Long seq, Pageable pageable){
+        return exhibitRepository.findAll(ExhibitPredicate.search(selectKey, titleText, seq),pageable);
+    }
 
     @Transactional
     public Page<ExhibitEntity> selectALLTable0(Long seq, Pageable pageable){

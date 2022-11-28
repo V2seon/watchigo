@@ -198,15 +198,6 @@ var options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
 // 위에 작성한 옵션으로 Drawing Manager를 생성합니다
 var manager = new kakao.maps.Drawing.DrawingManager(options);
 
-//manager.addListener('drawstart', function(data) {
-//
-//	var mapobj = manager.getOverlays();
-//
-//    	removeOverlays(mapobj.rectangle);
-//    	removeOverlays(mapobj.circle);
-//    	removeOverlays(mapobj.polygon);
-//});
-
 function removeOverlays(overlays) {
 
 	console.log("====>" +  overlays.length);
@@ -218,30 +209,6 @@ function removeOverlays(overlays) {
 
     overlays = [];
 }
-
-//manager.addListener('drawend', function(data) {
-//    //console.log('drawend', manager.getOverlays().length);
-//
-//     var data = manager.getData();
-//    //data = {marker: Array(0), polyline: Array(0), rectangle: Array(0), circle: Array(0), polygon: Array(0)}
-//    //console.log("data : " + JSON.stringify(data));
-//
-//
-//    if(data.rectangle.length > 0){
-//    	printRectangle(data[kakao.maps.drawing.OverlayType.RECTANGLE]);
-//    }
-//    else if(data.circle.length > 0){
-//    	printCircle(data[kakao.maps.drawing.OverlayType.CIRCLE]);
-//    }
-//    else if(data.polygon.length > 0){
-//    	printPolygon(data[kakao.maps.drawing.OverlayType.POLYGON]);
-//    }
-//    var obj = manager.getOverlays();
-//
-//    //console.log("polygon : " + JSON.stringify(obj));
-//    //removeOverlays();
-//    console.log("...");
-//});
 
 // undo, redo 버튼의 disabled 속성을 설정하기 위해 엘리먼트를 변수에 설정합니다
 var undoBtn = document.getElementById('undo');
@@ -284,8 +251,8 @@ function printRectangle(rects) {
     console.log("끝난점: " + JSON.stringify(rects[0].ePoint.y) + "|" + JSON.stringify(rects[0].ePoint.x));
     serviceszone = JSON.stringify(rects[0].sPoint.y) + "," + JSON.stringify(rects[0].sPoint.x) + "&" + JSON.stringify(rects[0].ePoint.y) + "," + JSON.stringify(rects[0].ePoint.x);
     console.log(serviceszone);
+    console.log(rects);
 }
-
 // Drawing Manager에서 가져온 데이터 중 원을 아래 지도에 표시하는 함수입니다
 function printCircle(circles) {
     var len = circles.length, i = 0;
@@ -306,6 +273,7 @@ function printPolygon(polygons) {
 	for(let i=0; i<JSON.stringify(polygons[0].points.length); i++){
        serviceszone = serviceszone + JSON.stringify(polygons[0].points[i].y)+"," +JSON.stringify(polygons[0].points[i].x) + "&"
 	}
+	console.log(serviceszone);
 //	serviceszone = JSON.stringify(polygons[0].points);
 }
 
@@ -313,8 +281,11 @@ var zonetype = "";
 // 버튼 클릭 시 호출되는 핸들러 입니다
 function selectOverlay(type) {
     // 그리기 중이면 그리기를 취소합니다
-    // manager.cancel();
-
+    manager.cancel();
+    clusterer.clear();
+    rectangle.setMap(null);
+    polygon.setMap(null);
+    circle.setMap(null);
     // 모양버튼 클릭시 type 담기
     zonetype = type;
     // 좌표값 초기화
@@ -367,104 +338,112 @@ if(serviceszone == null || serviceszone == ""){
            icon: "info" //"info,success,warning,error" 중 택1
           });
 }else{
-$('#load').show();
-// 파일여부 확인
-var videotype1 = ""; var videotype2 = ""; var imgtype1 = ""; var imgtype2 = "";
-var imgtype3 = ""; var imgtype4 = ""; var imgtype5 = ""; var imgtype6 = "";
-if(realUploadvideo1.files[0] != null ){
-videotype1 = realUploadvideo1.files[0].name}
-if(realUploadvideo2.files[0] != null ){
-videotype2 = realUploadvideo2.files[0].name}
-if(realUpload1.files[0] != null){
-imgtype1 = realUpload1.files[0].name}
-if(realUpload2.files[0] != null){
-imgtype2 = realUpload2.files[0].name}
-if(realUpload3.files[0] != null){
-imgtype3 = realUpload3.files[0].name}
-if(realUpload4.files[0] != null){
-imgtype4 = realUpload4.files[0].name}
-if(realUpload5.files[0] != null){
-imgtype5 = realUpload5.files[0].name}
-if(realUpload6.files[0] != null){
-imgtype6 = realUpload6.files[0].name}
-const a = 0;
-let sendData = {
-            "address" : address.value,
-            "address1" : address1.value,
-            "zonename" : zonename.value,
-            "zoneex" : zoneex.value,
-            "zonetype" : zonetype,
-            "serviceszone" : serviceszone,
-            "inv1" : videotype1,
-            "inv2" : videotype2,
-            "ini1" : imgtype1,
-            "ini2" : imgtype2,
-            "ini3" : imgtype3,
-            "ini4" : imgtype4,
-            "ini5" : imgtype5,
-            "ini6" : imgtype6,
-            "a" : a
-        };
-$.ajax({
-    url : "/savezone",
-    data : sendData,
-    type : "POST",
-    success : function(result){
-        var formData = new FormData();
-        if(realUploadvideo1.files[0] != null){
-            formData.append('files', realUploadvideo1.files[0]);
-        }
-        if(realUploadvideo2.files[0] != null){
-            formData.append('files', realUploadvideo2.files[0]);
-        }
-        if(realUpload1.files[0] != null){
-            formData.append('files', realUpload1.files[0]);
-        }
-        if(realUpload2.files[0] != null){
-            formData.append('files', realUpload2.files[0]);
-        }
-        if(realUpload3.files[0] != null){
-            formData.append('files', realUpload3.files[0]);
-        }
-        if(realUpload4.files[0] != null){
-            formData.append('files', realUpload4.files[0]);
-        }
-        if(realUpload5.files[0] != null){
-            formData.append('files', realUpload5.files[0]);
-        }
-        if(realUpload6.files[0] != null){
-            formData.append('files', realUpload6.files[0]);
-        }
+swal({
+	    title : "저장하시겠습니까?",
+    	icon  : "info",
+    	closeOnClickOutside : false
+}).then(function(){
+	$('#load').show();
+    // 파일여부 확인
+    var videotype1 = ""; var videotype2 = ""; var imgtype1 = ""; var imgtype2 = "";
+    var imgtype3 = ""; var imgtype4 = ""; var imgtype5 = ""; var imgtype6 = "";
+    if(realUploadvideo1.files[0] != null ){
+    videotype1 = realUploadvideo1.files[0].name}
+    if(realUploadvideo2.files[0] != null ){
+    videotype2 = realUploadvideo2.files[0].name}
+    if(realUpload1.files[0] != null){
+    imgtype1 = realUpload1.files[0].name}
+    if(realUpload2.files[0] != null){
+    imgtype2 = realUpload2.files[0].name}
+    if(realUpload3.files[0] != null){
+    imgtype3 = realUpload3.files[0].name}
+    if(realUpload4.files[0] != null){
+    imgtype4 = realUpload4.files[0].name}
+    if(realUpload5.files[0] != null){
+    imgtype5 = realUpload5.files[0].name}
+    if(realUpload6.files[0] != null){
+    imgtype6 = realUpload6.files[0].name}
+    const a = 0;
+    let sendData = {
+                "address" : address.value,
+                "address1" : address1.value,
+                "zonename" : zonename.value,
+                "zoneex" : zoneex.value,
+                "zonetype" : zonetype,
+                "serviceszone" : serviceszone,
+                "inv1" : videotype1,
+                "inv2" : videotype2,
+                "ini1" : imgtype1,
+                "ini2" : imgtype2,
+                "ini3" : imgtype3,
+                "ini4" : imgtype4,
+                "ini5" : imgtype5,
+                "ini6" : imgtype6,
+                "a" : a
+            };
+    $.ajax({
+        url : "/savezone",
+        data : sendData,
+        type : "POST",
+        success : function(result){
+            var formData = new FormData();
+            if(realUploadvideo1.files[0] != null){
+                formData.append('files', realUploadvideo1.files[0]);
+            }
+            if(realUploadvideo2.files[0] != null){
+                formData.append('files', realUploadvideo2.files[0]);
+            }
+            if(realUpload1.files[0] != null){
+                formData.append('files', realUpload1.files[0]);
+            }
+            if(realUpload2.files[0] != null){
+                formData.append('files', realUpload2.files[0]);
+            }
+            if(realUpload3.files[0] != null){
+                formData.append('files', realUpload3.files[0]);
+            }
+            if(realUpload4.files[0] != null){
+                formData.append('files', realUpload4.files[0]);
+            }
+            if(realUpload5.files[0] != null){
+                formData.append('files', realUpload5.files[0]);
+            }
+            if(realUpload6.files[0] != null){
+                formData.append('files', realUpload6.files[0]);
+            }
 
-        $.ajax({
-                type: "POST",
-                enctype: 'multipart/form-data',
-                url: "/upload",
-                data: formData,
-                processData: false,
-                contentType: false,
-                cache: false,
-                success: function (data) {
-                    $('#load').hide();
-                   location.href = "/servicezone";
-                },
-                error: function (e) {
+            $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: "/upload",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success: function (data) {
+                        $('#load').hide();
+                       location.href = "/servicezone";
+                    },
+                    error: function (e) {
 
-                    swal({
-                             text: "사진 업로드 실패",
-                             icon: "warning" //"info,success,warning,error" 중 택1
-                         });
-                }
-            });
-    },
-    error:function(request,status,error){
-    }
+                        swal({
+                                 text: "사진 업로드 실패",
+                                 icon: "warning" //"info,success,warning,error" 중 택1
+                             });
+                    }
+                });
+        },
+        error:function(request,status,error){
+        }
+    });
 });
+
 }
 }
 
 //위치보기
 function selectzone(pk){
+document.getElementById('menu_wrap1').style.display = "none";
 let sendData = {
             "pk" : pk
         };
@@ -510,6 +489,8 @@ $.ajax({
                 };
 
             if (result.type == "0"){
+                serviceszone = result.sp +"&"+ result.ep ;
+                console.log(serviceszone);
                 rectangle.setMap(null);
                 polygon.setMap(null);
                 circle.setMap(null);
@@ -539,6 +520,9 @@ $.ajax({
                rectangle.setMap(map);
             }
             else if(result.type == "1"){
+            serviceszone = result.ce +"&"+ result.ra ;
+            console.log(serviceszone);
+
             // 지도에 표시할 원을 생성합니다
             rectangle.setMap(null);
             circle.setMap(null);
@@ -561,6 +545,9 @@ $.ajax({
             circle.setMap(map);
             }
             else if(result.type == "2"){
+                serviceszone = result.data;
+                console.log(serviceszone);
+
                 rectangle.setMap(null);
                 circle.setMap(null);
                 polygon.setMap(null);
@@ -586,15 +573,20 @@ $.ajax({
                 // 지도에 다각형을 표시합니다
                 polygon.setMap(map);
             }
-
-
-            document.getElementById('zonenameview').innerText = result.zonename;
-            document.getElementById('exview').innerText = result.ex;
-            document.getElementById('pknum').value = result.pk;
-
-
-
-
+            document.getElementById('viewaddress').value = result.address;
+            document.getElementById('viewaddress1').value = result.address1;
+            document.getElementById('viewzonename').value = result.zonename;
+            document.getElementById('viewzoneex').value = result.ex;
+            document.getElementById('viewinv1').src = "/file?fileName="+result.video1;
+            document.getElementById('viewinv2').src = "/file?fileName="+result.video2;
+            document.getElementById('viewimg1').src = "/file?fileName="+result.img1;
+            document.getElementById('viewimg2').src = "/file?fileName="+result.img2;
+            document.getElementById('viewimg3').src = "/file?fileName="+result.img3;
+            document.getElementById('viewimg4').src = "/file?fileName="+result.img4;
+            document.getElementById('viewimg5').src = "/file?fileName="+result.img5;
+            document.getElementById('viewimg6').src = "/file?fileName="+result.img6;
+            document.getElementById('pknum').innerText = result.pk;
+            console.log(document.getElementById('pknum').innerText);
     },
     error: function (e) {
     }
@@ -604,28 +596,36 @@ $.ajax({
 //서비스존 삭제
 function deletezone(){
 swal({
-	    title : "삭제하시겠습니까?",
-    	icon  : "warning",
-    	closeOnClickOutside : false
-}).then(function(){
-	let sendData = {
-                "pk" : deletezonepk.value
-            };
-    $.ajax({
-        url : "/deletezone",
-        data : sendData,
-        type : "POST",
-        success : function(result){
-                location.href = "/servicezone";
-        },
-        error: function (e) {
-        }
+  title: "서비스존 삭제",
+  text: "해당 서비스존을 삭제하시겠습니까?",
+  icon: "warning",
+  closeOnClickOutside : false,
+  buttons : ["취소", "삭제"],
+  dangerMode: true
+}).then((result) => {
+  if (result) {
+        let sendData = {
+            "pk" : document.getElementById('pknum').innerText
+        };
+        $.ajax({
+            url : "/deletezone",
+            data : sendData,
+            type : "POST",
+            success : function(result){
+                swal({
+                      title : "삭제되었습니다.",
+                      closeOnClickOutside : false,
+                      icon: "success",
+                    }).then(function(){
+                        location.href = "/servicezone";
+                    });
+            },
+            error: function (e) {
+            }
         });
+  }
 });
-console.log(deletezonepk.value);
-
-
-
+console.log(document.getElementById('pknum').innerText);
 }
 
 

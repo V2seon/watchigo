@@ -1,11 +1,13 @@
 // 지도를 클릭한 위치에 표출할 마커입니다
-var marker = new kakao.maps.Marker({
-});
-// 지도에 마커를 표시합니다
-marker.setMap(map);
 
+// 지도에 마커를 표시합니다
+
+var zonepk = 0;
 // 위치보기
 function selectexzone(pk){
+var marker = new kakao.maps.Marker({
+});
+zonepk = pk;
 let sendData = {
             "pk" : pk
         };
@@ -29,7 +31,7 @@ $.ajax({
                 	closeOnClickOutside : false
             }).then(function(){
               	kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
-
+                    marker.setMap(map);
                     // 클릭한 위도, 경도 정보를 가져옵니다
                     var latlng = mouseEvent.latLng;
 
@@ -131,11 +133,11 @@ function lock(){
 // select element에서 선택된 option의 value가 저장됩니다.lock
     var selectedValue = yourTestSelect.options[yourTestSelect.selectedIndex].value;
     if(selectedValue == "기타"){
-        document.getElementById("tt11").readOnly = false;
-        document.getElementById("tt11").style.backgroundColor = "#FFFFFF";
+        document.getElementById("typename").readOnly = false;
+        document.getElementById("typename").style.backgroundColor = "#FFFFFF";
     }else{
-        document.getElementById("tt11").readOnly = true;
-        document.getElementById("tt11").style.backgroundColor = "#8C8C8C";
+        document.getElementById("typename").readOnly = true;
+        document.getElementById("typename").style.backgroundColor = "#8C8C8C";
     }
 
 }
@@ -226,6 +228,45 @@ function searching1(){
 
 }
 
+function searching2(){
+
+    var titleText = $('#titleText').val();
+    var selectKey = $('#selectKey').val();
+
+    const params = {
+        page: 0,
+        selectKey: selectKey,
+        titleText: titleText
+    }
+
+    const queryString = new URLSearchParams(params).toString();
+
+    const replaceUri = location.pathname + '?' + queryString;
+
+    history.pushState(null, '', replaceUri);
+
+    //값 가져오기 (페이지네이션)
+    const myPageQuery = new URLSearchParams(location.search);
+
+    var querydata = { "page" : myPageQuery.get('page'), "selectKey":myPageQuery.get('selectKey'),"titleText":myPageQuery.get('titleText')};
+
+    $.ajax({
+        url: "/exhibit_search1",
+        data: querydata,
+        type:"POST",
+    }).done(function (fragment) {
+        $("#table1").replaceWith(fragment);
+        console.log(fragment);
+    });
+
+}
+
+// 엔터키
+function enterkey2(){
+    if(window.event.keyCode == 13){
+        searching2();
+    }
+}
 // 엔터키
 function enterkey1(){
     if(window.event.keyCode == 13){
@@ -253,13 +294,12 @@ document.getElementById("vedbox").style.display='block';
 }
 
 // 전시/시설물 저장
-var zonepk = 0;
 let choice1 = document.getElementById("lock");
 function saveexhibit(){
 $('#load').show();
 console.log(zonepk);
 console.log(choice1.options[choice1.selectedIndex].value);
-console.log(document.getElementById("tt11").value);
+const typename = document.getElementById("typename").value;
 console.log(document.getElementById("exhibitname").value);
 console.log(document.getElementById("exhibitex").value);
 var expoint = document.getElementById("ypoint").value +","+ document.getElementById("xpoint").value;
@@ -297,6 +337,7 @@ let sendData = {
             "ini5" : imgtype5,
             "ini6" : imgtype6,
             "printtype" : tt,
+            "typename" : typename,
             "zonepk" : zonepk,
             "extype" : choice1.options[choice1.selectedIndex].value,
             "exhibitname" : document.getElementById("exhibitname").value,
@@ -309,56 +350,55 @@ $.ajax({
     data : sendData,
     type : "POST",
     success : function(result){
-    location.href = "/exhibit";
-//        var formData = new FormData();
-//        if(realUploadvideo1.files[0] != null){
-//            formData.append('files', realUploadvideo1.files[0]);
-//        }
-//        if(realUploadvideo2.files[0] != null){
-//            formData.append('files', realUploadvideo2.files[0]);
-//        }
-//        if(realUploadvideo3.files[0] != null){
-//            formData.append('files', realUploadvideo3.files[0]);
-//        }
-//        if(realUpload1.files[0] != null){
-//            formData.append('files', realUpload1.files[0]);
-//        }
-//        if(realUpload2.files[0] != null){
-//            formData.append('files', realUpload2.files[0]);
-//        }
-//        if(realUpload3.files[0] != null){
-//            formData.append('files', realUpload3.files[0]);
-//        }
-//        if(realUpload4.files[0] != null){
-//            formData.append('files', realUpload4.files[0]);
-//        }
-//        if(realUpload5.files[0] != null){
-//            formData.append('files', realUpload5.files[0]);
-//        }
-//        if(realUpload6.files[0] != null){
-//            formData.append('files', realUpload6.files[0]);
-//        }
-//
-//        $.ajax({
-//                type: "POST",
-//                enctype: 'multipart/form-data',
-//                url: "/upload",
-//                data: formData,
-//                processData: false,
-//                contentType: false,
-//                cache: false,
-//                success: function (data) {
-//                    $('#load').hide();
-//                   location.href = "/exhibit";
-//                },
-//                error: function (e) {
-//
-//                    swal({
-//                             text: "사진 업로드 실패",
-//                             icon: "warning" //"info,success,warning,error" 중 택1
-//                         });
-//                }
-//            });
+        var formData = new FormData();
+        if(realUploadvideo1.files[0] != null){
+            formData.append('files', realUploadvideo1.files[0]);
+        }
+        if(realUploadvideo2.files[0] != null){
+            formData.append('files', realUploadvideo2.files[0]);
+        }
+        if(realUploadvideo3.files[0] != null){
+            formData.append('files', realUploadvideo3.files[0]);
+        }
+        if(realUpload1.files[0] != null){
+            formData.append('files', realUpload1.files[0]);
+        }
+        if(realUpload2.files[0] != null){
+            formData.append('files', realUpload2.files[0]);
+        }
+        if(realUpload3.files[0] != null){
+            formData.append('files', realUpload3.files[0]);
+        }
+        if(realUpload4.files[0] != null){
+            formData.append('files', realUpload4.files[0]);
+        }
+        if(realUpload5.files[0] != null){
+            formData.append('files', realUpload5.files[0]);
+        }
+        if(realUpload6.files[0] != null){
+            formData.append('files', realUpload6.files[0]);
+        }
+
+        $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: "/upload1",
+                data: formData,
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function (data) {
+                    $('#load').hide();
+                   location.href = "/exhibit";
+                },
+                error: function (e) {
+
+                    swal({
+                             text: "사진 업로드 실패",
+                             icon: "warning" //"info,success,warning,error" 중 택1
+                         });
+                }
+            });
 
     },
     error:function(request,status,error){
@@ -368,6 +408,7 @@ $.ajax({
 
 // 전시/시설물 위치보기
 function selectexhibit(seq){
+document.getElementById('menu_wrap1').style.display = "none";
 let sendData = {
             "seq" : seq
         };
@@ -392,7 +433,64 @@ $.ajax({
 }
 
 // 전시/시설물 내용보기
-function selectexhibitview (seq){
-console.log(seq);
+function selectexhibitview(seq){
 document.getElementById('menu_wrap1').style.display = "block";
+let sendData = {
+            "seq" : seq
+        };
+$.ajax({
+    url : "/searchexhibitview",
+    data : sendData,
+    type : "POST",
+    success : function(result){
+            rectangle.setMap(null);
+            polygon.setMap(null);
+            circle.setMap(null);
+            let [s1, s2] =  result.center.split(',');
+            // 좌표 포지션 생성
+            var newPosition = new kakao.maps.LatLng(s1, s2)
+            // 이동
+            map.setLevel(2, {anchor: newPosition});
+            map.setCenter(newPosition);
+
+            document.getElementById('exhibitex').value = result.ex;
+            document.getElementById('exhibitname').value = result.name;
+            document.getElementById('ypoint').value = s1;
+            document.getElementById('xpoint').value = s2;
+            let se = document.getElementById('lock');
+
+            for(let i=0; i<se.options.length; i++){
+                if(se.options[i].value == result.type){
+                    se.options[i].selected = true;
+                }
+            }
+            lock();
+            document.getElementById('typename').value = result.typename;
+            document.getElementById('inv1').src = "/file1?fileName="+result.video1;
+            document.getElementById('inv2').src = "/file1?fileName="+result.video2;
+            document.getElementById('img1').src = "/file1?fileName="+result.img1;
+            document.getElementById('img2').src = "/file1?fileName="+result.img2;
+            document.getElementById('img3').src = "/file1?fileName="+result.img3;
+            document.getElementById('img4').src = "/file1?fileName="+result.img4;
+            document.getElementById('img5').src = "/file1?fileName="+result.img5;
+            document.getElementById('img6').src = "/file1?fileName="+result.img6;
+
+            if(result.printtype == "0"){
+                document.getElementById('gps').checked = true;
+            }else if(result.printtype == "1"){
+                document.getElementById('ved').checked = true;
+            }
+
+            test1();
+
+            var boxlen = document.getElementsByClassName('choicebtn').length;
+            for(let a=0; a<boxlen; a++){
+                document.getElementsByClassName('choicebtn')[a].checked = false;
+            }
+            document.getElementById(result.zonepk).checked = true;
+
+    },
+    error: function (e) {
+    }
+    });
 }

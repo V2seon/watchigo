@@ -1,15 +1,16 @@
 function inser(){
-    document.getElementById('intable').style.display = 'none';
-    document.getElementById('uptable').style.display = 'block';
+    location.href = "/newzone";
+}
+function inser1(){
+    location.href = "/newexhibit";
 }
 
 function backbtn(){
-    document.getElementById('intable').style.display = 'block';
-    document.getElementById('uptable').style.display = 'none';
+    location.href = "/servicezone";
 }
 
 function backbtn1(){
-    document.getElementById('menu_wrap1').style.display = 'none';
+    location.href = "/exhibit";
 }
 
 

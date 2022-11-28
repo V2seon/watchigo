@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>WATCHIGO</title>
+
+    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/main/main.css">
+
+</head>
+<body>
+<div th:insert="common/navbar.html"></div>
+<div class="map_wrap">
+    <div id="map" style="width:100%;height:98%;position:relative;overflow:hidden;"></div>
+    <div id="menu_wrap" class="bg_white">
+        <div class="option">
+            <div>
+                <input type="text" placeholder="아파트, 지역 및 학교명으로 검색 " value="" id="keyword" size="15" onkeyup="if(window.event.keyCode==13){sss()}">
+                <button onclick="sss()">검색하기</button>
+            </div>
+        </div>
+        <h1>서비스존 리스트</h1>
+        <div id="uptable">
+            <img onclick="backbtn()" class="backbtn" src="/img/back.png">
+            <div>
+                <div class="ser1">
+                    <span style="font-size:25px;">1. 서비스존 설정</span>
+
+                    <!--                    <button onclick="selectOverlay('MARKER')">마커</button>-->
+                    <!--                    <button onclick="selectOverlay('POLYLINE')">선</button>-->
+                    <div style="width:100%">
+                        <div class="boxname">
+                            <div style="float:left;">
+                                <button style="font-size:18px;" class="drwbtn" onclick="selectOverlay('RECTANGLE')">사각형 <br>모양 버튼</button>
+                            </div>
+                            <div class="boxmas">
+                                사각형으로 영역 설정
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:100%">
+                        <div class="boxname">
+                            <div style="float:left;">
+                                <button style="font-size:18px;" class="drwbtn" onclick="selectOverlay('CIRCLE')">원모양 <br>버튼</button>
+                            </div>
+                            <div class="boxmas">
+                                원으로 영역 설정
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:100%">
+                        <div class="boxname">
+                            <div style="float:left;">
+                                <button style="font-size:18px;" class="drwbtn" onclick="selectOverlay('POLYGON')">다각형 <br>모양 버튼</button>
+                            </div>
+                            <div class="boxmas">
+                                3곳 이상을 선택하여 영역 설정
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <input id="address" class="inte" type="text" placeholder="서비스 지역 ex)광주광역시 북구">
+                        <br>
+                        <input id="address1" class="inte" type="text" placeholder="설정영역 주소">
+                    </div>
+                    <div>
+                        <span style="font-size:25px; margin-bottom:20px;">2. 서비스존 이름</span>
+                        <div>
+                            <input id="zonename" class="inte" type="text" placeholder="서비스존 이름">
+                        </div>
+                    </div>
+                    <div>
+                        <span style="font-size:25px; margin-bottom:20px;">3. 서비스존 설명</span>
+                        <textarea id="zoneex" class="inte1" type="text" placeholder="서비스존 설명"></textarea>
+                    </div>
+                    <div>
+                        <span style="font-size:25px; margin-bottom:20px;">4. 동영상 업로드</span>
+                        <br>
+                        <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;- 동영상은 최대 2개까지 등록 가능합니다.</span>
+                        <div class="vbox">
+                            <div id="uploadvideo1" class="uploadvideo">
+                                <input id="realUploadvideo1"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
+                                <div style="width:150px; height:150px; position:absolute;" onclick="video1()">
+                                    <video id="inv1" class="inv1" src="/img/plus.mp4"></video>
+                                </div>
+                                <div class="delete" id="delete1">
+                                    <button id="delbtn1" onclick="delete1()" class="delbtn">삭제</button>
+                                </div>
+                            </div>
+                            <div id="uploadvideo2" class="uploadvideo">
+                                <input id="realUploadvideo2"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
+                                <div style="width:150px; height:150px; position:absolute;" onclick="video2()">
+                                    <video id="inv2" class="inv1" src="/img/plus.mp4"></video>
+                                </div>
+                                <div class="delete" id="delete2">
+                                    <button id="delbtn2" onclick="delete2()" class="delbtn">삭제</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin:auto;">
+                        <span style="font-size:25px; margin-bottom:20px;">5. 이미지 업로드</span>
+                        <br>
+                        <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;- 이미지는 최대 6장까지 등록 가능합니다.</span>
+                        <div class="ibox">
+                            <div id="uploadimg1" class="uploadimg">
+                                <input id="upimg1" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                <div style="width:150px; height:150px; position:absolute;" onclick="img1()">
+                                    <img class="img" id="img1" src="img/plus.png">
+                                </div>
+                                <div class="delete"  id="delete3">
+                                    <button id="delbtn3" onclick="delete3()" class="delbtn">삭제</button>
+                                </div>
+                            </div>
+                            <div id="uploadimg2" class="uploadimg">
+                                <input id="upimg2" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                <div style="width:150px; height:150px; position:absolute;" onclick="img2()">
+                                    <img class="img" id="img2" src="img/plus.png">
+                                </div>
+                                <div class="delete" id="delete4">
+                                    <button id="delbtn4"  onclick="delete4()" class="delbtn">삭제</button>
+                                </div>
+                            </div>
+                            <div id="uploadimg3" class="uploadimg">
+                                <input id="upimg3" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                <div style="width:150px; height:150px; position:absolute;" onclick="img3()">
+                                    <img class="img" id="img3" src="img/plus.png">
+                                </div>
+                                <div class="delete" id="delete5">
+                                    <button id="delbtn5"  onclick="delete5()" class="delbtn">삭제</button>
+                                </div>
+                            </div>
+                            <div id="uploadimg4" class="uploadimg">
+                                <input id="upimg4" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                <div style="width:150px; height:150px; position:absolute;" onclick="img4()">
+                                    <img class="img" id="img4" src="img/plus.png">
+                                </div>
+                                <div class="delete" id="delete6">
+                                    <button id="delbtn6"  onclick="delete6()" class="delbtn">삭제</button>
+                                </div>
+                            </div>
+                            <div id="uploadimg5" class="uploadimg">
+                                <input id="upimg5" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                <div style="width:150px; height:150px; position:absolute;" onclick="img5()">
+                                    <img class="img" id="img5" src="img/plus.png">
+                                </div>
+                                <div class="delete" id="delete7">
+                                    <button id="delbtn7"  onclick="delete7()" class="delbtn">삭제</button>
+                                </div>
+                            </div>
+                            <div id="uploadimg6" class="uploadimg">
+                                <input id="upimg6" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                <div style="width:150px; height:150px; position:absolute;" onclick="img6()">
+                                    <img class="img" id="img6" src="img/plus.png">
+                                </div>
+                                <div class="delete" id="delete8">
+                                    <button id="delbtn8"  onclick="delete8()" class="delbtn">삭제</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div style="margin-top:10px;">
+                        <span style="font-size:25px; margin-bottom:20px;">6. 마커 선택</span>
+                    </div>
+                    <div class="chmarker">
+                        선택한 마커 <br>이미지
+                    </div>
+                    <div>
+                        <a class="base" onclick="up()">기본 마커 선택</a>
+                    </div>
+                    <div>
+                        <a class="base" onclick="up1()">인기 마커 선택</a>
+                    </div>
+                    <div>
+                        <a class="base" onclick="up2()">커스텀 마커 선택</a>
+                    </div>
+                    <div style="margin-bottom:10px; margin-top:20px;">
+                        <span style="font-size:20px;">서비스존 전시/시설물 목록</span>
+                    </div>
+                    <div class="exbox">
+                        없음
+                    </div>
+                    <div style="width:80%; margin:auto;">
+                        <button class="upbtn" onclick="savezone()">저장하기</button>
+                    </div>
+                    <div style="width:80%; margin:auto;">
+                        <button class="upbtn">출시요청</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="custom_zoomcontrol radius_border">
+        <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>
+        <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
+    </div>
+</div>
+<div id="load"> <img src="/img/spinner.gif" alt="loading"></div>
+
+<div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="pop_bt" style="font-size: 13pt;" onClick="close_pop();">X</span>
+        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">기본 마커</span></b></span></p>
+        <div style="margin-bottom:30px;">
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+        </div>
+        <p><br /></p>
+    </div>
+</div>
+<div id="myModal1" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="pop_bt" style="font-size: 13pt;" onClick="close_pop1();">X</span>
+        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">인기 마커</span></b></span></p>
+        <div style="margin-bottom:30px;">
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+        </div>
+        <p><br /></p>
+    </div>
+</div>
+<div id="myModal2" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="pop_bt" style="font-size: 13pt;" onClick="close_pop2();">X</span>
+        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">커스텀 마커</span></b></span></p>
+        <div style="margin-bottom:30px;">
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+            <div class="basemarker">
+
+            </div>
+        </div>
+        <p><br /></p>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+function up() {
+        $('#myModal').show();
+};
+//팝업 Close 기능
+function close_pop(flag) {
+     $('#myModal').hide();
+};
+
+function up1() {
+        $('#myModal1').show();
+};
+//팝업 Close 기능
+function close_pop1(flag) {
+     $('#myModal1').hide();
+};
+
+function up2() {
+        $('#myModal2').show();
+};
+//팝업 Close 기능
+function close_pop2(flag) {
+     $('#myModal2').hide();
+};
+
+</script>
+<!--로컬-->
+<!--<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02733eb431496d9133c0f58496aa64fb&libraries=services,clusterer,drawing"></script>-->
+<!--서버-->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=00cb19549df691541ac9bf9f0256e498&libraries=services,clusterer,drawing"></script>
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+<!--주소 검색 및 내위치-->
+<!--영역 그리기-->
+<script src="/js/map/map.js?Version=1"></script>
+<!-- 비디오 및 이미지 업로드 -->
+<script src="/js/file/file.js"></script>
+<script src="/js/file/filesev.js"></script>
+<script src="/js/marker/marker.js"></script>
+<script src="/js/main/sev.js"></script>
+<script src="/js/main/servicezonelist.js"></script>
+
+<!-- swal창 띄우기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</body>
+</html>

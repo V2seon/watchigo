@@ -12,9 +12,6 @@
 <body>
 <div th:insert="common/navbar.html">
 </div>
-    <button class="mygps radius_border" onclick="currentLocation()">
-        <i class="material-icons">&#xe55c;</i>
-    </button>
     <div class="map_wrap">
         <div id="map" style="width:100%;height:98%;position:relative;overflow:hidden;">
         </div>
@@ -33,16 +30,16 @@
                                 name="selectKey" id="selectKey">
                             <option selected="selected">전체</option>
                             <!--                        <option value="번호">번호</option>-->
-                            <option value="이름">이름</option>
-                            <option value="상태">상태</option>
-                            <option value="주소">주소</option>
+                            <option value="서비스존">서비스존 이름</option>
+                            <option value="분류">분류</option>
+                            <option value="전시/시설물">전시/시설물 이름</option>
                         </select>
 
-                        <input id="titleText" type="text" placeholder="검색 " value="" onkeyup="enterkey1()">
-                        <button type="submit" onclick="searching1()">검색하기</button>
+                        <input id="titleText" type="text" placeholder="검색 " value="" onkeyup="enterkey2()">
+                        <button type="submit" onclick="searching2()">검색하기</button>
                     </div>
                 </div>
-                <table class="table1" >
+                <table id="table1" class="table1" >
                     <thead>
                     <tr class="table1">
                         <td>번호</td>
@@ -91,11 +88,17 @@
                     </thead>
                 </table>
                 <div style="margin:auto; margin-top:20px; width:90px;">
-                    <button onclick="inser()">전시/시설물 등록</button>
+                    <button onclick="inser1()">전시/시설물 등록</button>
                 </div>
             </div>
-            <div id="uptable" style="display:none;">
-                <img onclick="backbtn()" class="backbtn" src="/img/back.png">
+        </div>
+        <div class="custom_zoomcontrol radius_border">
+            <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>
+            <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
+        </div>
+        <div id="menu_wrap1" class="bg_white1">
+            <div id="uptable">
+                <img onclick="backbtn1()" class="backbtn" src="/img/back.png">
                 <div>
                     <div class="ser1">
                         <span style="font-size:25px;">1. 서비스존 선택</span>
@@ -129,7 +132,7 @@
                                 </td>
                                 <td>
                                     <label class="test_obj">
-                                        <input type="checkbox" class="choicebtn" style="background-color:red;"
+                                        <input type="checkbox" class="choicebtn" style="background-color:red;" th:id="${Co.pk}"
                                                th:onclick="|javascript:selectexzone(${Co.pk})|" th:value = ${Co.pk}>
                                         <span>선택</span>
                                     </label>
@@ -148,7 +151,7 @@
                                     <option value="전시물">전시물</option>
                                     <option value="기타">기타</option>
                                 </select>
-                                <input style="background-color:#8C8C8C;" id="tt11" type="text" placeholder="" readonly>
+                                <input style="background-color:#8C8C8C;" id="typename" type="text" placeholder="" readonly>
                             </div>
                         </div>
                         <div>
@@ -167,7 +170,8 @@
                                 <div id="uploadvideo1" class="uploadvideo">
                                     <input id="realUploadvideo1"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
                                     <div style="width:150px; height:150px; position:absolute;" onclick="video1()">
-                                        <video id="inv1" class="inv1" src="/img/plus.mp4"></video>
+                                        <video id="inv1" class="inv1" src="/img/plus.mp4"
+                                               onerror="this.src='/img/plus.mp4';"></video>
                                     </div>
                                     <div class="delete" id="delete1">
                                         <button id="delbtn1" onclick="delete1()" class="delbtn">삭제</button>
@@ -176,7 +180,8 @@
                                 <div id="uploadvideo2" class="uploadvideo">
                                     <input id="realUploadvideo2"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
                                     <div style="width:150px; height:150px; position:absolute;" onclick="video2()">
-                                        <video id="inv2" class="inv1" src="/img/plus.mp4"></video>
+                                        <video id="inv2" class="inv1" src="/img/plus.mp4"
+                                               onerror="this.src='/img/plus.mp4';"></video>
                                     </div>
                                     <div class="delete" id="delete2">
                                         <button id="delbtn2" onclick="delete2()" class="delbtn">삭제</button>
@@ -192,7 +197,8 @@
                                 <div id="uploadimg1" class="uploadimg">
                                     <input id="upimg1" class="upimg" type="file" required style="display:none;" accept="image/*">
                                     <div style="width:150px; height:150px; position:absolute;" onclick="img1()">
-                                        <img class="img" id="img1" src="img/plus.png">
+                                        <img class="img" id="img1" src="img/plus.png"
+                                             onerror="this.src='/img/plus.png';">
                                     </div>
                                     <div class="delete"  id="delete3">
                                         <button id="delbtn3" onclick="delete3()" class="delbtn">삭제</button>
@@ -201,7 +207,8 @@
                                 <div id="uploadimg2" class="uploadimg">
                                     <input id="upimg2" class="upimg" type="file" required style="display:none;" accept="image/*">
                                     <div style="width:150px; height:150px; position:absolute;" onclick="img2()">
-                                        <img class="img" id="img2" src="img/plus.png">
+                                        <img class="img" id="img2" src="img/plus.png"
+                                             onerror="this.src='/img/plus.png';">
                                     </div>
                                     <div class="delete" id="delete4">
                                         <button id="delbtn4"  onclick="delete4()" class="delbtn">삭제</button>
@@ -210,7 +217,8 @@
                                 <div id="uploadimg3" class="uploadimg">
                                     <input id="upimg3" class="upimg" type="file" required style="display:none;" accept="image/*">
                                     <div style="width:150px; height:150px; position:absolute;" onclick="img3()">
-                                        <img class="img" id="img3" src="img/plus.png">
+                                        <img class="img" id="img3" src="img/plus.png"
+                                             onerror="this.src='/img/plus.png';">
                                     </div>
                                     <div class="delete" id="delete5">
                                         <button id="delbtn5"  onclick="delete5()" class="delbtn">삭제</button>
@@ -219,7 +227,8 @@
                                 <div id="uploadimg4" class="uploadimg">
                                     <input id="upimg4" class="upimg" type="file" required style="display:none;" accept="image/*">
                                     <div style="width:150px; height:150px; position:absolute;" onclick="img4()">
-                                        <img class="img" id="img4" src="img/plus.png">
+                                        <img class="img" id="img4" src="img/plus.png"
+                                             onerror="this.src='/img/plus.png';">
                                     </div>
                                     <div class="delete" id="delete6">
                                         <button id="delbtn6"  onclick="delete6()" class="delbtn">삭제</button>
@@ -228,7 +237,8 @@
                                 <div id="uploadimg5" class="uploadimg">
                                     <input id="upimg5" class="upimg" type="file" required style="display:none;" accept="image/*">
                                     <div style="width:150px; height:150px; position:absolute;" onclick="img5()">
-                                        <img class="img" id="img5" src="img/plus.png">
+                                        <img class="img" id="img5" src="img/plus.png"
+                                             onerror="this.src='/img/plus.png';">
                                     </div>
                                     <div class="delete" id="delete7">
                                         <button id="delbtn7"  onclick="delete7()" class="delbtn">삭제</button>
@@ -237,7 +247,8 @@
                                 <div id="uploadimg6" class="uploadimg">
                                     <input id="upimg6" class="upimg" type="file" required style="display:none;" accept="image/*">
                                     <div style="width:150px; height:150px; position:absolute;" onclick="img6()">
-                                        <img class="img" id="img6" src="img/plus.png">
+                                        <img class="img" id="img6" src="img/plus.png"
+                                             onerror="this.src='/img/plus.png';">
                                     </div>
                                     <div class="delete" id="delete8">
                                         <button id="delbtn8"  onclick="delete8()" class="delbtn">삭제</button>
@@ -309,20 +320,6 @@
                         <button id="redo" class="disabled" onclick="redo()" disabled>REDO</button>
                     </p>
                 </div>
-            </div>
-        </div>
-        <div class="custom_zoomcontrol radius_border">
-            <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>
-            <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
-        </div>
-        <div id="menu_wrap1" class="bg_white1">
-            <img onclick="backbtn1()" class="backbtn" src="/img/back.png">
-            <div>
-                <span id="pknum" hidden></span>
-                <span id="zonenameview"></span>
-                <br>
-                <span id="exview"></span>
-
             </div>
             <button id="deletezone" onclick="deletezone()">서비스존 삭제</button>
         </div>
@@ -586,7 +583,7 @@
                         </td>
                         <td>
                             <label class="test_obj">
-                                <input type="checkbox" class="choicebtn" style="background-color:red;"
+                                <input type="checkbox" class="choicebtn" th:id="${Co.pk}" style="background-color:red;"
                                        th:onclick="|javascript:selectexzone(${Co.pk})|">
                                 <span>선택</span>
                             </label>
@@ -682,9 +679,9 @@ function close_pop2(flag) {
 
 </script>
 <!--로컬-->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02733eb431496d9133c0f58496aa64fb&libraries=services,clusterer,drawing"></script>
+<!--<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02733eb431496d9133c0f58496aa64fb&libraries=services,clusterer,drawing"></script>-->
 <!--서버-->
-<!--<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=00cb19549df691541ac9bf9f0256e498&libraries=services,clusterer,drawing"></script>-->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=00cb19549df691541ac9bf9f0256e498&libraries=services,clusterer,drawing"></script>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <!--주소 검색 및 내위치-->
 <!--영역 그리기-->
@@ -718,8 +715,6 @@ $.ajax({
         url  : "/exhibitview",
         type : "POST",
         success : function(result) {
-        console.log("성공");
-        console.log(result);
         const keys = Object.keys(result);
         for(let i=0; i<Object.keys(result).length; i++){
                 let key = keys[i]

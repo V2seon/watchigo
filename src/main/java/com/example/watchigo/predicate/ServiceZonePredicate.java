@@ -43,7 +43,8 @@ public class ServiceZonePredicate {
             catch (Exception e){
                 builder.and(
                         (qServiceZoneEntity.zonename.contains(titleText)).or
-                                (qServiceZoneEntity.address.contains(titleText))).and
+                                (qServiceZoneEntity.address.contains(titleText)).or
+                                (qServiceZoneEntity.state.contains(titleText))).and
                                 (qServiceZoneEntity.seq.eq(seq));
             }
 

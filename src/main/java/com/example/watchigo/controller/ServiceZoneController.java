@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -75,7 +76,7 @@ public class ServiceZoneController {
 
 //            return "gradetypedatalist0 :: #example3";
 
-            return  "Servicezone.html";
+            return  "ServicezoneMain.html";
         }else{
             returnValue = "login.html";
         }
@@ -107,7 +108,12 @@ public class ServiceZoneController {
 
         model.addAttribute("userlist", pageList); //페이지 객체 리스트
 
-        return "Servicezone :: #intable";
+        return "ServicezoneMain :: #intable";
+    }
+
+    @GetMapping("/newzone")
+    public String newzone(Model model,HttpServletRequest request){
+        return "ServicezoneInsert";
     }
 
     @ResponseBody
@@ -130,6 +136,8 @@ public class ServiceZoneController {
                                    @RequestParam(required = false, defaultValue = "", value = "a")int a){
         HttpSession session = request.getSession();
 
+        System.out.println(a);
+
         String state = "";
         if(a == 0){
             state = "등록됨";
@@ -138,6 +146,7 @@ public class ServiceZoneController {
         }else if(a == 2){
             state = "출시";
         }
+        System.out.println(state);
 
         int type = 0;
         if(zonetype.equals("RECTANGLE")){
@@ -150,17 +159,8 @@ public class ServiceZoneController {
         System.out.println("타입값: " +  type);
         String [] filedata = {inv1, inv2, ini1, ini2, ini3, ini4, ini5, ini6};
 
-        // 파일이름 재선언
-        for(int i = 0; i<filedata.length; i++){
-            String id = UUID.randomUUID().toString().replace("-","");
-            if(filedata[i].length()>1){
-                String [] token = filedata[i].split("\\.");
-                filedata[i] = id +"."+ token[1];
-            }
-        }
-
         // 폴더명 넘기기
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss");
         Date date = new Date();
         String str = sdf.format(date);
         session.setAttribute("sdf",str);
@@ -247,7 +247,7 @@ public class ServiceZoneController {
             }
         }
         
-        session.setAttribute("dir","/home/apache/htdocs/WatchigoAdmin/"+session.getAttribute("userid"));
+        session.setAttribute("dir","/home/AdminWatchigo/uploadfiles/servicezone/"+session.getAttribute("userid"));
         return "redirect:";
     }
 
@@ -293,24 +293,10 @@ public class ServiceZoneController {
         //    }
         //}
 
-        ArrayList<String> filename = new ArrayList<String>();
-
-        filename.add(s1.get().getVedio1());
-        filename.add(s1.get().getVedio2());
-        filename.add(s1.get().getImg1());
-        filename.add(s1.get().getImg2());
-        filename.add(s1.get().getImg3());
-        filename.add(s1.get().getImg4());
-        filename.add(s1.get().getImg5());
-        filename.add(s1.get().getImg6());
-
-        filename.removeAll(Arrays.asList("", null));
-
-
         // 파일 저장
         for(MultipartFile multipartFile : file){
             int a = 0;
-            File savefile = new File(savePath, filename.get(a));
+            File savefile = new File(savePath, multipartFile.getOriginalFilename());
             try {
                 multipartFile.transferTo(savefile);
                 a++;
@@ -323,9 +309,34 @@ public class ServiceZoneController {
 
 //        fileService.uploadFile(file);
         System.out.println("성공");
-        return "test1 :: Success";
+        return "ServicezoneInsert :: Success";
     }
 
+    @GetMapping("/file")
+    public StreamingResponseBody img(HttpServletRequest request,@RequestParam("fileName")String fileName) throws Exception {
+        HttpSession session = request.getSession();
+        String id = (String) session.getAttribute("userid");
+        String date = (String) session.getAttribute("date");
+        String DIR = "/home/AdminWatchigo/uploadfiles/servicezone/"+id+"/"+date+"/";
+        File file = new File(DIR+fileName);
+        final InputStream is = new FileInputStream(file);
+        return os -> {
+            readAndWrite(is,os);
+        };
+    }
+
+    private void readAndWrite(final InputStream is, OutputStream os) throws IOException {
+        try {
+            byte[] data = new byte[2048];
+            int read = 0;
+            while ((read = is.read(data)) > 0) {
+                os.write(data, 0, read);
+            }
+            os.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/searchzone")
@@ -348,12 +359,26 @@ public class ServiceZoneController {
                                  @RequestParam(required = false, defaultValue = "", value = "pk") Long pk){
         Optional<ServiceZoneEntity> s1 = serviceZoneRepository.findById(pk);
         HashMap<String, String> msg = new HashMap<String, String>();
+        HttpSession session = request.getSession();
+
+        session.setAttribute("date",s1.get().getDate());
+
 
         msg.put("center",s1.get().getZonecenter());
 
         msg.put("zonename",s1.get().getZonename());
+        msg.put("address",s1.get().getAddress());
+        msg.put("address1",s1.get().getAddress1());
         msg.put("ex",s1.get().getEx());
         msg.put("pk", String.valueOf(pk));
+        msg.put("video1",s1.get().getVideo1());
+        msg.put("video2",s1.get().getVideo2());
+        msg.put("img1",s1.get().getImg1());
+        msg.put("img2",s1.get().getImg2());
+        msg.put("img3",s1.get().getImg3());
+        msg.put("img4",s1.get().getImg4());
+        msg.put("img5",s1.get().getImg5());
+        msg.put("img6",s1.get().getImg6());
 
         String aass = String.valueOf(s1.get().getType());
 
@@ -395,7 +420,7 @@ public class ServiceZoneController {
             serviceZoneRepository.deleteById(pk);
             polygonRepository.deleteByApk(pk);
         }
-        return "test1 :: Success";
+        return "ServicezoneMain :: Success";
     }
 
 

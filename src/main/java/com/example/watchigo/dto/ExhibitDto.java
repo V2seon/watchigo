@@ -14,12 +14,13 @@ public class ExhibitDto {
     private Long a_pk;
     private Long a_userseq;
     private String a_type;
+    private String a_typename;
     private String a_zonename;
     private String a_name;
     private String a_ex;
     private String a_point;
-    private String a_vedio1;
-    private String a_vedio2;
+    private String a_video1;
+    private String a_video2;
     private String a_img1;
     private String a_img2;
     private String a_img3;
@@ -33,19 +34,20 @@ public class ExhibitDto {
 
 
     @Builder
-    public ExhibitDto(Long seq,Long pk,Long userseq, String type,String zonename, String name, String ex, String point, String vedio1, String vedio2,
+    public ExhibitDto(Long seq,Long pk,Long userseq, String type, String typename, String zonename, String name, String ex, String point, String video1, String video2,
                           String img1, String img2, String img3, String img4, String img5, String img6,
                           String mainicon,String armarker, int printtype ,String date) {
         a_seq = seq;
         a_pk = pk;
         a_userseq = userseq;
         a_type = type;
+        a_typename = typename;
         a_zonename = zonename;
         a_name = name;
         a_ex = ex;
         a_point = point;
-        a_vedio1 = vedio1;
-        a_vedio2 = vedio2;
+        a_video1 = video1;
+        a_video2 = video2;
         a_img1 = img1;
         a_img2 = img2;
         a_img3 = img3;
@@ -64,12 +66,13 @@ public class ExhibitDto {
                 .pk(a_pk)
                 .userseq(a_userseq)
                 .type(a_type)
+                .typename(a_typename)
                 .zonename(a_zonename)
                 .name(a_name)
                 .ex(a_ex)
                 .point(a_point)
-                .vedio1(a_vedio1)
-                .vedio2(a_vedio2)
+                .video1(a_video1)
+                .video2(a_video2)
                 .img1(a_img1)
                 .img2(a_img2)
                 .img3(a_img3)
