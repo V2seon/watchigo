@@ -146,8 +146,6 @@ function zoomOut() {
 var options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
     map: map, // Drawing Manager로 그리기 요소를 그릴 map 객체입니다
     drawingMode: [ // Drawing Manager로 제공할 그리기 요소 모드입니다
-        kakao.maps.Drawing.OverlayType.MARKER,
-        kakao.maps.Drawing.OverlayType.POLYLINE,
         kakao.maps.Drawing.OverlayType.RECTANGLE,
         kakao.maps.Drawing.OverlayType.CIRCLE,
         kakao.maps.Drawing.OverlayType.POLYGON
@@ -155,18 +153,6 @@ var options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
     // 사용자에게 제공할 그리기 가이드 툴팁입니다
     // 사용자에게 도형을 그릴때, 드래그할때, 수정할때 가이드 툴팁을 표시하도록 설정합니다
     guideTooltip: ['draw', 'drag', 'edit'],
-    markerOptions: { // 마커 옵션입니다
-        draggable: true, // 마커를 그리고 나서 드래그 가능하게 합니다
-        removable: true // 마커를 삭제 할 수 있도록 x 버튼이 표시됩니다
-    },
-    polylineOptions: { // 선 옵션입니다
-        draggable: true, // 그린 후 드래그가 가능하도록 설정합니다
-        removable: true, // 그린 후 삭제 할 수 있도록 x 버튼이 표시됩니다
-        editable: true, // 그린 후 수정할 수 있도록 설정합니다
-        strokeColor: '#39f', // 선 색
-        hintStrokeStyle: 'dash', // 그리중 마우스를 따라다니는 보조선의 선 스타일
-        hintStrokeOpacity: 0.5  // 그리중 마우스를 따라다니는 보조선의 투명도
-    },
     rectangleOptions: {
         draggable: true,
         removable: true,
@@ -221,9 +207,7 @@ manager.addListener('state_changed', function() {
     serviceszone = "";
 	var data = manager.getData();
         //data = {marker: Array(0), polyline: Array(0), rectangle: Array(0), circle: Array(0), polygon: Array(0)}
-        //console.log("data : " + JSON.stringify(data));
 
-        console.log("수정");
         if(data.rectangle.length > 0){
         	printRectangle(data[kakao.maps.drawing.OverlayType.RECTANGLE]);
         }
@@ -235,12 +219,9 @@ manager.addListener('state_changed', function() {
         }
         var obj = manager.getOverlays();
 
-        //console.log("polygon : " + JSON.stringify(obj));
-        //removeOverlays();
-        console.log("수정");
-
 });
-
+var ckexhibit = "";
+var ckexhibit1 = "";
 var serviceszone = "";
 // Drawing Manager에서 가져온 데이터 중 사각형을 아래 지도에 표시하는 함수입니다
 function printRectangle(rects) {
@@ -250,8 +231,10 @@ function printRectangle(rects) {
     console.log("시작점: " + JSON.stringify(rects[0].sPoint.y) + "|" + JSON.stringify(rects[0].sPoint.x));
     console.log("끝난점: " + JSON.stringify(rects[0].ePoint.y) + "|" + JSON.stringify(rects[0].ePoint.x));
     serviceszone = JSON.stringify(rects[0].sPoint.y) + "," + JSON.stringify(rects[0].sPoint.x) + "&" + JSON.stringify(rects[0].ePoint.y) + "," + JSON.stringify(rects[0].ePoint.x);
-    console.log(serviceszone);
-    console.log(rects);
+    checkexhibit(message);
+    ckexhibit = rects[0].sPoint;
+    ckexhibit1 = rects[0].ePoint;
+    findexrectangle();
 }
 // Drawing Manager에서 가져온 데이터 중 원을 아래 지도에 표시하는 함수입니다
 function printCircle(circles) {
@@ -261,7 +244,9 @@ function printCircle(circles) {
     console.log("중앙점: " + JSON.stringify(circles[0].center))
     console.log("반지름: " + JSON.stringify(circles[0].radius))
     serviceszone = JSON.stringify(circles[0].center.y)+","+ +JSON.stringify(circles[0].center.x)+"&"+JSON.stringify(circles[0].radius);
-    console.log(serviceszone);
+
+    ckexhibit = circles[0].center;
+    insidecircle(circles[0].radius);
 }
 // Drawing Manager에서 가져온 데이터 중 다각형을 아래 지도에 표시하는 함수입니다
 function printPolygon(polygons) {
@@ -273,8 +258,9 @@ function printPolygon(polygons) {
 	for(let i=0; i<JSON.stringify(polygons[0].points.length); i++){
        serviceszone = serviceszone + JSON.stringify(polygons[0].points[i].y)+"," +JSON.stringify(polygons[0].points[i].x) + "&"
 	}
-	console.log(serviceszone);
-//	serviceszone = JSON.stringify(polygons[0].points);
+	checkexhibit(message);
+    ckexhibit = polygons[0].points;
+    findexplogon();
 }
 
 var zonetype = "";
@@ -300,7 +286,7 @@ const zonename = document.getElementById('zonename');
 const zoneex = document.getElementById('zoneex');
 const deletezonepk = document.getElementById('pknum');
 
-// 저장하기
+//저장하기
 function savezone(){
 if(serviceszone == null || serviceszone == ""){
     swal({
@@ -587,6 +573,14 @@ $.ajax({
             document.getElementById('viewimg6').src = "/file?fileName="+result.img6;
             document.getElementById('pknum').innerText = result.pk;
             console.log(document.getElementById('pknum').innerText);
+
+            if(result.zonetype == "0"){
+                zonetype = "RECTANGLE"
+            }else if(result.zonetype == "1"){
+                zonetype = "CIRCLE"
+            }else if(result.zonetype == "2"){
+                zonetype = "POLYGON"
+            }
     },
     error: function (e) {
     }
@@ -625,11 +619,263 @@ swal({
         });
   }
 });
-console.log(document.getElementById('pknum').innerText);
+
 }
 
+//서비스존 수정
+function editzone(){
+const pkzonenum = document.getElementById('pknum').innerText;
+const viewaddress = document.getElementById('viewaddress');
+const viewaddress1 = document.getElementById('viewaddress1');
+const viewzonename = document.getElementById('viewzonename');
+const viewzoneex = document.getElementById('viewzoneex');
+if(serviceszone == null || serviceszone == ""){
+    swal({
+          text: "서비스존 영역을 설정해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(viewaddress.value == null || viewaddress.value == ""){
+    swal({
+          text: "설정영역 주소를 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(viewaddress1.value == null || viewaddress1.value == ""){
+    swal({
+          text: "설정영역 상세주소를 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(viewzonename.value == null || viewzonename.value == ""){
+     swal({
+           text: "서비스존 이름을 입력해주세요.",
+           icon: "info" //"info,success,warning,error" 중 택1
+           });
+}else if(viewzoneex.value == null || viewzoneex.value == ""){
+      swal({
+            text: "서비스존 설명을 입력해주세요.",
+            icon: "info" //"info,success,warning,error" 중 택1
+            });
+}else{
+swal({
+  title: "서비스존 수정",
+  text: "해당 서비스존을 수정하시겠습니까?",
+  icon: "info",
+  closeOnClickOutside : false,
+  buttons : ["취소", "수정"],
+}).then((result) => {
+  if (result) {
+	$('#load').show();
+    // 파일여부 확인
+    var videotype1 = ""; var videotype2 = ""; var imgtype1 = ""; var imgtype2 = "";
+    var imgtype3 = ""; var imgtype4 = ""; var imgtype5 = ""; var imgtype6 = "";
+    if(viewrealUploadvideo1.files[0] != null ){
+    videotype1 = viewrealUploadvideo1.files[0].name}
+    if(viewrealUploadvideo2.files[0] != null ){
+    videotype2 = viewrealUploadvideo2.files[0].name}
+    if(viewrealUpload1.files[0] != null){
+    imgtype1 = viewrealUpload1.files[0].name}
+    if(viewrealUpload2.files[0] != null){
+    imgtype2 = viewrealUpload2.files[0].name}
+    if(viewrealUpload3.files[0] != null){
+    imgtype3 = viewrealUpload3.files[0].name}
+    if(viewrealUpload4.files[0] != null){
+    imgtype4 = viewrealUpload4.files[0].name}
+    if(viewrealUpload5.files[0] != null){
+    imgtype5 = viewrealUpload5.files[0].name}
+    if(viewrealUpload6.files[0] != null){
+    imgtype6 = viewrealUpload6.files[0].name}
+    const a = 0;
+    let sendData = {
+                "address" : viewaddress.value,
+                "address1" : viewaddress1.value,
+                "zonename" : viewzonename.value,
+                "zoneex" : viewzoneex.value,
+                "zonetype" : zonetype,
+                "serviceszone" : serviceszone,
+                "inv1" : videotype1,
+                "inv2" : videotype2,
+                "ini1" : imgtype1,
+                "ini2" : imgtype2,
+                "ini3" : imgtype3,
+                "ini4" : imgtype4,
+                "ini5" : imgtype5,
+                "ini6" : imgtype6,
+                "a" : a,
+                "pkzonenum": pkzonenum
+            };
+    $.ajax({
+        url : "/editzone",
+        data : sendData,
+        type : "POST",
+        success : function(result){
+            var formData = new FormData();
+            if(viewrealUploadvideo1.files[0] != null){
+                formData.append('files', viewrealUploadvideo1.files[0]);
+            }
+            if(viewrealUploadvideo2.files[0] != null){
+                formData.append('files', viewrealUploadvideo2.files[0]);
+            }
+            if(viewrealUpload1.files[0] != null){
+                formData.append('files', viewrealUpload1.files[0]);
+            }
+            if(viewrealUpload2.files[0] != null){
+                formData.append('files', viewrealUpload2.files[0]);
+            }
+            if(viewrealUpload3.files[0] != null){
+                formData.append('files', viewrealUpload3.files[0]);
+            }
+            if(viewrealUpload4.files[0] != null){
+                formData.append('files', viewrealUpload4.files[0]);
+            }
+            if(viewrealUpload5.files[0] != null){
+                formData.append('files', viewrealUpload5.files[0]);
+            }
+            if(viewrealUpload6.files[0] != null){
+                formData.append('files', viewrealUpload6.files[0]);
+            }
+            if(viewrealUploadvideo1.files[0] == null && viewrealUploadvideo2.files[0] == null && viewrealUpload1.files[0] == null && viewrealUpload2.files[0] == null && viewrealUpload3.files[0] == null && viewrealUpload4.files[0] == null && viewrealUpload5.files[0] == null && viewrealUpload6.files[0] == null){
+                   location.href = "/servicezone";
+            }else{
+                $.ajax({
+                        type: "POST",
+                        enctype: 'multipart/form-data',
+                        url: "/upload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        cache: false,
+                        success: function (data) {
+                            $('#load').hide();
+                           location.href = "/servicezone";
+                        },
+                        error: function (e) {
+
+                            swal({
+                                     text: "사진 업로드 실패",
+                                     icon: "warning" //"info,success,warning,error" 중 택1
+                                 });
+                        }
+                    });
+            }
+
+        },
+        error:function(request,status,error){
+        }
+    });
+
+  }else{
+    location.href = "/servicezone";
+  }
+});
+}
+}
+
+//서비스존 내 전시/시설물 확인
+function checkexhibit(type){
+    console.log(type);
 
 
+}
+
+// 다각형 확인 함수
+function insideploygon(point, vs) {
+
+    var x = point[0],
+        y = point[1];
+
+    var inside = false;
+
+    for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+        var xi = vs[i].y,
+            yi = vs[i].x
+        var xj = vs[j].y,
+            yj = vs[j].x;
+
+        var intersect = ((yi > y) != (yj > y)) &&
+            (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+    }
+
+    return inside;
+}
+
+// 다각형 전시/시설물 좌표값 가져오기
+function findexplogon(){
+$.ajax({
+    url : "/findexpoint",
+    type : "POST",
+    success : function(result){
+            $(".id1").remove();
+        for(var i=0; i<result.point.length; i++){
+            var [s1, s2]  = result.point[i].split(',');
+            console.log(s1);
+            console.log(s2);
+            if(insideploygon([s1,s2],ckexhibit) == true){
+                $("#exbox")
+               .append("<span class='id1'>" + result.name[i] + "<br></span>");
+            }
+        }
+    },
+    error: function (e) {
+    }
+});
+
+}
+
+// 원 확인 함수
+function insidecircle(radius){
+var line = new kakao.maps.Polyline();
+$.ajax({
+    url : "/findexpoint",
+    type : "POST",
+    success : function(result){
+            $(".id1").remove();
+        for(var i=0; i<result.point.length; i++){
+            var [s1, s2]  = result.point[i].split(',');
+            var path = [
+                        new kakao.maps.LatLng(s1,s2),
+                        new kakao.maps.LatLng(ckexhibit.y,ckexhibit.x)
+                        ]
+            line.setPath(path);
+            var dist = line.getLength();
+            if( dist <= radius){
+                $("#exbox")
+               .append("<span class='id1'>" + result.name[i] + "<br></span>");
+            }
+        }
+    },
+    error: function (e) {
+    }
+});
+}
+
+// 사각형 확인 함수
+function findexrectangle(){
+$.ajax({
+    url : "/findexpoint",
+    type : "POST",
+    success : function(result){
+            $(".id1").remove();
+        var sw = new kakao.maps.LatLng(ckexhibit.y, ckexhibit.x),
+            ne = new kakao.maps.LatLng(ckexhibit1.y, ckexhibit1.x),
+            lb = new kakao.maps.LatLngBounds(sw, ne);
+        for(var i=0; i<result.point.length; i++){
+            var [s1, s2]  = result.point[i].split(',');
+            console.log(sw);
+            console.log(ne);
+
+            var l1 = new kakao.maps.LatLng(s1, s2);
+
+            if(lb.contain(l1) == true){
+                $("#exbox")
+               .append("<span class='id1'>" + result.name[i] + "<br></span>");
+            };
+        }
+    },
+    error: function (e) {
+    }
+});
+
+}
 
 
 

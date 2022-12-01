@@ -47,6 +47,7 @@ public class ServiceZoneController {
     private RentangleRepository rentangleRepository;
     private CircleRepository circleRepository;
     private UserRepository userRepository;
+    private ExhibitRepository exhibitRepository;
 
 
     @GetMapping("/servicezone")
@@ -113,7 +114,13 @@ public class ServiceZoneController {
 
     @GetMapping("/newzone")
     public String newzone(Model model,HttpServletRequest request){
-        return "ServicezoneInsert";
+        String returnValue = "";
+        if(new SessionCheck().loginSessionCheck(request)){
+            return "ServicezoneInsert.html";
+        }else{
+            returnValue = "login.html";
+        }
+        return returnValue;
     }
 
     @ResponseBody
@@ -176,9 +183,6 @@ public class ServiceZoneController {
 
             Float y =  (parseFloat(sw[0]) + parseFloat(ne[0])) /2;
             Float x =  (parseFloat(sw[1]) + parseFloat(ne[1])) /2;
-
-            System.out.println(parseFloat(sw[0]));
-            System.out.println(parseFloat(sw[1]));
 
             String abc = y+","+x;
 
@@ -379,6 +383,7 @@ public class ServiceZoneController {
         msg.put("img4",s1.get().getImg4());
         msg.put("img5",s1.get().getImg5());
         msg.put("img6",s1.get().getImg6());
+        msg.put("zonetype",String.valueOf(s1.get().getType()));
 
         String aass = String.valueOf(s1.get().getType());
 
@@ -423,8 +428,168 @@ public class ServiceZoneController {
         return "ServicezoneMain :: Success";
     }
 
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.POST, value = "/editzone")
+    public String EditServiceZone (HttpServletRequest request, Model model,
+                                   @RequestParam(required = false, defaultValue = "", value = "address")String address,
+                                   @RequestParam(required = false, defaultValue = "", value = "address1")String address1,
+                                   @RequestParam(required = false, defaultValue = "", value = "zonename")String zonename,
+                                   @RequestParam(required = false, defaultValue = "", value = "zoneex")String zoneex,
+                                   @RequestParam(required = false, defaultValue = "", value = "zonetype")String zonetype,
+                                   @RequestParam(required = false, defaultValue = "", value = "serviceszone")String serviceszone,
+                                   @RequestParam(required = false, defaultValue = "", value = "inv1")String inv1,
+                                   @RequestParam(required = false, defaultValue = "", value = "inv2")String inv2,
+                                   @RequestParam(required = false, defaultValue = "", value = "ini1")String ini1,
+                                   @RequestParam(required = false, defaultValue = "", value = "ini2")String ini2,
+                                   @RequestParam(required = false, defaultValue = "", value = "ini3")String ini3,
+                                   @RequestParam(required = false, defaultValue = "", value = "ini4")String ini4,
+                                   @RequestParam(required = false, defaultValue = "", value = "ini5")String ini5,
+                                   @RequestParam(required = false, defaultValue = "", value = "ini6")String ini6,
+                                   @RequestParam(required = false, defaultValue = "", value = "a")int a,
+                                   @RequestParam(required = false, defaultValue = "", value = "pkzonenum")Long zonepknum){
+        HttpSession session = request.getSession();
 
+        String state = "";
+        if(a == 0){
+            state = "등록됨";
+        }else if(a == 1){
+            state = "승인대기";
+        }else if(a == 2){
+            state = "출시";
+        }
 
+        int type = 0;
+        if(zonetype.equals("RECTANGLE")){
+            type = 0;
+        }else if(zonetype.equals("CIRCLE")){
+            type = 1;
+        }else if(zonetype.equals("POLYGON")){
+            type = 2;
+        }
+
+        Optional<ServiceZoneEntity> ser = serviceZoneRepository.findById(zonepknum);
+
+        String [] filedata = {inv1, inv2, ini1, ini2, ini3, ini4, ini5, ini6};
+        String [] dbfiledata = {ser.get().getVideo1(), ser.get().getVideo2(), ser.get().getImg1(), ser.get().getImg2(),
+                ser.get().getImg3(), ser.get().getImg4(), ser.get().getImg5(), ser.get().getImg6()};
+
+        for (int i=0; i<filedata.length; i++){
+            if(filedata[i].equals(null) || filedata[i].equals("")){
+                filedata[i] = dbfiledata[i];
+            }
+        }
+
+        // 폴더명 넘기기
+        session.setAttribute("sdf",ser.get().getDate());
+
+        // 사용자 일련번호 가져오기
+        Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
+
+        // 서비스존 저장
+        if(type == 0){ // 사각형
+            String ren[] = serviceszone.split("&");
+            String sw[] = ren[0].split(",");
+            String ne[] = ren[1].split(",");
+
+            Float y =  (parseFloat(sw[0]) + parseFloat(ne[0])) /2;
+            Float x =  (parseFloat(sw[1]) + parseFloat(ne[1])) /2;
+
+            String abc = y+","+x;
+
+            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(zonepknum, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,ser.get().getDate(),"0",
+                    filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]);
+            serviceZoneService.save(serviceZoneDto);
+
+        }else if(type == 1){ //원
+            String redate[] = serviceszone.split("&");
+            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(zonepknum, s1.get().getAseq(),zonename,redate[0],state,address,address1,zoneex,type,ser.get().getDate(),"0",
+                    filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]);
+            serviceZoneService.save(serviceZoneDto);
+        }else if(type == 2){ //다각형
+            String redate[] = serviceszone.split("&");
+            float xnum = 500;
+            float xnum1 = 0;
+            float ynum = 500;
+            float ynum1 = 0;
+
+            for(int i=0; i<redate.length; i++){
+                String si [] =  redate[i].split(",");
+                if(xnum > Float.parseFloat(si[1])){
+                    xnum = Float.parseFloat(si[1]);
+                }
+                if(xnum1 < Float.parseFloat(si[1])){
+                    xnum1 = Float.parseFloat(si[1]);
+                }
+                if(ynum > Float.parseFloat(si[0])){
+                    ynum = Float.parseFloat(si[0]);
+                }
+                if(ynum1 < Float.parseFloat(si[0])){
+                    ynum1 = Float.parseFloat(si[0]);
+                }
+            }
+
+            Float y = (ynum + ynum1) /2;
+            Float x = (xnum + xnum1) /2;
+
+            String abc = y+","+x;
+
+            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(zonepknum, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,ser.get().getDate(),"0",
+                    filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]);
+            serviceZoneService.save(serviceZoneDto);
+
+        }
+
+        //좌표값 저장
+        Optional<ServiceZoneEntity> sss = serviceZoneRepository.findByzonename(zonename);
+
+        // 영역 이름 세션담기
+        session.setAttribute("zonename",zonename);
+
+        if(type == 0){ // 사각형
+            String redate[] = serviceszone.split("&");
+            RectangleDto rectangleDto = new RectangleDto(sss.get().getPk(),sss.get().getSeq(),ser.get().getDate(),redate[0],redate[1]);
+            rentangleService.save(rectangleDto);
+        }else if(type == 1){ //원
+            String redate[] = serviceszone.split("&");
+            CircleDto circleDto = new CircleDto(sss.get().getPk(),sss.get().getSeq(),ser.get().getDate(),redate[0],redate[1]);
+            circleService.save(circleDto);
+        }else if(type == 2){ //다각형
+            String data[] = serviceszone.split("&");
+            polygonRepository.deleteByApk(zonepknum);
+            for(int i=0; i<data.length; i++){
+                PolygonDto polygonDto = new PolygonDto(null,sss.get().getPk(),sss.get().getSeq(), ser.get().getDate(), (long) i+1, data[i]);
+                polygonServicey.save(polygonDto);
+            }
+        }
+
+        session.setAttribute("dir","/home/AdminWatchigo/uploadfiles/servicezone/"+session.getAttribute("userid"));
+        return "redirect:";
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.POST, value = "/findexpoint")
+    public Object findexpoint(Model model, HttpServletRequest request, Pageable pageable){
+
+        HttpSession session = request.getSession();
+        Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
+
+        List<ExhibitEntity> ex1 = exhibitRepository.findByuserseq(s1.get().getAseq());
+
+        ArrayList<String> plist = new ArrayList<>();
+        ArrayList<String> nlist = new ArrayList<>();
+
+        for(int i=0; i<ex1.size(); i++){
+            plist.add(ex1.get(i).getPoint());
+            nlist.add(ex1.get(i).getName());
+        }
+
+        HashMap<String, List> msg = new HashMap<String, List>();
+
+        msg.put("point", plist);
+        msg.put("name", nlist);
+
+        return msg;
+    }
 
 
 }

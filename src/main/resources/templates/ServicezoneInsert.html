@@ -179,8 +179,7 @@
                     <div style="margin-bottom:10px; margin-top:20px;">
                         <span style="font-size:20px;">서비스존 전시/시설물 목록</span>
                     </div>
-                    <div class="exbox">
-                        없음
+                    <div id="exbox" class="exbox">
                     </div>
                     <div style="width:80%; margin:auto;">
                         <button class="upbtn" onclick="savezone()">저장하기</button>
@@ -433,7 +432,41 @@ function close_pop2(flag) {
 <script src="/js/marker/marker.js"></script>
 <script src="/js/main/sev.js"></script>
 <script src="/js/main/servicezonelist.js"></script>
+<script type="text/javascript">
+// 마커 클러스터러를 생성합니다
+var clusterer = new kakao.maps.MarkerClusterer({
+    map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+    averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+    minLevel: 7 // 클러스터 할 최소 지도 레벨
+});
 
+var markers = [];
+
+window.onload=function(){
+// 마커를 담을 배열입니다
+$.ajax({
+        url  : "/view",
+        type : "POST",
+        success : function(result) {
+        const keys = Object.keys(result);
+        for(let i=0; i<Object.keys(result).length; i++){
+                let key = keys[i]
+                let value = result[key]
+                let [point1,point2] = value.split(",");
+                var marker = new kakao.maps.Marker({
+                    position: new kakao.maps.LatLng(point1, point2), // 마커의 좌표
+                    map: map // 마커를 표시할 지도 객체
+                });
+                markers.push(marker);
+        }
+        clusterer.addMarkers(markers);
+        },error:function(request,status,error){
+
+        }
+    })
+
+}
+</script>
 <!-- swal창 띄우기 -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>

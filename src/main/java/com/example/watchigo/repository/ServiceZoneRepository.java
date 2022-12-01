@@ -24,4 +24,6 @@ public interface ServiceZoneRepository extends JpaRepository<ServiceZoneEntity, 
     Page<ServiceZoneEntity> findAll(Pageable pageable);
 
 
+
+
 }

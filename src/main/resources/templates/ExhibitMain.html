@@ -309,19 +309,20 @@
                             </div>
                         </div>
                         <div style="width:80%; margin:auto;">
-                            <button class="upbtn" onclick="saveexhibit()">저장하기</button>
+                            <button class="upbtn" onclick="editexhibit()">저장하기</button>
                         </div>
                         <div style="width:80%; margin:auto;">
-                            <button class="upbtn">삭제</button>
+                            <button class="upbtn" onclick="deleteexhibit()">삭제</button>
                         </div>
                     </div>
+                    <span id="pknum" hidden=""></span>
+                    <span id="seqnum" hidden=""></span>
                     <p class="edit" style="display:none;">
                         <button id="undo" class="disabled" onclick="undo()" disabled>UNDO</button>
                         <button id="redo" class="disabled" onclick="redo()" disabled>REDO</button>
                     </p>
                 </div>
             </div>
-            <button id="deletezone" onclick="deletezone()">서비스존 삭제</button>
         </div>
     </div>
 <div id="load"> <img src="/img/spinner.gif" alt="loading"></div>
@@ -691,7 +692,7 @@ function close_pop2(flag) {
 <script src="/js/marker/marker.js"></script>
 <script src="/js/main/sev.js"></script>
 <script src="/js/main/servicezonelist.js"></script>
-<script src="/js/exhibit/main.js"></script>
+<script src="/js/exhibit/main.js?Version=1"></script>
 
 <!--자동실행함수 서비스존 위치마커 표시 -->
 <script type="text/javascript">

@@ -8,6 +8,7 @@ import com.example.watchigo.repository.*;
 import com.example.watchigo.service.ExhibitService;
 import com.example.watchigo.service.ServiceZoneService;
 import lombok.AllArgsConstructor;
+import org.apache.poi.sl.draw.geom.GuideIf;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -385,7 +386,76 @@ public class Exhibitcontroller {
         msg.put("typename",s1.get().getTypename());
         msg.put("printtype",String.valueOf(s1.get().getPrinttype()));
         msg.put("zonepk",String.valueOf(s1.get().getPk()));
+        msg.put("seq",String.valueOf(s1.get().getSeq()));
 
         return msg;
     }
+
+    @PostMapping("/deleteexhibit")
+    public String delete(@RequestParam(required = false, defaultValue = "", value = "pk")Long pk){
+        System.out.println("인덱스값");
+        System.out.println(pk);
+
+        exhibitRepository.deleteById(pk);
+
+        return "ExhibitMain :: Success";
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.POST, value = "/editexhibit")
+    public Object editexhibit(Model model, HttpServletRequest request,
+                              @RequestParam(required = false, defaultValue = "", value = "zonepk") Long zonepk,
+                              @RequestParam(required = false, defaultValue = "", value = "printtype") int printtype,
+                              @RequestParam(required = false, defaultValue = "", value = "exhibitname") String exhibitname,
+                              @RequestParam(required = false, defaultValue = "", value = "exhibitex") String exhibitex,
+                              @RequestParam(required = false, defaultValue = "", value = "extype") String extype,
+                              @RequestParam(required = false, defaultValue = "", value = "inv1") String inv1,
+                              @RequestParam(required = false, defaultValue = "", value = "inv2") String inv2,
+                              @RequestParam(required = false, defaultValue = "", value = "inv3") String inv3,
+                              @RequestParam(required = false, defaultValue = "", value = "ini1") String ini1,
+                              @RequestParam(required = false, defaultValue = "", value = "ini2") String ini2,
+                              @RequestParam(required = false, defaultValue = "", value = "ini3") String ini3,
+                              @RequestParam(required = false, defaultValue = "", value = "ini4") String ini4,
+                              @RequestParam(required = false, defaultValue = "", value = "ini5") String ini5,
+                              @RequestParam(required = false, defaultValue = "", value = "ini6") String ini6,
+                              @RequestParam(required = false, defaultValue = "", value = "expoint") String expoint,
+                              @RequestParam(required = false, defaultValue = "", value = "typename") String typename,
+                              @RequestParam(required = false, defaultValue = "", value = "seqnum") Long seqnum){
+
+        HttpSession session = request.getSession();
+
+        Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
+        Optional<ServiceZoneEntity> s2 = serviceZoneRepository.findById(zonepk);
+
+        System.out.println(seqnum);
+        System.out.println(s2.get().getZonename());
+
+        session.setAttribute("name",exhibitname);
+
+        Optional<ExhibitEntity> ex11 = exhibitRepository.findById(seqnum);
+
+        String str = ex11.get().getDate();
+
+        String [] filedata = {inv1, inv2, ini1, ini2, ini3, ini4, ini5, ini6};
+        String [] dbfiledata = {ex11.get().getVideo1(), ex11.get().getVideo2(), ex11.get().getImg1(), ex11.get().getImg2(),
+                ex11.get().getImg3(), ex11.get().getImg4(), ex11.get().getImg5(), ex11.get().getImg6()};
+
+        for (int i=0; i<filedata.length; i++){
+            if(filedata[i].equals(null) || filedata[i].equals("")){
+                filedata[i] = dbfiledata[i];
+            }
+        }
+
+        ExhibitDto exhibitDto = new ExhibitDto(seqnum,zonepk,s1.get().getAseq(),extype,typename,s2.get().getZonename(),exhibitname,
+                exhibitex,expoint,filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]
+                ,"0","0",printtype,str);
+        exhibitService.save(exhibitDto);
+
+        session.setAttribute("dir1","/home/AdminWatchigo/uploadfiles/exhibit/"+session.getAttribute("userid"));
+
+        return "redirect:";
+    }
+
+
+
 }

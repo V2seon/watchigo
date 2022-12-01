@@ -8,6 +8,7 @@ function selectexzone(pk){
 var marker = new kakao.maps.Marker({
 });
 zonepk = pk;
+document.getElementById("pknum").innerText = zonepk;
 let sendData = {
             "pk" : pk
         };
@@ -489,8 +490,169 @@ $.ajax({
             }
             document.getElementById(result.zonepk).checked = true;
 
+            document.getElementById('pknum').innerText = result.zonepk;
+            document.getElementById('seqnum').innerText = result.seq;
+
+
     },
     error: function (e) {
     }
     });
+}
+
+// 전시/시설물 삭제
+function deleteexhibit(){
+swal({
+  title: "전시/시설물 삭제",
+  text: "해당 전시/시설물을 삭제하시겠습니까?",
+  icon: "warning",
+  closeOnClickOutside : false,
+  buttons : ["취소", "삭제"],
+  dangerMode: true
+}).then((result) => {
+  if (result) {
+        let sendData = {
+            "pk" : document.getElementById('seqnum').innerText
+        };
+        $.ajax({
+            url : "/deleteexhibit",
+            data : sendData,
+            type : "POST",
+            success : function(result){
+                swal({
+                      title : "삭제되었습니다.",
+                      closeOnClickOutside : false,
+                      icon: "success",
+                    }).then(function(){
+                        location.href = "/exhibit";
+                    });
+            },
+            error: function (e) {
+            }
+        });
+  }
+});
+}
+
+// 전시/시설물 수정
+function editexhibit(){
+swal({
+  title: "전시/시설물 수정",
+  text: "해당 전시/시설물을 수정하시겠습니까?",
+  icon: "warning",
+  closeOnClickOutside : false,
+  buttons : ["취소", "수정"],
+}).then((result) =>{
+$('#load').show();
+zonepk = document.getElementById("pknum").innerText;
+const seq = document.getElementById("seqnum").innerText;
+const typename = document.getElementById("typename").value;
+var expoint = document.getElementById("ypoint").value +","+ document.getElementById("xpoint").value;
+// 파일여부 확인
+var videotype1 = ""; var videotype2 = ""; var videotype3 = "";
+var imgtype1 = ""; var imgtype2 = ""; var imgtype3 = "";
+var imgtype4 = ""; var imgtype5 = ""; var imgtype6 = "";
+
+if(realUploadvideo1.files[0] != null ){
+videotype1 = realUploadvideo1.files[0].name}
+if(realUploadvideo2.files[0] != null ){
+videotype2 = realUploadvideo2.files[0].name}
+if(realUploadvideo3.files[0] != null ){
+videotype3 = realUploadvideo3.files[0].name}
+if(realUpload1.files[0] != null){
+imgtype1 = realUpload1.files[0].name}
+if(realUpload2.files[0] != null){
+imgtype2 = realUpload2.files[0].name}
+if(realUpload3.files[0] != null){
+imgtype3 = realUpload3.files[0].name}
+if(realUpload4.files[0] != null){
+imgtype4 = realUpload4.files[0].name}
+if(realUpload5.files[0] != null){
+imgtype5 = realUpload5.files[0].name}
+if(realUpload6.files[0] != null){
+imgtype6 = realUpload6.files[0].name}
+let sendData = {
+            "inv1" : videotype1,
+            "inv2" : videotype2,
+            "inv3" : videotype3,
+            "ini1" : imgtype1,
+            "ini2" : imgtype2,
+            "ini3" : imgtype3,
+            "ini4" : imgtype4,
+            "ini5" : imgtype5,
+            "ini6" : imgtype6,
+            "printtype" : tt,
+            "typename" : typename,
+            "zonepk" : zonepk,
+            "extype" : choice1.options[choice1.selectedIndex].value,
+            "exhibitname" : document.getElementById("exhibitname").value,
+            "exhibitex" : document.getElementById("exhibitex").value,
+            "expoint" : expoint,
+            "seqnum" : seq
+        };
+$.ajax({
+    url : "/editexhibit",
+    data : sendData,
+    type : "POST",
+    success : function(result){
+        console.log("여긴성공");
+        var formData = new FormData();
+        if(realUploadvideo1.files[0] != null){
+            formData.append('files', realUploadvideo1.files[0]);
+        }
+        if(realUploadvideo2.files[0] != null){
+            formData.append('files', realUploadvideo2.files[0]);
+        }
+        if(realUploadvideo3.files[0] != null){
+            formData.append('files', realUploadvideo3.files[0]);
+        }
+        if(realUpload1.files[0] != null){
+            formData.append('files', realUpload1.files[0]);
+        }
+        if(realUpload2.files[0] != null){
+            formData.append('files', realUpload2.files[0]);
+        }
+        if(realUpload3.files[0] != null){
+            formData.append('files', realUpload3.files[0]);
+        }
+        if(realUpload4.files[0] != null){
+            formData.append('files', realUpload4.files[0]);
+        }
+        if(realUpload5.files[0] != null){
+            formData.append('files', realUpload5.files[0]);
+        }
+        if(realUpload6.files[0] != null){
+            formData.append('files', realUpload6.files[0]);
+        }
+        if(realUploadvideo1.files[0] == null && realUploadvideo2.files[0] == null && realUpload1.files[0] == null && realUpload2.files[0] == null && realUpload3.files[0] == null && realUpload4.files[0] == null && realUpload5.files[0] == null && realUpload6.files[0] == null){
+            location.href = "/exhibit";
+        }else{
+            $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: "/upload1",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success: function (data) {
+                        $('#load').hide();
+                       location.href = "/exhibit";
+                    },
+                    error: function (e) {
+                        swal({
+                                 text: "사진 업로드 실패",
+                                 icon: "warning" //"info,success,warning,error" 중 택1
+                             });
+                    }
+                });
+        }
+
+
+    },
+    error:function(request,status,error){
+    }
+});
+});
+
 }
