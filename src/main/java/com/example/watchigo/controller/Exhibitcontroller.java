@@ -176,7 +176,6 @@ public class Exhibitcontroller {
         return returnValue;
     }
 
-
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/searchzoneview1")
     public Object searchzoneview(Model model, HttpServletRequest request,
@@ -233,7 +232,9 @@ public class Exhibitcontroller {
                               @RequestParam(required = false, defaultValue = "", value = "ini5") String ini5,
                               @RequestParam(required = false, defaultValue = "", value = "ini6") String ini6,
                               @RequestParam(required = false, defaultValue = "", value = "expoint") String expoint,
-                              @RequestParam(required = false, defaultValue = "", value = "typename") String typename){
+                              @RequestParam(required = false, defaultValue = "", value = "typename") String typename,
+                              @RequestParam(required = false, defaultValue = "", value = "mainicon") String mainicon,
+                              @RequestParam(required = false, defaultValue = "", value = "armarker") String armarker){
 
         HttpSession session = request.getSession();
 
@@ -253,7 +254,7 @@ public class Exhibitcontroller {
 
         ExhibitDto exhibitDto = new ExhibitDto(null,zonepk,s1.get().getAseq(),extype,typename,s2.get().getZonename(),exhibitname,
                 exhibitex,expoint,filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]
-                ,"0","0",printtype,str);
+                ,mainicon,armarker,printtype,str);
         exhibitService.save(exhibitDto);
 
         session.setAttribute("dir1","/home/AdminWatchigo/uploadfiles/exhibit/"+session.getAttribute("userid"));
@@ -332,16 +333,23 @@ public class Exhibitcontroller {
     @RequestMapping(method = RequestMethod.POST, value = "/exhibitview")
     public Object view(Model model, HttpServletRequest request){
 
-        HashMap<String, String> msg = new HashMap<String, String>();
+        HashMap<String, List> msg = new HashMap<String, List>();
 
         HttpSession session = request.getSession();
         Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
 
         List<ExhibitEntity> sss = exhibitRepository.findByuserseq(s1.get().getAseq());
 
+        ArrayList<String> plist = new ArrayList<>();
+        ArrayList<String> mlist = new ArrayList<>();
+
         for(int i=0; i<sss.size(); i++){
-            msg.put("renspoint"+i,sss.get(i).getPoint());
+            plist.add(sss.get(i).getPoint());
+            mlist.add(sss.get(i).getMainicon());
         }
+
+        msg.put("point", plist);
+        msg.put("mlist", mlist);
 
         return msg;
     }
@@ -387,6 +395,9 @@ public class Exhibitcontroller {
         msg.put("printtype",String.valueOf(s1.get().getPrinttype()));
         msg.put("zonepk",String.valueOf(s1.get().getPk()));
         msg.put("seq",String.valueOf(s1.get().getSeq()));
+        msg.put("mainicon",s1.get().getMainicon());
+        msg.put("armarker",s1.get().getArmarker());
+
 
         return msg;
     }
@@ -420,7 +431,9 @@ public class Exhibitcontroller {
                               @RequestParam(required = false, defaultValue = "", value = "ini6") String ini6,
                               @RequestParam(required = false, defaultValue = "", value = "expoint") String expoint,
                               @RequestParam(required = false, defaultValue = "", value = "typename") String typename,
-                              @RequestParam(required = false, defaultValue = "", value = "seqnum") Long seqnum){
+                              @RequestParam(required = false, defaultValue = "", value = "seqnum") Long seqnum,
+                              @RequestParam(required = false, defaultValue = "", value = "mainicon") String mainicon,
+                              @RequestParam(required = false, defaultValue = "", value = "armarker") String armarker){
 
         HttpSession session = request.getSession();
 
@@ -448,7 +461,7 @@ public class Exhibitcontroller {
 
         ExhibitDto exhibitDto = new ExhibitDto(seqnum,zonepk,s1.get().getAseq(),extype,typename,s2.get().getZonename(),exhibitname,
                 exhibitex,expoint,filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]
-                ,"0","0",printtype,str);
+                ,mainicon ,armarker,printtype,str);
         exhibitService.save(exhibitDto);
 
         session.setAttribute("dir1","/home/AdminWatchigo/uploadfiles/exhibit/"+session.getAttribute("userid"));

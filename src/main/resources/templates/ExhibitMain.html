@@ -262,7 +262,7 @@
                             <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;-지도에 표시되는 아이콘 선택</span><br>
                             <a class="base" onclick="up()">&nbsp;&nbsp;아이콘 선택 버튼</a>
                             <div class="chmarker">
-                                선택한 아이콘 <br>이미지
+                                <img class="mainicon" id="mainicon" src="/img/marker/test/img.png">
                             </div>
                         </div>
                         <div style="margin-top:10px; height:130px;">
@@ -270,7 +270,7 @@
                             <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;-어플을 통해 AR로 표시되는 마커 이미지 선택</span><br>
                             <a class="base" onclick="up1()">&nbsp;&nbsp;AR 마커 선택 버튼</a>
                             <div class="chmarker">
-                                선택한 AR 마커 <br>이미지
+                                <img class="armarker" id="armarker" src="/img/marker/test/img_1.png">
                             </div>
                         </div>
                         <div style="margin-top:10px;">
@@ -334,19 +334,19 @@
         <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">아이콘 선택</span></b></span></p>
         <div style="margin-bottom:30px;">
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/location.png" onclick="semk(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m1.png" onclick="semk(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m2.png" onclick="semk(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m3.png" onclick="semk(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m4.png" onclick="semk(this)">
             </div>
             <div class="basemarker">
 
@@ -407,83 +407,19 @@
         <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">AR 마커 선택</span></b></span></p>
         <div style="margin-bottom:30px;">
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/location.png" onclick="searmk(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m1.png" onclick="searmk(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m2.png" onclick="searmk(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m3.png" onclick="searmk(this)">
             </div>
             <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-        </div>
-        <p><br /></p>
-    </div>
-</div>
-<div id="myModal2" class="modal">
-    <!-- Modal content -->
-    <div class="modal-content">
-        <span class="pop_bt" style="font-size: 13pt;" onClick="close_pop2();">X</span>
-        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">커스텀 마커</span></b></span></p>
-        <div style="margin-bottom:30px;">
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m4.png" onclick="searmk(this)">
             </div>
             <div class="basemarker">
 
@@ -696,11 +632,6 @@ function close_pop2(flag) {
 
 <!--자동실행함수 서비스존 위치마커 표시 -->
 <script type="text/javascript">
-$(".choicebtn").change(function() {
-    $(".choicebtn").not(this).prop('checked', false);
-    zonepk = this.value;
-});
-
 // 마커 클러스터러를 생성합니다
 var clusterer = new kakao.maps.MarkerClusterer({
     map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
@@ -716,15 +647,20 @@ $.ajax({
         url  : "/exhibitview",
         type : "POST",
         success : function(result) {
-        const keys = Object.keys(result);
-        for(let i=0; i<Object.keys(result).length; i++){
-                let key = keys[i]
-                let value = result[key]
+        for(let i=0; i<result.point.length; i++){
+                let value = result.point[i];
                 let [point1,point2] = value.split(",");
 
+                var imageSrc = result.mlist[i], // 마커이미지의 주소입니다
+                    imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
+                    imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+                // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
                 var marker = new kakao.maps.Marker({
                     position: new kakao.maps.LatLng(point1, point2), // 마커의 좌표
-                    map: map // 마커를 표시할 지도 객체
+                    map: map, // 마커를 표시할 지도 객체
+                    image: markerImage
                 });
                 markers.push(marker);
         }
@@ -733,6 +669,7 @@ $.ajax({
 
         }
     })
+
 }
 </script>
 

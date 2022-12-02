@@ -140,20 +140,18 @@ public class ServiceZoneController {
                                    @RequestParam(required = false, defaultValue = "", value = "ini4")String ini4,
                                    @RequestParam(required = false, defaultValue = "", value = "ini5")String ini5,
                                    @RequestParam(required = false, defaultValue = "", value = "ini6")String ini6,
+                                   @RequestParam(required = false, defaultValue = "", value = "marker1")String marker1,
                                    @RequestParam(required = false, defaultValue = "", value = "a")int a){
         HttpSession session = request.getSession();
 
-        System.out.println(a);
-
         String state = "";
         if(a == 0){
-            state = "등록됨";
+            state = "등록중";
         }else if(a == 1){
             state = "승인대기";
         }else if(a == 2){
             state = "출시";
         }
-        System.out.println(state);
 
         int type = 0;
         if(zonetype.equals("RECTANGLE")){
@@ -163,7 +161,7 @@ public class ServiceZoneController {
         }else if(zonetype.equals("POLYGON")){
             type = 2;
         }
-        System.out.println("타입값: " +  type);
+
         String [] filedata = {inv1, inv2, ini1, ini2, ini3, ini4, ini5, ini6};
 
         // 폴더명 넘기기
@@ -186,13 +184,13 @@ public class ServiceZoneController {
 
             String abc = y+","+x;
 
-            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(null, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,str,"0",
+            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(null, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,str,marker1,
                     filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]);
             serviceZoneService.save(serviceZoneDto);
 
         }else if(type == 1){ //원
             String redate[] = serviceszone.split("&");
-            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(null, s1.get().getAseq(),zonename,redate[0],state,address,address1,zoneex,type,str,"0",
+            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(null, s1.get().getAseq(),zonename,redate[0],state,address,address1,zoneex,type,str,marker1,
                     filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]);
             serviceZoneService.save(serviceZoneDto);
         }else if(type == 2){ //다각형
@@ -223,7 +221,7 @@ public class ServiceZoneController {
 
             String abc = y+","+x;
 
-            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(null, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,str,"0",
+            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(null, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,str,marker1,
                     filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]);
             serviceZoneService.save(serviceZoneDto);
 
@@ -259,16 +257,22 @@ public class ServiceZoneController {
     @RequestMapping(method = RequestMethod.POST, value = "/view")
     public Object view(Model model, HttpServletRequest request){
 
-        HashMap<String, String> msg = new HashMap<String, String>();
+        HashMap<String, List> msg = new HashMap<String, List>();
 
         HttpSession session = request.getSession();
         Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
 
         List<ServiceZoneEntity> sss = serviceZoneServeyRepository.findByseq(s1.get().getAseq());
 
+        ArrayList<String> plist = new ArrayList<>();
+        ArrayList<String> mlist = new ArrayList<>();
         for(int i=0; i<sss.size(); i++){
-            msg.put("renspoint"+i,sss.get(i).getZonecenter());
+            plist.add(sss.get(i).getZonecenter());
+            mlist.add(sss.get(i).getMarker());
         }
+
+        msg.put("plist", plist);
+        msg.put("mlist", mlist);
 
         return msg;
     }
@@ -367,9 +371,7 @@ public class ServiceZoneController {
 
         session.setAttribute("date",s1.get().getDate());
 
-
         msg.put("center",s1.get().getZonecenter());
-
         msg.put("zonename",s1.get().getZonename());
         msg.put("address",s1.get().getAddress());
         msg.put("address1",s1.get().getAddress1());
@@ -383,6 +385,7 @@ public class ServiceZoneController {
         msg.put("img4",s1.get().getImg4());
         msg.put("img5",s1.get().getImg5());
         msg.put("img6",s1.get().getImg6());
+        msg.put("marker",s1.get().getMarker());
         msg.put("zonetype",String.valueOf(s1.get().getType()));
 
         String aass = String.valueOf(s1.get().getType());
@@ -406,7 +409,6 @@ public class ServiceZoneController {
             }
             msg.put("data",data);
         }
-
         return msg;
     }
 
@@ -445,13 +447,14 @@ public class ServiceZoneController {
                                    @RequestParam(required = false, defaultValue = "", value = "ini4")String ini4,
                                    @RequestParam(required = false, defaultValue = "", value = "ini5")String ini5,
                                    @RequestParam(required = false, defaultValue = "", value = "ini6")String ini6,
+                                   @RequestParam(required = false, defaultValue = "", value = "marker1")String marker1,
                                    @RequestParam(required = false, defaultValue = "", value = "a")int a,
                                    @RequestParam(required = false, defaultValue = "", value = "pkzonenum")Long zonepknum){
         HttpSession session = request.getSession();
 
         String state = "";
         if(a == 0){
-            state = "등록됨";
+            state = "등록중";
         }else if(a == 1){
             state = "승인대기";
         }else if(a == 2){
@@ -496,13 +499,13 @@ public class ServiceZoneController {
 
             String abc = y+","+x;
 
-            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(zonepknum, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,ser.get().getDate(),"0",
+            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(zonepknum, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,ser.get().getDate(),marker1,
                     filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]);
             serviceZoneService.save(serviceZoneDto);
 
         }else if(type == 1){ //원
             String redate[] = serviceszone.split("&");
-            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(zonepknum, s1.get().getAseq(),zonename,redate[0],state,address,address1,zoneex,type,ser.get().getDate(),"0",
+            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(zonepknum, s1.get().getAseq(),zonename,redate[0],state,address,address1,zoneex,type,ser.get().getDate(),marker1,
                     filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]);
             serviceZoneService.save(serviceZoneDto);
         }else if(type == 2){ //다각형
@@ -533,7 +536,7 @@ public class ServiceZoneController {
 
             String abc = y+","+x;
 
-            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(zonepknum, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,ser.get().getDate(),"0",
+            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(zonepknum, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,ser.get().getDate(),marker1,
                     filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]);
             serviceZoneService.save(serviceZoneDto);
 

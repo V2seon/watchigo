@@ -285,9 +285,13 @@ const address1 = document.getElementById('address1');
 const zonename = document.getElementById('zonename');
 const zoneex = document.getElementById('zoneex');
 const deletezonepk = document.getElementById('pknum');
+var marker1 = "";
 
+var a = 0;
 //저장하기
 function savezone(){
+marker1 = document.getElementById('marker1').src;
+a = 0;
 if(serviceszone == null || serviceszone == ""){
     swal({
           text: "서비스존 영역을 설정해주세요.",
@@ -323,6 +327,11 @@ if(serviceszone == null || serviceszone == ""){
            text: "이미지를 등록해주세요.",
            icon: "info" //"info,success,warning,error" 중 택1
           });
+}else if(marker1 == "/img/marker/img_2.png"){
+     swal({
+           text: "마커를 선택해주세요.",
+           icon: "info" //"info,success,warning,error" 중 택1
+          });
 }else{
 swal({
 	    title : "저장하시겠습니까?",
@@ -349,7 +358,6 @@ swal({
     imgtype5 = realUpload5.files[0].name}
     if(realUpload6.files[0] != null){
     imgtype6 = realUpload6.files[0].name}
-    const a = 0;
     let sendData = {
                 "address" : address.value,
                 "address1" : address1.value,
@@ -365,7 +373,156 @@ swal({
                 "ini4" : imgtype4,
                 "ini5" : imgtype5,
                 "ini6" : imgtype6,
-                "a" : a
+                "a" : a,
+                "marker1" : marker1
+            };
+    $.ajax({
+        url : "/savezone",
+        data : sendData,
+        type : "POST",
+        success : function(result){
+            var formData = new FormData();
+            if(realUploadvideo1.files[0] != null){
+                formData.append('files', realUploadvideo1.files[0]);
+            }
+            if(realUploadvideo2.files[0] != null){
+                formData.append('files', realUploadvideo2.files[0]);
+            }
+            if(realUpload1.files[0] != null){
+                formData.append('files', realUpload1.files[0]);
+            }
+            if(realUpload2.files[0] != null){
+                formData.append('files', realUpload2.files[0]);
+            }
+            if(realUpload3.files[0] != null){
+                formData.append('files', realUpload3.files[0]);
+            }
+            if(realUpload4.files[0] != null){
+                formData.append('files', realUpload4.files[0]);
+            }
+            if(realUpload5.files[0] != null){
+                formData.append('files', realUpload5.files[0]);
+            }
+            if(realUpload6.files[0] != null){
+                formData.append('files', realUpload6.files[0]);
+            }
+
+            $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: "/upload",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success: function (data) {
+                        $('#load').hide();
+                       location.href = "/servicezone";
+                    },
+                    error: function (e) {
+
+                        swal({
+                                 text: "사진 업로드 실패",
+                                 icon: "warning" //"info,success,warning,error" 중 택1
+                             });
+                    }
+                });
+        },
+        error:function(request,status,error){
+        }
+    });
+});
+
+}
+}
+
+//출시요청
+function savezone1(){
+marker1 = document.getElementById('marker1').src;
+a = 1;
+if(serviceszone == null || serviceszone == ""){
+    swal({
+          text: "서비스존 영역을 설정해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(address.value == null || address.value == ""){
+    swal({
+          text: "설정영역 주소를 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(address1.value == null || address1.value == ""){
+    swal({
+          text: "설정영역 상세주소를 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(zonename.value == null || zonename.value == ""){
+     swal({
+           text: "서비스존 이름을 입력해주세요.",
+           icon: "info" //"info,success,warning,error" 중 택1
+           });
+}else if(zoneex.value == null || zoneex.value == ""){
+      swal({
+            text: "서비스존 설명을 입력해주세요.",
+            icon: "info" //"info,success,warning,error" 중 택1
+            });
+}else if(realUploadvideo1.files[0] == null && realUploadvideo2.files[0] == null){
+    swal({
+          text: "동영상을 등록해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+         });
+}else if(realUpload1.files[0] == null && realUpload2.files[0] == null && realUpload3.files[0] == null && realUpload4.files[0] == null && realUpload5.files[0] == null && realUpload6.files[0] == null){
+     swal({
+           text: "이미지를 등록해주세요.",
+           icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(marker1 == "/img/marker/img_2.png"){
+      swal({
+            text: "마커를 선택해주세요.",
+            icon: "info" //"info,success,warning,error" 중 택1
+           });
+}else{
+swal({
+	    title : "저장하시겠습니까?",
+    	icon  : "info",
+    	closeOnClickOutside : false
+}).then(function(){
+	$('#load').show();
+    // 파일여부 확인
+    var videotype1 = ""; var videotype2 = ""; var imgtype1 = ""; var imgtype2 = "";
+    var imgtype3 = ""; var imgtype4 = ""; var imgtype5 = ""; var imgtype6 = "";
+    if(realUploadvideo1.files[0] != null ){
+    videotype1 = realUploadvideo1.files[0].name}
+    if(realUploadvideo2.files[0] != null ){
+    videotype2 = realUploadvideo2.files[0].name}
+    if(realUpload1.files[0] != null){
+    imgtype1 = realUpload1.files[0].name}
+    if(realUpload2.files[0] != null){
+    imgtype2 = realUpload2.files[0].name}
+    if(realUpload3.files[0] != null){
+    imgtype3 = realUpload3.files[0].name}
+    if(realUpload4.files[0] != null){
+    imgtype4 = realUpload4.files[0].name}
+    if(realUpload5.files[0] != null){
+    imgtype5 = realUpload5.files[0].name}
+    if(realUpload6.files[0] != null){
+    imgtype6 = realUpload6.files[0].name}
+    let sendData = {
+                "address" : address.value,
+                "address1" : address1.value,
+                "zonename" : zonename.value,
+                "zoneex" : zoneex.value,
+                "zonetype" : zonetype,
+                "serviceszone" : serviceszone,
+                "inv1" : videotype1,
+                "inv2" : videotype2,
+                "ini1" : imgtype1,
+                "ini2" : imgtype2,
+                "ini3" : imgtype3,
+                "ini4" : imgtype4,
+                "ini5" : imgtype5,
+                "ini6" : imgtype6,
+                "a" : a,
+                "marker1" : marker1
             };
     $.ajax({
         url : "/savezone",
@@ -573,6 +730,25 @@ $.ajax({
             document.getElementById('viewimg6').src = "/file?fileName="+result.img6;
             document.getElementById('pknum').innerText = result.pk;
             console.log(document.getElementById('pknum').innerText);
+            document.getElementById('marker1').src = result.marker;
+
+            viewuploadvideo1.addEventListener('mouseover',viewover1);
+            viewuploadvideo1.addEventListener('mouseout',viewout1);
+            viewuploadvideo2.addEventListener('mouseover',viewover2);
+            viewuploadvideo2.addEventListener('mouseout',viewout2);
+            viewupload1.addEventListener('mouseover',viewover3);
+            viewupload1.addEventListener('mouseout',viewout3);
+            viewupload2.addEventListener('mouseover',viewover4);
+            viewupload2.addEventListener('mouseout',viewout4);
+            viewupload3.addEventListener('mouseover',viewover5);
+            viewupload3.addEventListener('mouseout',viewout5);
+            viewupload4.addEventListener('mouseover',viewover6);
+            viewupload4.addEventListener('mouseout',viewout6);
+            viewupload5.addEventListener('mouseover',viewover7);
+            viewupload5.addEventListener('mouseout',viewout7);
+            viewupload6.addEventListener('mouseover',viewover8);
+            viewupload6.addEventListener('mouseout',viewout8);
+
 
             if(result.zonetype == "0"){
                 zonetype = "RECTANGLE"
@@ -624,6 +800,7 @@ swal({
 
 //서비스존 수정
 function editzone(){
+marker1 = document.getElementById('marker1').src;
 const pkzonenum = document.getElementById('pknum').innerText;
 const viewaddress = document.getElementById('viewaddress');
 const viewaddress1 = document.getElementById('viewaddress1');
@@ -700,7 +877,8 @@ swal({
                 "ini5" : imgtype5,
                 "ini6" : imgtype6,
                 "a" : a,
-                "pkzonenum": pkzonenum
+                "pkzonenum": pkzonenum,
+                "marker1" : marker1
             };
     $.ajax({
         url : "/editzone",

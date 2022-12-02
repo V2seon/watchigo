@@ -58,7 +58,7 @@
                                 </td>
                                 <td>
                                     <label class="test_obj">
-                                        <input type="checkbox" class="choicebtn" style="background-color:red;"
+                                        <input type="checkbox" class="choicebtn" style="background-color:red;" th:id="${Co.pk}"
                                                th:onclick="|javascript:selectexzone(${Co.pk})|" th:value = ${Co.pk}>
                                         <span>선택</span>
                                     </label>
@@ -180,7 +180,7 @@
                             <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;-지도에 표시되는 아이콘 선택</span><br>
                             <a class="base" onclick="up()">&nbsp;&nbsp;아이콘 선택 버튼</a>
                             <div class="chmarker">
-                                선택한 아이콘 <br>이미지
+                                <img class="mainicon" id="mainicon" src="/img/marker/test/img.png">
                             </div>
                         </div>
                         <div style="margin-top:10px; height:130px;">
@@ -188,7 +188,7 @@
                             <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;-어플을 통해 AR로 표시되는 마커 이미지 선택</span><br>
                             <a class="base" onclick="up1()">&nbsp;&nbsp;AR 마커 선택 버튼</a>
                             <div class="chmarker">
-                                선택한 AR 마커 <br>이미지
+                                <img class="armarker" id="armarker" src="/img/marker/test/img_1.png">
                             </div>
                         </div>
                         <div style="margin-top:10px;">
@@ -233,6 +233,8 @@
                             <button class="upbtn">삭제</button>
                         </div>
                     </div>
+                    <span id="pknum" hidden=""></span>
+                    <span id="seqnum" hidden=""></span>
                     <p class="edit" style="display:none;">
                         <button id="undo" class="disabled" onclick="undo()" disabled>UNDO</button>
                         <button id="redo" class="disabled" onclick="redo()" disabled>REDO</button>
@@ -254,19 +256,19 @@
         <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">아이콘 선택</span></b></span></p>
         <div style="margin-bottom:30px;">
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/location.png" onclick="semk(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m1.png" onclick="semk(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m2.png" onclick="semk(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m3.png" onclick="semk(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m4.png" onclick="semk(this)">
             </div>
             <div class="basemarker">
 
@@ -327,83 +329,19 @@
         <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">AR 마커 선택</span></b></span></p>
         <div style="margin-bottom:30px;">
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/location.png" onclick="searmk(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m1.png" onclick="searmk(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m2.png" onclick="searmk(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m3.png" onclick="searmk(this)">
             </div>
             <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-        </div>
-        <p><br /></p>
-    </div>
-</div>
-<div id="myModal2" class="modal">
-    <!-- Modal content -->
-    <div class="modal-content">
-        <span class="pop_bt" style="font-size: 13pt;" onClick="close_pop2();">X</span>
-        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">커스텀 마커</span></b></span></p>
-        <div style="margin-bottom:30px;">
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m4.png" onclick="searmk(this)">
             </div>
             <div class="basemarker">
 
@@ -567,41 +505,6 @@ function close_pop2(flag) {
 <script src="/js/main/sev.js"></script>
 <script src="/js/main/servicezonelist.js"></script>
 <script src="/js/exhibit/main.js"></script>
-<script type="text/javascript">
-// 마커 클러스터러를 생성합니다
-var clusterer = new kakao.maps.MarkerClusterer({
-    map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
-    averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-    minLevel: 7 // 클러스터 할 최소 지도 레벨
-});
-
-var markers = [];
-
-window.onload=function(){
-// 마커를 담을 배열입니다
-$.ajax({
-        url  : "/view",
-        type : "POST",
-        success : function(result) {
-        const keys = Object.keys(result);
-        for(let i=0; i<Object.keys(result).length; i++){
-                let key = keys[i]
-                let value = result[key]
-                let [point1,point2] = value.split(",");
-                var marker = new kakao.maps.Marker({
-                    position: new kakao.maps.LatLng(point1, point2), // 마커의 좌표
-                    map: map // 마커를 표시할 지도 객체
-                });
-                markers.push(marker);
-        }
-        clusterer.addMarkers(markers);
-        },error:function(request,status,error){
-
-        }
-    })
-
-}
-</script>
 <!-- swal창 띄우기 -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>

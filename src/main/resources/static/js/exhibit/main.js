@@ -8,7 +8,12 @@ function selectexzone(pk){
 var marker = new kakao.maps.Marker({
 });
 zonepk = pk;
-document.getElementById("pknum").innerText = zonepk;
+document.getElementById("pknum").innerText = pk;
+var boxlen = document.getElementsByClassName('choicebtn').length;
+for(let a=0; a<boxlen; a++){
+    document.getElementsByClassName('choicebtn')[a].checked = false;
+}
+document.getElementById(pk).checked = true;
 let sendData = {
             "pk" : pk
         };
@@ -294,9 +299,14 @@ document.getElementById("vedbox").style.display='block';
 }
 }
 
+var mainicon = "";
+var armarker = "";
+
 // 전시/시설물 저장
 let choice1 = document.getElementById("lock");
 function saveexhibit(){
+mainicon = document.getElementById("mainicon").src;
+armarker = document.getElementById("armarker").src;
 $('#load').show();
 console.log(zonepk);
 console.log(choice1.options[choice1.selectedIndex].value);
@@ -343,7 +353,9 @@ let sendData = {
             "extype" : choice1.options[choice1.selectedIndex].value,
             "exhibitname" : document.getElementById("exhibitname").value,
             "exhibitex" : document.getElementById("exhibitex").value,
-            "expoint" : expoint
+            "expoint" : expoint,
+            "mainicon" : mainicon,
+            "armarker" : armarker
         };
         console.log(sendData);
 $.ajax({
@@ -488,11 +500,31 @@ $.ajax({
             for(let a=0; a<boxlen; a++){
                 document.getElementsByClassName('choicebtn')[a].checked = false;
             }
+
             document.getElementById(result.zonepk).checked = true;
+
+            document.getElementById('mainicon').src = result.mainicon;
+            document.getElementById('armarker').src = result.armarker;
 
             document.getElementById('pknum').innerText = result.zonepk;
             document.getElementById('seqnum').innerText = result.seq;
 
+            uploadvideo1.addEventListener('mouseover',over1);
+            uploadvideo1.addEventListener('mouseout',out1);
+            uploadvideo2.addEventListener('mouseover',over2);
+            uploadvideo2.addEventListener('mouseout',out2);
+            upload1.addEventListener('mouseover',over3);
+            upload1.addEventListener('mouseout',out3);
+            upload2.addEventListener('mouseover',over4);
+            upload2.addEventListener('mouseout',out4);
+            upload3.addEventListener('mouseover',over5);
+            upload3.addEventListener('mouseout',out5);
+            upload4.addEventListener('mouseover',over6);
+            upload4.addEventListener('mouseout',out6);
+            upload5.addEventListener('mouseover',over7);
+            upload5.addEventListener('mouseout',out7);
+            upload6.addEventListener('mouseover',over8);
+            upload6.addEventListener('mouseout',out8);
 
     },
     error: function (e) {
@@ -536,6 +568,8 @@ swal({
 
 // 전시/시설물 수정
 function editexhibit(){
+mainicon = document.getElementById("mainicon").src;
+armarker = document.getElementById("armarker").src;
 swal({
   title: "전시/시설물 수정",
   text: "해당 전시/시설물을 수정하시겠습니까?",
@@ -588,7 +622,9 @@ let sendData = {
             "exhibitname" : document.getElementById("exhibitname").value,
             "exhibitex" : document.getElementById("exhibitex").value,
             "expoint" : expoint,
-            "seqnum" : seq
+            "seqnum" : seq,
+            "mainicon" : mainicon,
+            "armarker" : armarker
         };
 $.ajax({
     url : "/editexhibit",

@@ -20,15 +20,11 @@
                 <button onclick="sss()">검색하기</button>
             </div>
         </div>
-        <h1>서비스존 리스트</h1>
         <div id="uptable">
             <img onclick="backbtn()" class="backbtn" src="/img/back.png">
             <div>
                 <div class="ser1">
                     <span style="font-size:25px;">1. 서비스존 설정</span>
-
-                    <!--                    <button onclick="selectOverlay('MARKER')">마커</button>-->
-                    <!--                    <button onclick="selectOverlay('POLYLINE')">선</button>-->
                     <div style="width:100%">
                         <div class="boxname">
                             <div style="float:left;">
@@ -165,7 +161,7 @@
                         <span style="font-size:25px; margin-bottom:20px;">6. 마커 선택</span>
                     </div>
                     <div class="chmarker">
-                        선택한 마커 <br>이미지
+                        <img class="mainicon" id="marker1" src="/img/marker/test/img_2.png">
                     </div>
                     <div>
                         <a class="base" onclick="up()">기본 마커 선택</a>
@@ -185,7 +181,7 @@
                         <button class="upbtn" onclick="savezone()">저장하기</button>
                     </div>
                     <div style="width:80%; margin:auto;">
-                        <button class="upbtn">출시요청</button>
+                        <button class="upbtn" onclick="savezone1()">출시요청</button>
                     </div>
                 </div>
             </div>
@@ -205,10 +201,19 @@
         <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">기본 마커</span></b></span></p>
         <div style="margin-bottom:30px;">
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/location.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m1.png" onclick="semk1(this)">
+            </div>
+            <div class="basemarker">
+                <img class="markerimg" src="/img/marker/m2.png" onclick="semk1(this)">
+            </div>
+            <div class="basemarker">
+                <img class="markerimg" src="/img/marker/m3.png" onclick="semk1(this)">
+            </div>
+            <div class="basemarker">
+                <img class="markerimg" src="/img/marker/m4.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
 
@@ -269,19 +274,19 @@
         <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">인기 마커</span></b></span></p>
         <div style="margin-bottom:30px;">
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/location.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m1.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m2.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m3.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m4.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
 
@@ -333,19 +338,19 @@
         <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">커스텀 마커</span></b></span></p>
         <div style="margin-bottom:30px;">
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/location.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m1.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m2.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m3.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m4.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
 
@@ -432,41 +437,7 @@ function close_pop2(flag) {
 <script src="/js/marker/marker.js"></script>
 <script src="/js/main/sev.js"></script>
 <script src="/js/main/servicezonelist.js"></script>
-<script type="text/javascript">
-// 마커 클러스터러를 생성합니다
-var clusterer = new kakao.maps.MarkerClusterer({
-    map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
-    averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-    minLevel: 7 // 클러스터 할 최소 지도 레벨
-});
 
-var markers = [];
-
-window.onload=function(){
-// 마커를 담을 배열입니다
-$.ajax({
-        url  : "/view",
-        type : "POST",
-        success : function(result) {
-        const keys = Object.keys(result);
-        for(let i=0; i<Object.keys(result).length; i++){
-                let key = keys[i]
-                let value = result[key]
-                let [point1,point2] = value.split(",");
-                var marker = new kakao.maps.Marker({
-                    position: new kakao.maps.LatLng(point1, point2), // 마커의 좌표
-                    map: map // 마커를 표시할 지도 객체
-                });
-                markers.push(marker);
-        }
-        clusterer.addMarkers(markers);
-        },error:function(request,status,error){
-
-        }
-    })
-
-}
-</script>
 <!-- swal창 띄우기 -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>

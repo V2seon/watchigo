@@ -218,11 +218,10 @@ display: none;
 justify-content: center;
 align-items: center;
 margin-top:60px;
-margin-left:52px;
+margin-left:23.5px;
 }
 
 .delbtn{
-display:none;
 width:50px;
 height:30px;
 z-index:50;
@@ -230,21 +229,21 @@ z-index:50;
 
 .delete1{
 position:absolute;
-z-index:9797979;
+z-index:10;
 width:100px;
 height:50px;
 text-align:center;
-display: none;
+display:none;
 justify-content: center;
 align-items: center;
 margin-top:60px;
-margin-left:52px;
+margin-left:23.5px;
 }
 
 .delbtn1{
 width:50px;
 height:30px;
-z-index:989898;
+z-index:50;
 }
 
 .exbox{
@@ -270,6 +269,21 @@ background-color:gray;
 font-size:16px;
 text-align:center;
 }
+
+.mainicon{
+width:63px;
+height:63px;
+background-color:gray;
+text-align:center;
+}
+
+.armarker{
+width:63px;
+height:63px;
+background-color:gray;
+text-align:center;
+}
+
 
 .base:hover{
 cursor:pointer;
@@ -309,6 +323,15 @@ margin-left:10px;
 margin-right:10px;
 margin-bottom:20px;
 float:right;
+}
+
+.markerimg{
+width:80px;
+height:80px;
+}
+
+.markerimg:hover{
+cursor:pointer;
 }
 
 .pop_bt{
