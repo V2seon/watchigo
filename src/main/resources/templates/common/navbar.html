@@ -1,32 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>WATCHIGO</title>
+    <link rel="stylesheet" href="css/nav/nav.css">
 </head>
 <body>
-<div>
-    <table>
-        <thead>
-        <tr>
-            <td onclick="">
-                WATCHIGO
-            </td>
-            <td onclick="">
-                <a href="/servicezone">서비스존</a>
-            </td>
-            <td onclick="">
-                <a href="/exhibit">전시/시설물</a>
-            </td>
-            <td onclick="">
-                AI영상탐지
-            </td >
-            <td onclick="">
-                내정보보기
-            </td>
-        </tr>
-        </thead>
-    </table>
-</div>
+<nav class="menubar">
+    <div></div>
+    <ul>
+        <li class="icon">
+            <img class="iconimg" src="/img/nav/mainlogo.png">
+        </li>
+        <li th:class="${nowurl0 == '/servicezone' ? 'icon-active' : 'icon'}">
+            <a href="/servicezone">
+                <img class="iconimg" src="/img/nav/sericon.png">
+            </a>
+        </li>
+        <li th:class="${nowurl0 == '/exhibit' ? 'icon-active' : 'icon'}">
+            <a href="/exhibit">
+                <img class="iconimg" src="/img/nav/exicon.png">
+            </a>
+        </li>
+        <li th:class="${nowurl0 == '/0' ? 'icon-active' : 'icon'}">
+            <a>
+                <img class="iconimg" src="/img/nav/AI.png">
+            </a>
+        </li>
+        <li th:class="${nowurl0 == '/0' ? 'icon-active' : 'icon'}">
+            <a>
+                <img class="iconimg" src="/img/nav/myaa.png">
+            </a>
+        </li>
+    </ul>
+</nav>
 </body>
 </html>

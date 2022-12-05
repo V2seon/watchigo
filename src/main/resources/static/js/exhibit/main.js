@@ -501,7 +501,7 @@ $.ajax({
                 document.getElementsByClassName('choicebtn')[a].checked = false;
             }
 
-            document.getElementById(result.zonepk).checked = true;
+//            document.getElementById(result.zonepk).checked = true;
 
             document.getElementById('mainicon').src = result.mainicon;
             document.getElementById('armarker').src = result.armarker;

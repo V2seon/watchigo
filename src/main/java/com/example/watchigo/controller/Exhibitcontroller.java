@@ -79,6 +79,7 @@ public class Exhibitcontroller {
 //            Page<GradeType1DataEntity> pageList = Gradetype1DataService.selectALLTable2(selectKey, titleText, pageable);
 
             model.addAttribute("userlist1", memberEntities1); //페이지 객체 리스트
+            model.addAttribute("nowurl0", "/exhibit");
 
 //            return "gradetypedatalist0 :: #example3";
 
@@ -252,9 +253,12 @@ public class Exhibitcontroller {
 
         String [] filedata = {inv1, inv2, ini1, ini2, ini3, ini4, ini5, ini6};
 
+        String text1[] = mainicon.split("3020");
+        String text2[] = armarker.split("3020");
+
         ExhibitDto exhibitDto = new ExhibitDto(null,zonepk,s1.get().getAseq(),extype,typename,s2.get().getZonename(),exhibitname,
                 exhibitex,expoint,filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]
-                ,mainicon,armarker,printtype,str);
+                ,text1[1],text2[1],printtype,str);
         exhibitService.save(exhibitDto);
 
         session.setAttribute("dir1","/home/AdminWatchigo/uploadfiles/exhibit/"+session.getAttribute("userid"));
@@ -459,9 +463,12 @@ public class Exhibitcontroller {
             }
         }
 
+        String text1[] = mainicon.split("3020");
+        String text2[] = armarker.split("3020");
+
         ExhibitDto exhibitDto = new ExhibitDto(seqnum,zonepk,s1.get().getAseq(),extype,typename,s2.get().getZonename(),exhibitname,
                 exhibitex,expoint,filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]
-                ,mainicon ,armarker,printtype,str);
+                ,text1[1] ,text2[1],printtype,str);
         exhibitService.save(exhibitDto);
 
         session.setAttribute("dir1","/home/AdminWatchigo/uploadfiles/exhibit/"+session.getAttribute("userid"));

@@ -7,24 +7,24 @@
     <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/main/main.css">
-
+    <link rel="stylesheet" href="css/nav/nav.css">
+    <link rel="stylesheet" href="css/servicezone/main.css">
 </head>
 <body>
 <div th:insert="common/navbar.html"></div>
     <div class="map_wrap">
-        <div id="map" style="width:100%;height:98%;position:relative;overflow:hidden;"></div>
+        <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
         <div id="menu_wrap" class="bg_white">
             <div class="option">
                 <div>
-                    <input type="text" placeholder="아파트, 지역 및 학교명으로 검색 " value="" id="keyword" size="15" onkeyup="if(window.event.keyCode==13){sss()}">
-                    <button onclick="sss()">검색하기</button>
+                    <input class="srad" type="text" placeholder="아파트, 지역 및 학교명으로 검색 " value="" id="keyword" size="15" onkeyup="if(window.event.keyCode==13){sss()}">
                 </div>
-            </div>
-            <h1>서비스존 리스트</h1>
+
+            <h1 class="t1">SERVICE ZONE LIST ────────────</h1>
             <div id="intable">
                 <div class="option">
-                    <div>
-                        <select class="form-control form-control-sm"
+                    <div style="margin-bottom:20px;">
+                        <select class="selserzone"
                                 name="selectKey" id="selectKey">
                             <option selected="selected">전체</option>
                             <!--                        <option value="번호">번호</option>-->
@@ -33,66 +33,58 @@
                             <option value="주소">주소</option>
                         </select>
 
-                        <input id="titleText" type="text" placeholder="검색 " value="" onkeyup="enterkey()">
-                        <button type="submit" onclick="searching()">검색하기</button>
+                        <input class="selserzonetxt" id="titleText" type="text" placeholder="검색어를 입력해주세요 " value="" onkeyup="enterkey()">
                     </div>
                 </div>
-                <table class="table1" >
-                    <thead>
-                    <tr class="table1">
-                        <td>번호</td>
-                        <td>이름</td>
-                        <td>상태</td>
-                        <td>주소</td>
-                        <td>위치보기</td>
-                        <td>내용</td>
-                    </tr>
-                    <tr class="table1" th:if="${userlist}!=null" th:each="Co : ${userlist}">
-                        <td>
-                            <span th:if="${Co.pk}!= null"
-                                  th:text="${Co.pk}"
-                                  th:value="${Co.pk}">
-                            </span>
-                        </td>
-                        <td>
-                            <span th:if="${Co.zonename}!= null"
-                                  th:text="${Co.zonename}"
-                                  th:value="${Co.zonename}">
-                            </span>
-                        </td>
-                        <td>
-                            <span th:if="${Co.state}!= null"
-                                  th:text="${Co.state}"
-                                  th:value="${Co.state}">
-                            </span>
-                        </td>
-                        <td>
-                            <span th:if="${Co.address}!= null"
-                                  th:text="${Co.address}"
-                                  th:value="${Co.address}">
-                            </span>
-                        </td>
-                        <td>
-                            <span class="text111" th:text="보기"
-                                  th:onclick="|javascript:selectzone(${Co.pk})|">
-                            </span>
-                        </td>
-                        <td>
-                            <span class="text111" th:text="보기"
-                                  th:onclick="|javascript:selectzoneview(${Co.pk})|">
-                            </span>
-                        </td>
-                    </tr>
-                    </thead>
-                </table>
-                <div style="margin:auto; margin-top:20px; width:90px;">
-                    <button onclick="inser()">서비스존 등록</button>
+                <div class="viewzonebox1">
+                    <div class="zoneviewbox" th:if="${userlist}!=null" th:each="Co : ${userlist}">
+                        <div class="realbox">
+                            <img class="zonemainimg" th:src="'/file?fileName='+${Co.date}+'/'+${Co.img1}">
+                        </div>
+                        <div class="textviewbox">
+                            <div th:if="${Co.state}== 등록중"
+                                 th:text="${Co.state}"
+                                 th:value="${Co.state}"
+                                 class="zonetext">
+                            </div>
+                            <div th:if="${Co.state}== 승인대기"
+                                 th:text="${Co.state}"
+                                 th:value="${Co.state}"
+                                 class="zonetext1">
+                            </div>
+                            <div th:if="${Co.state}== 출시"
+                                 th:text="${Co.state}"
+                                 th:value="${Co.state}"
+                                 class="zonetext2">
+                            </div>
+                            <div th:if="${Co.zonename}!= null"
+                                 th:text="${Co.zonename}"
+                                 th:value="${Co.zonename}"
+                                 class="zonenameview">
+                            </div>
+                            <div th:if="${Co.address}!= null"
+                                 th:text="${Co.address}"
+                                 th:value="${Co.address}"
+                                 class="zoneaddview">
+                            </div>
+                            <div style="width:300px;">
+                                <div th:onclick="|javascript:selectzone(${Co.pk})|"
+                                     class="zoneview1">
+                                    <img src="/img/servicezone/zoneview.png">
+                                </div>
+                                <div th:onclick="|javascript:selectzoneview(${Co.pk})|"
+                                     class="zoneview2">
+                                    <img src="/img/servicezone/textview.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin:auto; margin-top:8px;">
+                    <button class="inserzone" onclick="inser()">+ 서비스존 등록</button>
                 </div>
             </div>
-        </div>
-        <div class="custom_zoomcontrol radius_border">
-            <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>
-            <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
         </div>
         <div id="menu_wrap1" class="bg_white1">
             <div id="uptable1">
@@ -284,7 +276,13 @@
                 </div>
             </div>
         </div>
-
+        </div>
+        <div class="custom_zoomcontrol radius_border">
+            <span onclick="zoomIn()"><img src="/img/servicezone/zoomin.png" alt="확대"></span>
+        </div>
+        <div class="custom_zoomcontrol1 radius_border">
+            <span onclick="zoomOut()"><img src="/img/servicezone/zoomout.png" alt="축소"></span>
+        </div>
     </div>
 <div id="load"> <img src="/img/spinner.gif" alt="loading"></div>
 

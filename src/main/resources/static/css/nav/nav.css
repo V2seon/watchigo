@@ -1,0 +1,42 @@
+ul{
+list-style: none;
+margin:0px; padding:0px;
+width:90px;
+text-align : center;
+}
+
+.menubar{
+position:fixed;
+height:100%;
+z-index:9999999;
+background-color:#1e85ff;
+}
+
+li{
+width:100%;
+display : inline-block;
+height:80px;
+vertical-align: middle;
+}
+
+li:hover{
+cursor:pointer;
+}
+
+
+.icon{
+list-style-type : none;
+padding-left:0px;
+line-height: 100px;
+}
+
+.icon-active{
+list-style-type : none;
+padding-left:0px;
+line-height: 100px;
+background-color:#FFFFFF;
+}
+
+.iconimg{
+margin-top:14px;
+}

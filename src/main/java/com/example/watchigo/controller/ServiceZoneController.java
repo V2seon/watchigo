@@ -60,7 +60,7 @@ public class ServiceZoneController {
 
             Page<ServiceZoneEntity> memberEntities = serviceZoneService.selectALLTable0(s1.get().getAseq(), pageable);
 
-            pageable = PageRequest.of(page, 15,Sort.by("pk").descending());
+            pageable = PageRequest.of(page, 100,Sort.by("pk").descending());
             Pagination pagination = new Pagination(memberEntities.getTotalPages(), page);
 
             model.addAttribute("thisPage", pagination.getPage()); //현재 몇 페이지에 있는지 확인하기 위함
@@ -74,6 +74,8 @@ public class ServiceZoneController {
 //            Page<GradeType1DataEntity> pageList = Gradetype1DataService.selectALLTable2(selectKey, titleText, pageable);
 
             model.addAttribute("userlist", memberEntities); //페이지 객체 리스트
+
+            model.addAttribute("nowurl0", "/servicezone");
 
 //            return "gradetypedatalist0 :: #example3";
 
@@ -92,7 +94,7 @@ public class ServiceZoneController {
         HttpSession session = request.getSession();
         Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
 
-        Pageable pageable = PageRequest.of(page, 15,Sort.by("pk").descending());
+        Pageable pageable = PageRequest.of(page, 100);
         int totalPages = serviceZoneService.selectALLTable(selectKey, titleText,s1.get().getAseq(), pageable).getTotalPages();
         Pagination pagination = new Pagination(totalPages, page);
 
@@ -170,6 +172,8 @@ public class ServiceZoneController {
         String str = sdf.format(date);
         session.setAttribute("sdf",str);
 
+        String text1[] = marker1.split("3020");
+
         // 사용자 일련번호 가져오기
         Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
 
@@ -184,13 +188,13 @@ public class ServiceZoneController {
 
             String abc = y+","+x;
 
-            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(null, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,str,marker1,
+            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(null, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,str,text1[1],
                     filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]);
             serviceZoneService.save(serviceZoneDto);
 
         }else if(type == 1){ //원
             String redate[] = serviceszone.split("&");
-            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(null, s1.get().getAseq(),zonename,redate[0],state,address,address1,zoneex,type,str,marker1,
+            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(null, s1.get().getAseq(),zonename,redate[0],state,address,address1,zoneex,type,str,text1[1],
                     filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]);
             serviceZoneService.save(serviceZoneDto);
         }else if(type == 2){ //다각형
@@ -221,7 +225,7 @@ public class ServiceZoneController {
 
             String abc = y+","+x;
 
-            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(null, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,str,marker1,
+            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(null, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,str,text1[1],
                     filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]);
             serviceZoneService.save(serviceZoneDto);
 
@@ -325,7 +329,7 @@ public class ServiceZoneController {
         HttpSession session = request.getSession();
         String id = (String) session.getAttribute("userid");
         String date = (String) session.getAttribute("date");
-        String DIR = "/home/AdminWatchigo/uploadfiles/servicezone/"+id+"/"+date+"/";
+        String DIR = "/home/AdminWatchigo/uploadfiles/servicezone/"+id+"/";
         File file = new File(DIR+fileName);
         final InputStream is = new FileInputStream(file);
         return os -> {
@@ -452,6 +456,10 @@ public class ServiceZoneController {
                                    @RequestParam(required = false, defaultValue = "", value = "pkzonenum")Long zonepknum){
         HttpSession session = request.getSession();
 
+
+
+
+
         String state = "";
         if(a == 0){
             state = "등록중";
@@ -473,8 +481,13 @@ public class ServiceZoneController {
         Optional<ServiceZoneEntity> ser = serviceZoneRepository.findById(zonepknum);
 
         String [] filedata = {inv1, inv2, ini1, ini2, ini3, ini4, ini5, ini6};
+        for (int i=0; i<filedata.length; i++) {
+            System.out.println(filedata[i]);
+        }
         String [] dbfiledata = {ser.get().getVideo1(), ser.get().getVideo2(), ser.get().getImg1(), ser.get().getImg2(),
                 ser.get().getImg3(), ser.get().getImg4(), ser.get().getImg5(), ser.get().getImg6()};
+
+        String text1[] = marker1.split("3020");
 
         for (int i=0; i<filedata.length; i++){
             if(filedata[i].equals(null) || filedata[i].equals("")){
@@ -499,13 +512,13 @@ public class ServiceZoneController {
 
             String abc = y+","+x;
 
-            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(zonepknum, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,ser.get().getDate(),marker1,
+            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(zonepknum, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,ser.get().getDate(),text1[1],
                     filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]);
             serviceZoneService.save(serviceZoneDto);
 
         }else if(type == 1){ //원
             String redate[] = serviceszone.split("&");
-            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(zonepknum, s1.get().getAseq(),zonename,redate[0],state,address,address1,zoneex,type,ser.get().getDate(),marker1,
+            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(zonepknum, s1.get().getAseq(),zonename,redate[0],state,address,address1,zoneex,type,ser.get().getDate(),text1[1],
                     filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]);
             serviceZoneService.save(serviceZoneDto);
         }else if(type == 2){ //다각형
@@ -536,7 +549,7 @@ public class ServiceZoneController {
 
             String abc = y+","+x;
 
-            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(zonepknum, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,ser.get().getDate(),marker1,
+            ServiceZoneDto serviceZoneDto = new ServiceZoneDto(zonepknum, s1.get().getAseq(),zonename,abc,state,address,address1,zoneex,type,ser.get().getDate(),text1[1],
                     filedata[0],filedata[1],filedata[2],filedata[3],filedata[4],filedata[5],filedata[6],filedata[7]);
             serviceZoneService.save(serviceZoneDto);
 
