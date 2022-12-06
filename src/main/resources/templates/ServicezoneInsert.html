@@ -8,188 +8,216 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/main/main.css">
     <link rel="stylesheet" href="css/nav/nav.css">
-    <link rel="stylesheet" href="css/servicezone/main.css">
+    <link rel="stylesheet" href="css/servicezone/insert.css">
 </head>
 <body>
 <div th:insert="common/navbar.html"></div>
 <div class="map_wrap">
-    <div id="map" style="width:100%;height:98%;position:relative;overflow:hidden;"></div>
+    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
     <div id="menu_wrap" class="bg_white">
-        <div class="option">
+        <div class="option" style="height:120px;">
             <div>
                 <input class="srad" type="text" placeholder="아파트, 지역 및 학교명으로 검색 " value="" id="keyword" size="15" onkeyup="if(window.event.keyCode==13){sss()}">
             </div>
+            <img class="backbtn99" onclick="backbtn()" src="/img/srinsert/Arrow.png">
+            <span class="t2">SERVICE ZONE SETTING ────────</span>
         </div>
         <div id="uptable">
-            <img onclick="backbtn()" class="backbtn" src="/img/back.png">
             <div>
-                <div class="ser1">
-                    <span style="font-size:25px;">1. 서비스존 설정</span>
+                <div class="ser2">
+                    <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">영역선택 툴</span>
                     <div style="width:100%">
                         <div class="boxname">
                             <div style="float:left;">
-                                <button style="font-size:18px;" class="drwbtn" onclick="selectOverlay('RECTANGLE')">사각형 <br>모양 버튼</button>
+                                <div style="font-size:18px;" class="drwbtn" onclick="selectOverlay('RECTANGLE')">
+                                    <img id="reimg" src="/img/srinsert/Rentangle.png">
+                                </div>
                             </div>
-                            <div class="boxmas">
-                                사각형으로 영역 설정
+                            <div style="float:left; margin-left:20px;">
+                                <div style="font-size:18px;" class="drwbtn" onclick="selectOverlay('CIRCLE')">
+                                    <img id="ciimg" src="/img/srinsert/Circle.png">
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div style="width:100%">
-                        <div class="boxname">
-                            <div style="float:left;">
-                                <button style="font-size:18px;" class="drwbtn" onclick="selectOverlay('CIRCLE')">원모양 <br>버튼</button>
-                            </div>
-                            <div class="boxmas">
-                                원으로 영역 설정
-                            </div>
-                        </div>
-                    </div>
-                    <div style="width:100%">
-                        <div class="boxname">
-                            <div style="float:left;">
-                                <button style="font-size:18px;" class="drwbtn" onclick="selectOverlay('POLYGON')">다각형 <br>모양 버튼</button>
-                            </div>
-                            <div class="boxmas">
-                                3곳 이상을 선택하여 영역 설정
+                            <div style="float:left; margin-left:20px;">
+                                <div style="font-size:18px;" class="drwbtn" onclick="selectOverlay('POLYGON')">
+                                    <img id="plimg" src="/img/srinsert/Polygon.png">
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="zguidebox">
+                        <span class="zguide">영역선택 툴을 선택해주세요</span>
+                    </div>
+                    <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">설정영역주소</span>
                     <div>
-                        <input id="address" class="inte" type="text" placeholder="서비스 지역 ex)광주광역시 북구">
-                        <br>
-                        <input id="address1" class="inte" type="text" placeholder="설정영역 주소">
+                        <input style="margin-top:10px;" id="address" class="inte" type="text" placeholder="설정영역 입력">
+                        <input style="margin-bottom:40px;" id="address1" class="inte" type="text" placeholder="상세주소 입력">
                     </div>
+                    <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">서비스존 이름</span>
                     <div>
-                        <span style="font-size:25px; margin-bottom:20px;">2. 서비스존 이름</span>
                         <div>
-                            <input id="zonename" class="inte" type="text" placeholder="서비스존 이름">
+                            <input style="margin-top:10px; margin-bottom:40px;" id="zonename" class="inte" type="text" placeholder="서비스존 이름">
                         </div>
                     </div>
+                    <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">설정영역주소</span>
                     <div>
-                        <span style="font-size:25px; margin-bottom:20px;">3. 서비스존 설명</span>
-                        <textarea id="zoneex" class="inte1" type="text" placeholder="서비스존 설명"></textarea>
+                        <textarea style="margin-bottom:40px;" id="zoneex" class="inte1" type="text" placeholder="서비스존 설명"></textarea>
                     </div>
-                    <div>
-                        <span style="font-size:25px; margin-bottom:20px;">4. 동영상 업로드</span>
-                        <br>
-                        <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;- 동영상은 최대 2개까지 등록 가능합니다.</span>
+                    <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">서비스존 동영상 업로드</span>
+                    <div style="width:93.5%; margin-top:10px; margin-bottom:40px; height:180px; border: 1px dashed #E0E0E0; border-radius: 8px;">
                         <div class="vbox">
                             <div id="uploadvideo1" class="uploadvideo">
                                 <input id="realUploadvideo1"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
-                                <div style="width:150px; height:150px; position:absolute;" onclick="video1()">
-                                    <video id="inv1" class="inv1" src="/img/plus.mp4"></video>
+                                <div style="position:relative;" onclick="video1()">
+                                    <img id="uploadview" class="invimg1" src="/img/srinsert/upload.png">
+                                    <video id="inv1" class="inv1" src=""></video>
                                 </div>
                                 <div class="delete" id="delete1">
-                                    <button id="delbtn1" onclick="delete1()" class="delbtn">삭제</button>
+                                    <img id="delbtn1" onclick="delete1()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
+                            <div style="width:20px;"></div>
                             <div id="uploadvideo2" class="uploadvideo">
                                 <input id="realUploadvideo2"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
-                                <div style="width:150px; height:150px; position:absolute;" onclick="video2()">
-                                    <video id="inv2" class="inv1" src="/img/plus.mp4"></video>
+                                <div onclick="video2()">
+                                    <img id="uploadview2" class="invimg1" src="/img/srinsert/upload.png">
+                                    <video id="inv2" class="inv1" src=""></video>
                                 </div>
                                 <div class="delete" id="delete2">
-                                    <button id="delbtn2" onclick="delete2()" class="delbtn">삭제</button>
+                                    <img id="delbtn2" onclick="delete2()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
                         </div>
+                        <span style="text-align:center; display: flex; justify-content: center; align-items: center;
+                                    color: #BDBDBD;font-style: normal; font-weight: 300 font-size: 14px;">
+                            <img src="/img/srinsert/videoicon.png">&nbsp;동영상은 최대 2개까지 등록 가능합니다.
+                        </span>
                     </div>
-                    <div style="margin:auto;">
-                        <span style="font-size:25px; margin-bottom:20px;">5. 이미지 업로드</span>
-                        <br>
-                        <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;- 이미지는 최대 6장까지 등록 가능합니다.</span>
+                    <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">서비스존 이미지 업로드</span>
+
+                    <div style="width:93.5%; margin-top:10px; margin-bottom:40px; height:420px; border: 1px dashed #E0E0E0; border-radius: 8px;">
                         <div class="ibox">
                             <div id="uploadimg1" class="uploadimg">
                                 <input id="upimg1" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                <div style="width:150px; height:150px; position:absolute;" onclick="img1()">
-                                    <img class="img" id="img1" src="img/plus.png">
+                                <div style="position:relative;" onclick="img1()">
+                                    <img class="img" id="img1" src="/img/srinsert/upload.png">
                                 </div>
                                 <div class="delete"  id="delete3">
-                                    <button id="delbtn3" onclick="delete3()" class="delbtn">삭제</button>
+                                    <img id="delbtn3" onclick="delete3()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
+                            <div style="width:20px;"></div>
+
                             <div id="uploadimg2" class="uploadimg">
                                 <input id="upimg2" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                <div style="width:150px; height:150px; position:absolute;" onclick="img2()">
-                                    <img class="img" id="img2" src="img/plus.png">
+                                <div style="position:relative;" onclick="img2()">
+                                    <img class="img" id="img2" src="/img/srinsert/upload.png">
                                 </div>
                                 <div class="delete" id="delete4">
-                                    <button id="delbtn4"  onclick="delete4()" class="delbtn">삭제</button>
+                                    <img id="delbtn4" onclick="delete4()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
+                        </div>
+                        <div class="ibox">
                             <div id="uploadimg3" class="uploadimg">
                                 <input id="upimg3" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                <div style="width:150px; height:150px; position:absolute;" onclick="img3()">
-                                    <img class="img" id="img3" src="img/plus.png">
+                                <div style="position:relative;" onclick="img3()">
+                                    <img class="img" id="img3" src="/img/srinsert/upload.png">
                                 </div>
                                 <div class="delete" id="delete5">
-                                    <button id="delbtn5"  onclick="delete5()" class="delbtn">삭제</button>
+                                    <img id="delbtn5" onclick="delete5()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
+                            <div style="width:20px;"></div>
                             <div id="uploadimg4" class="uploadimg">
                                 <input id="upimg4" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                <div style="width:150px; height:150px; position:absolute;" onclick="img4()">
-                                    <img class="img" id="img4" src="img/plus.png">
+                                <div style="position:relative;" onclick="img4()">
+                                    <img class="img" id="img4" src="/img/srinsert/upload.png">
                                 </div>
                                 <div class="delete" id="delete6">
-                                    <button id="delbtn6"  onclick="delete6()" class="delbtn">삭제</button>
+                                    <img id="delbtn6" onclick="delete6()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
+                        </div>
+                        <div class="ibox">
                             <div id="uploadimg5" class="uploadimg">
                                 <input id="upimg5" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                <div style="width:150px; height:150px; position:absolute;" onclick="img5()">
-                                    <img class="img" id="img5" src="img/plus.png">
+                                <div style="position:relative;" onclick="img5()">
+                                    <img class="img" id="img5" src="/img/srinsert/upload.png">
                                 </div>
+                                <div style="width:20px;"></div>
                                 <div class="delete" id="delete7">
-                                    <button id="delbtn7"  onclick="delete7()" class="delbtn">삭제</button>
+                                    <img id="delbtn7" onclick="delete7()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
+                            <div style="width:20px;"></div>
                             <div id="uploadimg6" class="uploadimg">
                                 <input id="upimg6" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                <div style="width:150px; height:150px; position:absolute;" onclick="img6()">
-                                    <img class="img" id="img6" src="img/plus.png">
+                                <div style="position:relative;" onclick="img6()">
+                                    <img class="img" id="img6" src="/img/srinsert/upload.png">
                                 </div>
                                 <div class="delete" id="delete8">
-                                    <button id="delbtn8"  onclick="delete8()" class="delbtn">삭제</button>
+                                    <img id="delbtn8" onclick="delete8()" class="delbtn" src="/img/srinsert/delete.png">
+                                </div>
+                            </div>
+                        </div>
+                        <span style="text-align:center; display: flex; justify-content: center; align-items: center;
+                                    color: #BDBDBD;font-style: normal; font-weight: 300 font-size: 14px;">
+                            <img src="/img/srinsert/imgicon.png">&nbsp;이미지는 최대 6개까지 등록 가능합니다.
+                        </span>
+                    </div>
+                    <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">마커 선택</span>
+                    <div style="width:93.5%; border-radius: 8px; height:185px; margin-top:10px; margin-bottom:40px; border: 1px solid #E0E0E0;">
+                        <div class="mbox">
+                            <div class="markerbox">
+                                <div class="markerse" id="markerse1" onclick="up()">
+                                    기본 마커 선택
+                                </div>
+                                <div class="markerse" id="markerse2" onclick="up1()">
+                                    인기 마커 선택
+                                </div>
+                                <div class="markerse" id="markerse3" onclick="up2()">
+                                    커스텀 마커 선택
+                                </div>
+                            </div>
+                            <div style="width:20px;"></div>
+                            <div class="markerbox">
+                                <div class="markerbox1">
+                                    <div class="semk">
+                                        <img id="marker1" src="/img/marker/m8.png">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <br>
-                    <div style="margin-top:10px;">
-                        <span style="font-size:25px; margin-bottom:20px;">6. 마커 선택</span>
+                    <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">서비스존 전시 / 시설물 목록</span>
+                    <div id="exbox" style="width:93.5%; border-radius: 8px; height:100px; margin-top:10px; margin-bottom:40px; border: 1px solid #E0E0E0;">
+
                     </div>
-                    <div class="chmarker">
-                        <img class="mainicon" id="marker1" src="/img/marker/test/img_2.png">
-                    </div>
-                    <div>
-                        <a class="base" onclick="up()">기본 마커 선택</a>
-                    </div>
-                    <div>
-                        <a class="base" onclick="up1()">인기 마커 선택</a>
-                    </div>
-                    <div>
-                        <a class="base" onclick="up2()">커스텀 마커 선택</a>
-                    </div>
-                    <div style="margin-bottom:10px; margin-top:20px;">
-                        <span style="font-size:20px;">서비스존 전시/시설물 목록</span>
-                    </div>
-                    <div id="exbox" class="exbox">
-                    </div>
-                    <div style="width:80%; margin:auto;">
-                        <button class="upbtn" onclick="savezone()">저장하기</button>
-                    </div>
-                    <div style="width:80%; margin:auto;">
-                        <button class="upbtn" onclick="savezone1()">출시요청</button>
+                    <div style="width:93.5%;">
+                        <div class="mbox">
+                            <div class="submitbox">
+                                <img onclick="savezone()" src="/img/srinsert/save.png">
+                            </div>
+                            <div style="width:20px;"></div>
+                            <div class="submitbox">
+                                <img onclick="savezone1()" src="/img/srinsert/save1.png">
+                            </div>
+                            <div style="width:20px;"></div>
+                            <div class="submitbox">
+                                <img src="/img/srinsert/del.png">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="custom_zoomcontrol radius_border">
-        <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>
-        <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
+    <div id="zoombtn1" class="custom_zoomcontrol radius_border">
+        <span onclick="zoomIn()"><img src="/img/servicezone/zoomin.png" alt="확대"></span>
+    </div>
+    <div id="zoombtn2" class="custom_zoomcontrol1 radius_border">
+        <span onclick="zoomOut()"><img src="/img/servicezone/zoomout.png" alt="축소"></span>
     </div>
 </div>
 <div id="load"> <img src="/img/spinner.gif" alt="loading"></div>
@@ -201,7 +229,7 @@
         <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">기본 마커</span></b></span></p>
         <div style="margin-bottom:30px;">
             <div class="basemarker">
-                <img class="markerimg" src="/img/marker/location.png" onclick="semk1(this)">
+                <img class="markerimg" src="/img/marker/m5.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
                 <img class="markerimg" src="/img/marker/m1.png" onclick="semk1(this)">
@@ -216,13 +244,13 @@
                 <img class="markerimg" src="/img/marker/m4.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m6.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m7.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m8.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
 
@@ -274,7 +302,7 @@
         <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">인기 마커</span></b></span></p>
         <div style="margin-bottom:30px;">
             <div class="basemarker">
-                <img class="markerimg" src="/img/marker/location.png" onclick="semk1(this)">
+                <img class="markerimg" src="/img/marker/m5.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
                 <img class="markerimg" src="/img/marker/m1.png" onclick="semk1(this)">
@@ -289,13 +317,13 @@
                 <img class="markerimg" src="/img/marker/m4.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m6.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m7.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m8.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
 
@@ -338,7 +366,7 @@
         <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">커스텀 마커</span></b></span></p>
         <div style="margin-bottom:30px;">
             <div class="basemarker">
-                <img class="markerimg" src="/img/marker/location.png" onclick="semk1(this)">
+                <img class="markerimg" src="/img/marker/m5.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
                 <img class="markerimg" src="/img/marker/m1.png" onclick="semk1(this)">
@@ -353,13 +381,13 @@
                 <img class="markerimg" src="/img/marker/m4.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m6.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m7.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
-
+                <img class="markerimg" src="/img/marker/m8.png" onclick="semk1(this)">
             </div>
             <div class="basemarker">
 
@@ -400,26 +428,38 @@
 
 function up() {
         $('#myModal').show();
+        document.getElementById('markerse1').style.backgroundColor= '#AFD1F9';
+        document.getElementById('markerse1').style.color= '#FFFFFF';
 };
 //팝업 Close 기능
 function close_pop(flag) {
      $('#myModal').hide();
+     document.getElementById('markerse1').style.backgroundColor= '#F2F2F2';
+     document.getElementById('markerse1').style.color= '#333333';
 };
 
 function up1() {
         $('#myModal1').show();
+        document.getElementById('markerse2').style.backgroundColor= '#AFD1F9';
+        document.getElementById('markerse2').style.color= '#FFFFFF';
 };
 //팝업 Close 기능
 function close_pop1(flag) {
      $('#myModal1').hide();
+     document.getElementById('markerse2').style.backgroundColor= '#F2F2F2';
+     document.getElementById('markerse2').style.color= '#333333';
 };
 
 function up2() {
         $('#myModal2').show();
+        document.getElementById('markerse3').style.backgroundColor= '#AFD1F9';
+        document.getElementById('markerse3').style.color= '#FFFFFF';
 };
 //팝업 Close 기능
 function close_pop2(flag) {
      $('#myModal2').hide();
+     document.getElementById('markerse3').style.backgroundColor= '#F2F2F2';
+     document.getElementById('markerse3').style.color= '#333333';
 };
 
 </script>

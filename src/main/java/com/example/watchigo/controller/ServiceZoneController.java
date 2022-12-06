@@ -118,6 +118,7 @@ public class ServiceZoneController {
     public String newzone(Model model,HttpServletRequest request){
         String returnValue = "";
         if(new SessionCheck().loginSessionCheck(request)){
+            model.addAttribute("nowurl0", "/servicezone");
             return "ServicezoneInsert.html";
         }else{
             returnValue = "login.html";
@@ -377,18 +378,11 @@ public class ServiceZoneController {
 
         msg.put("center",s1.get().getZonecenter());
         msg.put("zonename",s1.get().getZonename());
-        msg.put("address",s1.get().getAddress());
-        msg.put("address1",s1.get().getAddress1());
         msg.put("ex",s1.get().getEx());
         msg.put("pk", String.valueOf(pk));
+        msg.put("date", s1.get().getDate());
         msg.put("video1",s1.get().getVideo1());
-        msg.put("video2",s1.get().getVideo2());
         msg.put("img1",s1.get().getImg1());
-        msg.put("img2",s1.get().getImg2());
-        msg.put("img3",s1.get().getImg3());
-        msg.put("img4",s1.get().getImg4());
-        msg.put("img5",s1.get().getImg5());
-        msg.put("img6",s1.get().getImg6());
         msg.put("marker",s1.get().getMarker());
         msg.put("zonetype",String.valueOf(s1.get().getType()));
 
@@ -591,6 +585,7 @@ public class ServiceZoneController {
 
         List<ExhibitEntity> ex1 = exhibitRepository.findByuserseq(s1.get().getAseq());
 
+        System.out.println(ex1);
         ArrayList<String> plist = new ArrayList<>();
         ArrayList<String> nlist = new ArrayList<>();
 

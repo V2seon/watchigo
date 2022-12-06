@@ -14,22 +14,22 @@
         </li>
         <li th:class="${nowurl0 == '/servicezone' ? 'icon-active' : 'icon'}">
             <a href="/servicezone">
-                <img class="iconimg" src="/img/nav/sericon.png">
+                <img class="iconimg" th:src="${nowurl0 == '/servicezone' ? '/img/nav/sericonBlue.png' : '/img/nav/sericon.png'}">
             </a>
         </li>
         <li th:class="${nowurl0 == '/exhibit' ? 'icon-active' : 'icon'}">
             <a href="/exhibit">
-                <img class="iconimg" src="/img/nav/exicon.png">
+                <img class="iconimg" th:src="${nowurl0 == '/exhibit' ? '/img/nav/exiconBlue.png' : '/img/nav/exicon.png'}">
             </a>
         </li>
         <li th:class="${nowurl0 == '/0' ? 'icon-active' : 'icon'}">
             <a>
-                <img class="iconimg" src="/img/nav/AI.png">
+                <img class="iconimg" th:src="${nowurl0 == '/0' ? '/img/nav/AIBlue.png' : '/img/nav/AI.png'}">
             </a>
         </li>
         <li th:class="${nowurl0 == '/0' ? 'icon-active' : 'icon'}">
             <a>
-                <img class="iconimg" src="/img/nav/myaa.png">
+                <img class="iconimg" th:src="${nowurl0 == '/0' ? '/img/nav/myaaBlue.png' : '/img/nav/myaa.png'}">
             </a>
         </li>
     </ul>

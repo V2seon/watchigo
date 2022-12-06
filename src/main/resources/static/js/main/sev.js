@@ -7,6 +7,7 @@ function inser1(){
 
 function backbtn(){
     location.href = "/servicezone";
+//    document.getElementById("menu_wrap1").style.display = "none";
 }
 
 function backbtn1(){

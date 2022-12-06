@@ -67,7 +67,7 @@
                                  th:value="${Co.address}"
                                  class="zoneaddview">
                             </div>
-                            <div style="width:300px;">
+                            <div style="width:300px; margin:auto;">
                                 <div th:onclick="|javascript:selectzone(${Co.pk})|"
                                      class="zoneview1">
                                     <img src="/img/servicezone/zoneview.png">
@@ -86,204 +86,57 @@
                 </div>
             </div>
         </div>
-        <div id="menu_wrap1" class="bg_white1">
-            <div id="uptable1">
-                <img onclick="backbtn()" class="backbtn" src="/img/back.png">
-                <div>
-                    <div class="ser1">
-                        <span style="font-size:25px;">1. 서비스존 설정</span>
-
-                        <!--                    <button onclick="selectOverlay('MARKER')">마커</button>-->
-                        <!--                    <button onclick="selectOverlay('POLYLINE')">선</button>-->
-                        <div style="width:100%">
-                            <div class="boxname">
-                                <div style="float:left;">
-                                    <button style="font-size:18px;" class="drwbtn" onclick="selectOverlay('RECTANGLE')">사각형 <br>모양 버튼</button>
-                                </div>
-                                <div class="boxmas">
-                                    사각형으로 영역 설정
-                                </div>
-                            </div>
-                        </div>
-                        <div style="width:100%">
-                            <div class="boxname">
-                                <div style="float:left;">
-                                    <button style="font-size:18px;" class="drwbtn" onclick="selectOverlay('CIRCLE')">원모양 <br>버튼</button>
-                                </div>
-                                <div class="boxmas">
-                                    원으로 영역 설정
-                                </div>
-                            </div>
-                        </div>
-                        <div style="width:100%">
-                            <div class="boxname">
-                                <div style="float:left;">
-                                    <button style="font-size:18px;" class="drwbtn" onclick="selectOverlay('POLYGON')">다각형 <br>모양 버튼</button>
-                                </div>
-                                <div class="boxmas">
-                                    3곳 이상을 선택하여 영역 설정
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <input id="viewaddress" class="inte" type="text" placeholder="서비스 지역 ex)광주광역시 북구">
-                            <br>
-                            <input id="viewaddress1" class="inte" type="text" placeholder="설정영역 주소">
-                        </div>
-                        <div>
-                            <span style="font-size:25px; margin-bottom:20px;">2. 서비스존 이름</span>
-                            <div>
-                                <input id="viewzonename" class="inte" type="text" placeholder="서비스존 이름">
-                            </div>
-                        </div>
-                        <div>
-                            <span style="font-size:25px; margin-bottom:20px;">3. 서비스존 설명</span>
-                            <textarea id="viewzoneex" class="inte1" type="text" placeholder="서비스존 설명"></textarea>
-                        </div>
-                        <div>
-                            <span style="font-size:25px; margin-bottom:20px;">4. 동영상 업로드</span>
-                            <br>
-                            <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;- 동영상은 최대 2개까지 등록 가능합니다.</span>
-                            <div class="vbox">
-                                <div id="viewuploadvideo1" class="uploadvideo">
-                                    <input id="viewrealUploadvideo1"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="viewvideo1()">
-                                        <video id="viewinv1" class="inv1" src="/img/plus.mp4"
-                                               onerror="this.src='/img/plus.mp4';"></video>
-                                    </div>
-                                    <div class="delete1" id="viewdelete1">
-                                        <button id="viewdelbtn1" onclick="viewdelete1()" class="delbtn1">삭제</button>
-                                    </div>
-                                </div>
-                                <div id="viewuploadvideo2" class="uploadvideo">
-                                    <input id="viewrealUploadvideo2"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="viewvideo2()">
-                                        <video id="viewinv2" class="inv1" src="/img/plus.mp4"
-                                               onerror="this.src='/img/plus.mp4';"></video>
-                                    </div>
-                                    <div class="delete1" id="viewdelete2">
-                                        <button id="viewdelbtn2" onclick="viewdelete2()" class="delbtn1">삭제</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="margin:auto;">
-                            <span style="font-size:25px; margin-bottom:20px;">5. 이미지 업로드</span>
-                            <br>
-                            <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;- 이미지는 최대 6장까지 등록 가능합니다.</span>
-                            <div class="ibox">
-                                <div id="viewuploadimg1" class="uploadimg">
-                                    <input id="viewupimg1" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="viewimg1()">
-                                        <img class="img" id="viewimg1" src="img/plus.png"
-                                             onerror="this.src='/img/plus.png';">
-                                    </div>
-                                    <div class="delete1"  id="viewdelete3">
-                                        <button id="viewdelbtn3" onclick="viewdelete3()" class="delbtn1">삭제</button>
-                                    </div>
-                                </div>
-                                <div id="viewuploadimg2" class="uploadimg">
-                                    <input id="viewupimg2" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="viewimg2()">
-                                        <img class="img" id="viewimg2" src="img/plus.png"
-                                             onerror="this.src='/img/plus.png';">
-                                    </div>
-                                    <div class="delete1" id="viewdelete4">
-                                        <button id="viewdelbtn4"  onclick="viewdelete4()" class="delbtn1">삭제</button>
-                                    </div>
-                                </div>
-                                <div id="viewuploadimg3" class="uploadimg">
-                                    <input id="viewupimg3" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="viewimg3()">
-                                        <img class="img" id="viewimg3" src="img/plus.png"
-                                             onerror="this.src='/img/plus.png';">
-                                    </div>
-                                    <div class="delete1" id="viewdelete5">
-                                        <button id="viewdelbtn5"  onclick="viewdelete5()" class="delbtn1">삭제</button>
-                                    </div>
-                                </div>
-                                <div id="viewuploadimg4" class="uploadimg">
-                                    <input id="viewupimg4" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="viewimg4()">
-                                        <img class="img" id="viewimg4" src="img/plus.png"
-                                             onerror="this.src='/img/plus.png';">
-                                    </div>
-                                    <div class="delete1" id="viewdelete6">
-                                        <button id="viewdelbtn6"  onclick="viewdelete6()" class="delbtn1">삭제</button>
-                                    </div>
-                                </div>
-                                <div id="viewuploadimg5" class="uploadimg">
-                                    <input id="viewupimg5" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="viewimg5()">
-                                        <img class="img" id="viewimg5" src="img/plus.png"
-                                             onerror="this.src='/img/plus.png';">
-                                    </div>
-                                    <div class="delete1" id="viewdelete7">
-                                        <button id="viewdelbtn7"  onclick="viewdelete7()" class="delbtn1">삭제</button>
-                                    </div>
-                                </div>
-                                <div id="viewuploadimg6" class="uploadimg">
-                                    <input id="viewupimg6" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="viewimg6()">
-                                        <img class="img" id="viewimg6" src="img/plus.png"
-                                             onerror="this.src='/img/plus.png';">
-                                    </div>
-                                    <div class="delete1" id="viewdelete8">
-                                        <button id="viewdelbtn8"  onclick="viewdelete8()" class="delbtn1">삭제</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div style="margin-top:10px;">
-                            <span style="font-size:25px; margin-bottom:20px;">6. 마커 선택</span>
-                        </div>
-                        <div class="chmarker">
-                            <img class="mainicon" id="marker1" src="/img/marker/test/img_2.png">
-                        </div>
-                        <div>
-                            <a class="base" onclick="up()">기본 마커 선택</a>
-                        </div>
-                        <div>
-                            <a class="base" onclick="up1()">인기 마커 선택</a>
-                        </div>
-                        <div>
-                            <a class="base" onclick="up2()">커스텀 마커 선택</a>
-                        </div>
-                        <div style="margin-bottom:10px; margin-top:20px;">
-                            <span style="font-size:20px;">서비스존 전시/시설물 목록</span>
-                        </div>
-                        <div id="exbox" class="exbox">
-
-                        </div>
-                        <div style="width:80%; margin:auto;">
-                            <button class="upbtn" onclick="editzone()">저장하기</button>
-                        </div>
-                        <div style="width:80%; margin:auto;">
-                            <button class="upbtn">출시요청</button>
-                        </div>
-                        <div style="width:80%; margin:auto;">
-                            <button class="upbtn" onclick="deletezone()">삭제</button>
-                        </div>
-                    </div>
-
-                    <span id="pknum" hidden></span>
-
-                    <p class="edit" style="display:none;">
-                        <button id="undo" class="disabled" onclick="undo()" disabled>UNDO</button>
-                        <button id="redo" class="disabled" onclick="redo()" disabled>REDO</button>
-                    </p>
-                </div>
-            </div>
-        </div>
-        </div>
-        <div class="custom_zoomcontrol radius_border">
-            <span onclick="zoomIn()"><img src="/img/servicezone/zoomin.png" alt="확대"></span>
-        </div>
-        <div class="custom_zoomcontrol1 radius_border">
-            <span onclick="zoomOut()"><img src="/img/servicezone/zoomout.png" alt="축소"></span>
         </div>
     </div>
+<div id="menu_wrap1" >
+    <div class="backbtn">
+        <img onclick="backbtn()" style="border-radius: 8px 0px 0px 8px; background:#e0e0e0; position: relative; top: 577.5px;"
+             src="/img/servicezone/close.png">
+    </div>
+    <div id="uptable1" class="uptable1">
+        <div id="viewzonename" class="viewzonename">
+            <h1 id="zonetext" style="color: #1475E5;">
+                304카페
+            </h1>
+        </div>
+        <div id="viewzoneex" class="viewzoneex">
+            <div id="zonetext1" class="textbox">
+                만천하의 생의 천고에 새 하여도 열락의 듣기만 같은 그림자는 약동하다. 가치를 인생의 긴지라 뛰노는 곧 속에서 것이다. 따뜻한 대중을 원대하고, 있는 품었기 힘차게 천지는 봄바람이다. 보는 이 그러므로 것이 만천하의 봄바람이다. 두손을 온갖 무한한 사막이다. 뜨고, 하는 천지는 곳이 앞이 청춘 운다. 원질이 가지에 때에, 그들에게 그들의 품었기 찾아 놀이 이것이다. 충분히 전인 그러므로 보는 사막이다. 작고 가슴이 있는 위하여, 피고 이것이다. 자신과 새 그것은 무엇이 있으며, 것이다.생생하며, 이것은 뜨고, 방황하였으며, 힘있다. 전인 대한 주며, 꽃이 위하여서. 피에 싶이 대고, 예가 과실이 이것은 든 품에 천하를 있다. 청춘의 수 그것을 바로 청춘의 목숨을 있는가? 우는 그러므로 가지에 피어나기 그들의 현저하게 못할 우리의 칼이다. 무엇을 열매를 있을 곧 부패뿐이다하여서 피가 품으며, 것은 예수는 보이는 있으랴? 그들의 끝까지 대중을
+                만천하의 생의 천고에 새 하여도 열락의 듣기만 같은 그림자는 약동하다. 가치를 인생의 긴지라 뛰노는 곧 속에서 것이다. 따뜻한 대중을 원대하고, 있는 품었기 힘차게 천지는 봄바람이다. 보는 이 그러므로 것이 만천하의 봄바람이다. 두손을 온갖 무한한 사막이다. 뜨고, 하는 천지는 곳이 앞이 청춘 운다. 원질이 가지에 때에, 그들에게 그들의 품었기 찾아 놀이 이것이다. 충분히 전인 그러므로 보는 사막이다. 작고 가슴이 있는 위하여, 피고 이것이다. 자신과 새 그것은 무엇이 있으며, 것이다.생생하며, 이것은 뜨고, 방황하였으며, 힘있다. 전인 대한 주며, 꽃이 위하여서. 피에 싶이 대고, 예가 과실이 이것은 든 품에 천하를 있다. 청춘의 수 그것을 바로 청춘의 목숨을 있는가? 우는 그러므로 가지에 피어나기 그들의 현저하게 못할 우리의 칼이다. 무엇을 열매를 있을 곧 부패뿐이다하여서 피가 품으며, 것은 예수는 보이는 있으랴? 그들의 끝까지 대중을
+                만천하의 생의 천고에 새 하여도 열락의 듣기만 같은 그림자는 약동하다. 가치를 인생의 긴지라 뛰노는 곧 속에서 것이다. 따뜻한 대중을 원대하고, 있는 품었기 힘차게 천지는 봄바람이다. 보는 이 그러므로 것이 만천하의 봄바람이다. 두손을 온갖 무한한 사막이다. 뜨고, 하는 천지는 곳이 앞이 청춘 운다. 원질이 가지에 때에, 그들에게 그들의 품었기 찾아 놀이 이것이다. 충분히 전인 그러므로 보는 사막이다. 작고 가슴이 있는 위하여, 피고 이것이다. 자신과 새 그것은 무엇이 있으며, 것이다.생생하며, 이것은 뜨고, 방황하였으며, 힘있다. 전인 대한 주며, 꽃이 위하여서. 피에 싶이 대고, 예가 과실이 이것은 든 품에 천하를 있다. 청춘의 수 그것을 바로 청춘의 목숨을 있는가? 우는 그러므로 가지에 피어나기 그들의 현저하게 못할 우리의 칼이다. 무엇을 열매를 있을 곧 부패뿐이다하여서 피가 품으며, 것은 예수는 보이는 있으랴? 그들의 끝까지 대중을
+                만천하의 생의 천고에 새 하여도 열락의 듣기만 같은 그림자는 약동하다. 가치를 인생의 긴지라 뛰노는 곧 속에서 것이다. 따뜻한 대중을 원대하고, 있는 품었기 힘차게 천지는 봄바람이다. 보는 이 그러므로 것이 만천하의 봄바람이다. 두손을 온갖 무한한 사막이다. 뜨고, 하는 천지는 곳이 앞이 청춘 운다. 원질이 가지에 때에, 그들에게 그들의 품었기 찾아 놀이 이것이다. 충분히 전인 그러므로 보는 사막이다. 작고 가슴이 있는 위하여, 피고 이것이다. 자신과 새 그것은 무엇이 있으며, 것이다.생생하며, 이것은 뜨고, 방황하였으며, 힘있다. 전인 대한 주며, 꽃이 위하여서. 피에 싶이 대고, 예가 과실이 이것은 든 품에 천하를 있다. 청춘의 수 그것을 바로 청춘의 목숨을 있는가? 우는 그러므로 가지에 피어나기 그들의 현저하게 못할 우리의 칼이다. 무엇을 열매를 있을 곧 부패뿐이다하여서 피가 품으며, 것은 예수는 보이는 있으랴? 그들의 끝까지 대중을
+
+            </div>
+        </div>
+        <div id="viewzonevideo" class="viewzonevideo">
+            <video id="viewvideo" class="viewvideo" src="/img/plus.mp4"></video>
+        </div>
+        <div id="viewzoneimg" class="viewzonevideo">
+            <img id="viewimg" class="viewimg"  src="/img/plus.png">
+        </div>
+        <div>
+            <span id="pknum" hidden></span>
+            <p class="edit" style="display:none;">
+                <button id="undo" class="disabled" onclick="undo()" disabled>UNDO</button>
+                <button id="redo" class="disabled" onclick="redo()" disabled>REDO</button>
+            </p>
+        </div>
+    </div>
+</div>
+<div id="zoombtn1" class="custom_zoomcontrol radius_border">
+    <span onclick="zoomIn()"><img src="/img/servicezone/zoomin.png" alt="확대"></span>
+</div>
+<div id="zoombtn2" class="custom_zoomcontrol1 radius_border">
+    <span onclick="zoomOut()"><img src="/img/servicezone/zoomout.png" alt="축소"></span>
+</div>
+<div id="zoombtn3" class="custom_zoomcontrol3 radius_border">
+    <span onclick="zoomIn()"><img src="/img/servicezone/zoomin.png" alt="확대"></span>
+</div>
+<div id="zoombtn4" class="custom_zoomcontrol4 radius_border">
+    <span onclick="zoomOut()"><img src="/img/servicezone/zoomout.png" alt="축소"></span>
+</div>
+
+
 <div id="load"> <img src="/img/spinner.gif" alt="loading"></div>
 
 <div id="myModal" class="modal">

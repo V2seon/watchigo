@@ -268,10 +268,25 @@ var zonetype = "";
 function selectOverlay(type) {
     // 그리기 중이면 그리기를 취소합니다
     manager.cancel();
-    clusterer.clear();
+//    clusterer.clear();
     rectangle.setMap(null);
     polygon.setMap(null);
     circle.setMap(null);
+
+    if(type == "RECTANGLE"){
+        document.getElementById('reimg').src = "/img/srinsert/RentangleBlue.png";
+        document.getElementById('ciimg').src = "/img/srinsert/Circle.png";
+        document.getElementById('plimg').src = "/img/srinsert/Polygon.png";
+    }else if(type == "CIRCLE"){
+        document.getElementById('reimg').src = "/img/srinsert/Rentangle.png";
+        document.getElementById('ciimg').src = "/img/srinsert/CircleBlue.png";
+        document.getElementById('plimg').src = "/img/srinsert/Polygon.png";
+    }else if(type == "POLYGON"){
+        document.getElementById('reimg').src = "/img/srinsert/Rentangle.png";
+        document.getElementById('ciimg').src = "/img/srinsert/Circle.png";
+        document.getElementById('plimg').src = "/img/srinsert/PolygonBlue.png";
+    }
+
     // 모양버튼 클릭시 type 담기
     zonetype = type;
     // 좌표값 초기화
@@ -716,38 +731,17 @@ $.ajax({
                 // 지도에 다각형을 표시합니다
                 polygon.setMap(map);
             }
-            document.getElementById('viewaddress').value = result.address;
-            document.getElementById('viewaddress1').value = result.address1;
-            document.getElementById('viewzonename').value = result.zonename;
-            document.getElementById('viewzoneex').value = result.ex;
-            document.getElementById('viewinv1').src = "/file?fileName="+result.video1;
-            document.getElementById('viewinv2').src = "/file?fileName="+result.video2;
-            document.getElementById('viewimg1').src = "/file?fileName="+result.img1;
-            document.getElementById('viewimg2').src = "/file?fileName="+result.img2;
-            document.getElementById('viewimg3').src = "/file?fileName="+result.img3;
-            document.getElementById('viewimg4').src = "/file?fileName="+result.img4;
-            document.getElementById('viewimg5').src = "/file?fileName="+result.img5;
-            document.getElementById('viewimg6').src = "/file?fileName="+result.img6;
-            document.getElementById('pknum').innerText = result.pk;
-            console.log(document.getElementById('pknum').innerText);
-            document.getElementById('marker1').src = result.marker;
-
-            viewuploadvideo1.addEventListener('mouseover',viewover1);
-            viewuploadvideo1.addEventListener('mouseout',viewout1);
-            viewuploadvideo2.addEventListener('mouseover',viewover2);
-            viewuploadvideo2.addEventListener('mouseout',viewout2);
-            viewupload1.addEventListener('mouseover',viewover3);
-            viewupload1.addEventListener('mouseout',viewout3);
-            viewupload2.addEventListener('mouseover',viewover4);
-            viewupload2.addEventListener('mouseout',viewout4);
-            viewupload3.addEventListener('mouseover',viewover5);
-            viewupload3.addEventListener('mouseout',viewout5);
-            viewupload4.addEventListener('mouseover',viewover6);
-            viewupload4.addEventListener('mouseout',viewout6);
-            viewupload5.addEventListener('mouseover',viewover7);
-            viewupload5.addEventListener('mouseout',viewout7);
-            viewupload6.addEventListener('mouseover',viewover8);
-            viewupload6.addEventListener('mouseout',viewout8);
+            document.getElementById('zonetext').innerText = result.zonename;
+            document.getElementById('zonetext1').innerText = result.ex;
+            document.getElementById('viewvideo').src = "/file?fileName="+result.date+"/"+result.video1;
+            document.getElementById('viewimg').src = "/file?fileName="+result.date+"/"+result.img1;
+//            document.getElementById('pknum').innerText = result.pk;
+//            console.log(document.getElementById('pknum').innerText);
+//            document.getElementById('marker1').src = result.marker;
+            document.getElementById('zoombtn1').style.display = "none";
+            document.getElementById('zoombtn2').style.display = "none";
+            document.getElementById('zoombtn3').style.display = "block";
+            document.getElementById('zoombtn4').style.display = "block";
 
 
             if(result.zonetype == "0"){
