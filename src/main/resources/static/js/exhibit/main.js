@@ -261,7 +261,7 @@ function searching2(){
         data: querydata,
         type:"POST",
     }).done(function (fragment) {
-        $("#table1").replaceWith(fragment);
+        $("#viewzonebox1").replaceWith(fragment);
         console.log(fragment);
     });
 
@@ -448,6 +448,8 @@ $.ajax({
 // 전시/시설물 내용보기
 function selectexhibitview(seq){
 document.getElementById('menu_wrap1').style.display = "block";
+document.getElementById('menu_wrap2').style.display = "none";
+
 let sendData = {
             "seq" : seq
         };
@@ -466,66 +468,52 @@ $.ajax({
             map.setLevel(2, {anchor: newPosition});
             map.setCenter(newPosition);
 
-            document.getElementById('exhibitex').value = result.ex;
-            document.getElementById('exhibitname').value = result.name;
-            document.getElementById('ypoint').value = s1;
-            document.getElementById('xpoint').value = s2;
-            let se = document.getElementById('lock');
+//            document.getElementById('exhibitex').value = result.ex;
+//            document.getElementById('exhibitname').value = result.name;
+//            document.getElementById('ypoint').value = s1;
+//            document.getElementById('xpoint').value = s2;
+//            let se = document.getElementById('lock');
+//
+//            for(let i=0; i<se.options.length; i++){
+//                if(se.options[i].value == result.type){
+//                    se.options[i].selected = true;
+//                }
+//            }
+//            lock();
+            document.getElementById('zonetext').innerText = result.zonename;
+            document.getElementById('zonetext1').innerText = result.ex;
+            document.getElementById('viewvideo').src = "/file?fileName="+result.date+"/"+result.video1;
+            document.getElementById('viewimg').src = "/file?fileName="+result.date+"/"+result.img1;
+            document.getElementById('marker1').src = result.mainicon;
+            document.getElementById('marker2').src = result.armarker;
+//            document.getElementById('pknum').innerText = result.pk;
+//            console.log(document.getElementById('pknum').innerText);
+//            document.getElementById('marker1').src = result.marker;
+            document.getElementById('zoombtn1').style.display = "none";
+            document.getElementById('zoombtn2').style.display = "none";
+            document.getElementById('zoombtn3').style.display = "block";
+            document.getElementById('zoombtn4').style.display = "block";
 
-            for(let i=0; i<se.options.length; i++){
-                if(se.options[i].value == result.type){
-                    se.options[i].selected = true;
-                }
-            }
-            lock();
-            document.getElementById('typename').value = result.typename;
-            document.getElementById('inv1').src = "/file1?fileName="+result.video1;
-            document.getElementById('inv2').src = "/file1?fileName="+result.video2;
-            document.getElementById('img1').src = "/file1?fileName="+result.img1;
-            document.getElementById('img2').src = "/file1?fileName="+result.img2;
-            document.getElementById('img3').src = "/file1?fileName="+result.img3;
-            document.getElementById('img4').src = "/file1?fileName="+result.img4;
-            document.getElementById('img5').src = "/file1?fileName="+result.img5;
-            document.getElementById('img6').src = "/file1?fileName="+result.img6;
-
-            if(result.printtype == "0"){
-                document.getElementById('gps').checked = true;
-            }else if(result.printtype == "1"){
-                document.getElementById('ved').checked = true;
-            }
-
-            test1();
-
-            var boxlen = document.getElementsByClassName('choicebtn').length;
-            for(let a=0; a<boxlen; a++){
-                document.getElementsByClassName('choicebtn')[a].checked = false;
-            }
+//            if(result.printtype == "0"){
+//                document.getElementById('gps').checked = true;
+//            }else if(result.printtype == "1"){
+//                document.getElementById('ved').checked = true;
+//            }
+//
+//            test1();
+//
+//            var boxlen = document.getElementsByClassName('choicebtn').length;
+//            for(let a=0; a<boxlen; a++){
+//                document.getElementsByClassName('choicebtn')[a].checked = false;
+//            }
 
 //            document.getElementById(result.zonepk).checked = true;
 
-            document.getElementById('mainicon').src = result.mainicon;
-            document.getElementById('armarker').src = result.armarker;
-
-            document.getElementById('pknum').innerText = result.zonepk;
-            document.getElementById('seqnum').innerText = result.seq;
-
-            uploadvideo1.addEventListener('mouseover',over1);
-            uploadvideo1.addEventListener('mouseout',out1);
-            uploadvideo2.addEventListener('mouseover',over2);
-            uploadvideo2.addEventListener('mouseout',out2);
-            upload1.addEventListener('mouseover',over3);
-            upload1.addEventListener('mouseout',out3);
-            upload2.addEventListener('mouseover',over4);
-            upload2.addEventListener('mouseout',out4);
-            upload3.addEventListener('mouseover',over5);
-            upload3.addEventListener('mouseout',out5);
-            upload4.addEventListener('mouseover',over6);
-            upload4.addEventListener('mouseout',out6);
-            upload5.addEventListener('mouseover',over7);
-            upload5.addEventListener('mouseout',out7);
-            upload6.addEventListener('mouseover',over8);
-            upload6.addEventListener('mouseout',out8);
-
+//            document.getElementById('mainicon').src = result.mainicon;
+//            document.getElementById('armarker').src = result.armarker;
+//
+//            document.getElementById('pknum').innerText = result.zonepk;
+//            document.getElementById('seqnum').innerText = result.seq;
     },
     error: function (e) {
     }

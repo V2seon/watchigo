@@ -63,7 +63,7 @@ html, body {
     width:48px;
     height:48px;
     overflow:hidden;
-    z-index:1;
+    z-index:3;
     background-color:#1C7FF3;
 }
 
@@ -74,7 +74,7 @@ html, body {
     width:48px;
     height:48px;
     overflow:hidden;
-    z-index:1;
+    z-index:3;
     background-color:#1C7FF3;
 }
 
@@ -123,7 +123,7 @@ html, body {
     width:48px;
     height:48px;
     overflow:hidden;
-    z-index:1;
+    z-index:3;
     background-color:#1C7FF3;
     display:none;
 }
@@ -135,7 +135,7 @@ html, body {
     width:48px;
     height:48px;
     overflow:hidden;
-    z-index:1;
+    z-index:3;
     background-color:#1C7FF3;
     display:none;
 }

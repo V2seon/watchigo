@@ -145,7 +145,7 @@ public class Exhibitcontroller {
 
         model.addAttribute("userlist", pageList); //페이지 객체 리스트
 
-        return "ExhibitMain :: #table1";
+        return "ExhibitMain :: #viewzonebox1";
     }
 
     @GetMapping("/newexhibit")
@@ -384,20 +384,12 @@ public class Exhibitcontroller {
         session.setAttribute("date",s1.get().getDate());
 
         msg.put("video1",s1.get().getVideo1());
-        msg.put("video2",s1.get().getVideo2());
         msg.put("img1",s1.get().getImg1());
-        msg.put("img2",s1.get().getImg2());
-        msg.put("img3",s1.get().getImg3());
-        msg.put("img4",s1.get().getImg4());
-        msg.put("img5",s1.get().getImg5());
-        msg.put("img6",s1.get().getImg6());
-        msg.put("name",s1.get().getName());
+        msg.put("zonename",s1.get().getZonename());
         msg.put("ex",s1.get().getEx());
         msg.put("center",s1.get().getPoint());
         msg.put("type",s1.get().getType());
         msg.put("typename",s1.get().getTypename());
-        msg.put("printtype",String.valueOf(s1.get().getPrinttype()));
-        msg.put("zonepk",String.valueOf(s1.get().getPk()));
         msg.put("seq",String.valueOf(s1.get().getSeq()));
         msg.put("mainicon",s1.get().getMainicon());
         msg.put("armarker",s1.get().getArmarker());

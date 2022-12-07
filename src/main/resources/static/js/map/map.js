@@ -642,9 +642,9 @@ $.ajax({
             // 이동
             map.setLevel(2, {anchor: newPosition});
             map.setCenter(newPosition);
-            for ( var i = 0; i < markers.length; i++ ) {
-                    markers[i].setMap(null);
-                };
+//            for ( var i = 0; i < markers.length; i++ ) {
+//                    markers[i].setMap(null);
+//                };
 
             if (result.type == "0"){
                 serviceszone = result.sp +"&"+ result.ep ;

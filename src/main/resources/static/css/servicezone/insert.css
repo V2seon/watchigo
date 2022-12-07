@@ -208,6 +208,8 @@ align-items: center;
 .markerbox{
 width:180px;
 height:152px;
+border: 1px solid #E0E0E0;
+border-radius: 8px;
 }
 
 .markerbox1{
@@ -286,6 +288,7 @@ height: 86px;
 border: 1px solid #FFFFFF;
 border-radius: 8px;
 }
+
 
 
 

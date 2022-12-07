@@ -7,26 +7,26 @@
     <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/main/main.css">
-
+    <link rel="stylesheet" href="css/exhibit/main.css">
 </head>
 <body>
 <div th:insert="common/navbar.html">
 </div>
     <div class="map_wrap">
-        <div id="map" style="width:100%;height:98%;position:relative;overflow:hidden;">
+        <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;">
         </div>
         <div id="menu_wrap" class="bg_white">
             <div class="option">
                 <div>
-                    <input type="text" placeholder="아파트, 지역 및 학교명으로 검색 " value="" id="keyword" size="15" onkeyup="if(window.event.keyCode==13){sss()}">
-                    <button onclick="sss()">검색하기</button>
+                    <input class="srad" type="text" placeholder="아파트, 지역 및 학교명으로 검색 " value="" id="keyword" size="15" onkeyup="if(window.event.keyCode==13){sss()}">
                 </div>
+                <h1 class="t1">EXHIBIT / FACILTY LIST ──────────</h1>
             </div>
-            <h1>전시/시설물 리스트</h1>
+
             <div id="intable">
                 <div class="option">
-                    <div>
-                        <select class="form-control form-control-sm"
+                    <div style="margin-bottom:20px;">
+                        <select class="selserzone"
                                 name="selectKey" id="selectKey">
                             <option selected="selected">전체</option>
                             <!--                        <option value="번호">번호</option>-->
@@ -35,296 +35,228 @@
                             <option value="전시/시설물">전시/시설물 이름</option>
                         </select>
 
-                        <input id="titleText" type="text" placeholder="검색 " value="" onkeyup="enterkey2()">
-                        <button type="submit" onclick="searching2()">검색하기</button>
+                        <input class="selserzonetxt" id="titleText" type="text" placeholder="검색어를 입력해주세요 " value="" onkeyup="enterkey2()">
                     </div>
                 </div>
-                <table id="table1" class="table1" >
-                    <thead>
-                    <tr class="table1">
-                        <td>번호</td>
-                        <td>서비스존 이름</td>
-                        <td>분류</td>
-                        <td>전시/시설물 이름</td>
-                        <td>위치보기</td>
-                        <td>내용</td>
-                    </tr>
-                    <tr class="table1" th:if="${userlist}!=null" th:each="Co : ${userlist}">
-                        <td>
-                            <span th:if="${Co.seq}!= null"
-                                  th:text="${Co.seq}"
-                                  th:value="${Co.seq}">
-                            </span>
-                        </td>
-                        <td>
-                            <span th:if="${Co.zonename}!= null"
-                                  th:text="${Co.zonename}"
-                                  th:value="${Co.zonename}">
-                            </span>
-                        </td>
-                        <td>
-                            <span th:if="${Co.type}!= null"
-                                  th:text="${Co.type}"
-                                  th:value="${Co.type}">
-                            </span>
-                        </td>
-                        <td>
-                            <span th:if="${Co.name}!= null"
-                                  th:text="${Co.name}"
-                                  th:value="${Co.name}">
-                            </span>
-                        </td>
-                        <td>
-                            <span class="text111" th:text="보기"
-                                  th:onclick="|javascript:selectexhibit(${Co.seq})|">
-                            </span>
-                        </td>
-                        <td>
-                            <span class="text111" th:text="보기"
-                                  th:onclick="|javascript:selectexhibitview(${Co.seq})|">
-                            </span>
-                        </td>
-                    </tr>
-                    </thead>
-                </table>
-                <div style="margin:auto; margin-top:20px; width:90px;">
-                    <button onclick="inser1()">전시/시설물 등록</button>
+                <div id="viewzonebox1" class="viewzonebox1">
+                    <div class="zoneviewbox" th:if="${userlist}!=null" th:each="Co : ${userlist}">
+                        <div class="tbox1">
+                            <div class="extype" th:if="${Co.type}== 시설물">
+                                시설물
+                            </div>
+                            <div class="extype" th:if="${Co.type}== 전시물">
+                                전시물
+                            </div>
+                            <div class="extype" th:if="${Co.type}== 기타">
+                                기타
+                            </div>
+                            <div class="exzone" th:if="${Co.zonename}!= null"
+                                 th:text="${Co.zonename}"
+                                 th:value="${Co.zonename}">
+                            </div>
+                            <div class="exname" th:if="${Co.name}!= null"
+                                 th:text="'시설물 이름 : ' +${Co.name}"
+                                 th:value="${Co.name}">
+                            </div>
+                        </div>
+                        <div class="tbox2">
+                            <div th:onclick="|javascript:selectexhibit(${Co.seq})|">
+                                <img src="/img/exhibit/zoneview.png">
+                            </div>
+                            <div style="width:20px;"></div>
+                            <div th:onclick="|javascript:selectexhibitview(${Co.seq})|">
+                                <img src="/img/exhibit/textview.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style=" display:flex; text-align : center; justify-content: center; align-items: center;margin:auto; margin-top:8px;">
+                    <button class="inserzone" onclick="inser1()">전시/시설물 등록</button>
                 </div>
             </div>
         </div>
-        <div class="custom_zoomcontrol radius_border">
-            <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>
-            <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
+        <div id="zoombtn1" class="custom_zoomcontrol radius_border">
+            <span onclick="zoomIn()"><img src="/img/servicezone/zoomin.png" alt="확대"></span>
         </div>
-        <div id="menu_wrap1" class="bg_white1">
-            <div id="uptable">
-                <img onclick="backbtn1()" class="backbtn" src="/img/back.png">
+        <div id="zoombtn2" class="custom_zoomcontrol1 radius_border">
+            <span onclick="zoomOut()"><img src="/img/servicezone/zoomout.png" alt="축소"></span>
+        </div>
+        <div id="zoombtn3" class="custom_zoomcontrol3 radius_border">
+            <span onclick="zoomIn()"><img src="/img/servicezone/zoomin.png" alt="확대"></span>
+        </div>
+        <div id="zoombtn4" class="custom_zoomcontrol4 radius_border">
+            <span onclick="zoomOut()"><img src="/img/servicezone/zoomout.png" alt="축소"></span>
+        </div>
+
+    </div>
+<div id="menu_wrap1" class="tab1">
+    <div class="backbtn">
+        <img onclick="backbtn1()" style="border-radius: 8px 0px 0px 8px; background:#e0e0e0; position: relative; top: 577.5px;"
+             src="/img/servicezone/close.png">
+    </div>
+    <div id="uptable1" class="uptable1">
+        <div id="viewzonename" class="viewzonename">
+            <h1 id="zonetext" style="color: #1475E5;">
+                304카페
+            </h1>
+        </div>
+        <div id="viewzoneex" class="viewzoneex">
+            <div id="zonetext1" class="textbox">
+                만천하의 생의 천고에 새 하여도 열락의 듣기만 같은 그림자는 약동하다. 가치를 인생의 긴지라 뛰노는 곧 속에서 것이다. 따뜻한 대중을 원대하고, 있는 품었기 힘차게 천지는 봄바람이다. 보는 이 그러므로 것이 만천하의 봄바람이다. 두손을 온갖 무한한 사막이다. 뜨고, 하는 천지는 곳이 앞이 청춘 운다. 원질이 가지에 때에, 그들에게 그들의 품었기 찾아 놀이 이것이다. 충분히 전인 그러므로 보는 사막이다. 작고 가슴이 있는 위하여, 피고 이것이다. 자신과 새 그것은 무엇이 있으며, 것이다.생생하며, 이것은 뜨고, 방황하였으며, 힘있다. 전인 대한 주며, 꽃이 위하여서. 피에 싶이 대고, 예가 과실이 이것은 든 품에 천하를 있다. 청춘의 수 그것을 바로 청춘의 목숨을 있는가? 우는 그러므로 가지에 피어나기 그들의 현저하게 못할 우리의 칼이다. 무엇을 열매를 있을 곧 부패뿐이다하여서 피가 품으며, 것은 예수는 보이는 있으랴? 그들의 끝까지 대중을
+                만천하의 생의 천고에 새 하여도 열락의 듣기만 같은 그림자는 약동하다. 가치를 인생의 긴지라 뛰노는 곧 속에서 것이다. 따뜻한 대중을 원대하고, 있는 품었기 힘차게 천지는 봄바람이다. 보는 이 그러므로 것이 만천하의 봄바람이다. 두손을 온갖 무한한 사막이다. 뜨고, 하는 천지는 곳이 앞이 청춘 운다. 원질이 가지에 때에, 그들에게 그들의 품었기 찾아 놀이 이것이다. 충분히 전인 그러므로 보는 사막이다. 작고 가슴이 있는 위하여, 피고 이것이다. 자신과 새 그것은 무엇이 있으며, 것이다.생생하며, 이것은 뜨고, 방황하였으며, 힘있다. 전인 대한 주며, 꽃이 위하여서. 피에 싶이 대고, 예가 과실이 이것은 든 품에 천하를 있다. 청춘의 수 그것을 바로 청춘의 목숨을 있는가? 우는 그러므로 가지에 피어나기 그들의 현저하게 못할 우리의 칼이다. 무엇을 열매를 있을 곧 부패뿐이다하여서 피가 품으며, 것은 예수는 보이는 있으랴? 그들의 끝까지 대중을
+                만천하의 생의 천고에 새 하여도 열락의 듣기만 같은 그림자는 약동하다. 가치를 인생의 긴지라 뛰노는 곧 속에서 것이다. 따뜻한 대중을 원대하고, 있는 품었기 힘차게 천지는 봄바람이다. 보는 이 그러므로 것이 만천하의 봄바람이다. 두손을 온갖 무한한 사막이다. 뜨고, 하는 천지는 곳이 앞이 청춘 운다. 원질이 가지에 때에, 그들에게 그들의 품었기 찾아 놀이 이것이다. 충분히 전인 그러므로 보는 사막이다. 작고 가슴이 있는 위하여, 피고 이것이다. 자신과 새 그것은 무엇이 있으며, 것이다.생생하며, 이것은 뜨고, 방황하였으며, 힘있다. 전인 대한 주며, 꽃이 위하여서. 피에 싶이 대고, 예가 과실이 이것은 든 품에 천하를 있다. 청춘의 수 그것을 바로 청춘의 목숨을 있는가? 우는 그러므로 가지에 피어나기 그들의 현저하게 못할 우리의 칼이다. 무엇을 열매를 있을 곧 부패뿐이다하여서 피가 품으며, 것은 예수는 보이는 있으랴? 그들의 끝까지 대중을
+                만천하의 생의 천고에 새 하여도 열락의 듣기만 같은 그림자는 약동하다. 가치를 인생의 긴지라 뛰노는 곧 속에서 것이다. 따뜻한 대중을 원대하고, 있는 품었기 힘차게 천지는 봄바람이다. 보는 이 그러므로 것이 만천하의 봄바람이다. 두손을 온갖 무한한 사막이다. 뜨고, 하는 천지는 곳이 앞이 청춘 운다. 원질이 가지에 때에, 그들에게 그들의 품었기 찾아 놀이 이것이다. 충분히 전인 그러므로 보는 사막이다. 작고 가슴이 있는 위하여, 피고 이것이다. 자신과 새 그것은 무엇이 있으며, 것이다.생생하며, 이것은 뜨고, 방황하였으며, 힘있다. 전인 대한 주며, 꽃이 위하여서. 피에 싶이 대고, 예가 과실이 이것은 든 품에 천하를 있다. 청춘의 수 그것을 바로 청춘의 목숨을 있는가? 우는 그러므로 가지에 피어나기 그들의 현저하게 못할 우리의 칼이다. 무엇을 열매를 있을 곧 부패뿐이다하여서 피가 품으며, 것은 예수는 보이는 있으랴? 그들의 끝까지 대중을
+
+            </div>
+        </div>
+        <div id="viewzonevideo" class="viewzonevideo">
+            <video id="viewvideo" class="viewvideo" src="/img/plus.mp4"></video>
+        </div>
+        <div id="viewzoneimg" class="viewzonevideo">
+            <img id="viewimg" class="viewimg"  src="/img/plus.png">
+        </div>
+        <div class="viewzonevideo" >
+            <div class="mbox1">
                 <div>
-                    <div class="ser1">
-                        <span style="font-size:25px;">1. 서비스존 선택</span>
-
-                        <table class="table1" >
-                            <thead>
-                            <tr class="table1">
-                                <td>번호</td>
-                                <td>서비스 지역</td>
-                                <td>서비스존 이름</td>
-                                <td>선택</td>
-                            </tr>
-                            <tr class="table1" th:if="${userlist1}!=null" th:each="Co : ${userlist1}">
-                                <td>
-                                    <span th:if="${Co.pk}!= null"
-                                          th:text="${Co.pk}"
-                                          th:value="${Co.pk}">
-                                    </span>
-                                </td>
-                                <td>
-                                    <span th:if="${Co.address}!= null"
-                                          th:text="${Co.address}"
-                                          th:value="${Co.address}">
-                                    </span>
-                                </td>
-                                <td>
-                                    <span th:if="${Co.zonename}!= null"
-                                          th:text="${Co.zonename}"
-                                          th:value="${Co.zonename}">
-                                    </span>
-                                </td>
-                                <td>
-                                    <label class="test_obj">
-                                        <input type="checkbox" class="choicebtn" style="background-color:red;" th:id="${Co.pk}"
-                                               th:onclick="|javascript:selectexzone(${Co.pk})|" th:value = ${Co.pk}>
-                                        <span>선택</span>
-                                    </label>
-                                </td>
-                            </tr>
-                            </thead>
-                        </table>
-                        <h4 onclick="view()">더보기</h4>
-                        <div>
-                            <span style="font-size:25px; margin-bottom:20px;">2. 전시/시설물 분류</span>
-                            <div>
-                                <select id="lock" onchange="lock()">
-                                    <option selected="selected">전체</option>
-                                    <!--                        <option value="번호">번호</option>-->
-                                    <option value="시설물">시설물</option>
-                                    <option value="전시물">전시물</option>
-                                    <option value="기타">기타</option>
-                                </select>
-                                <input style="background-color:#8C8C8C;" id="typename" type="text" placeholder="" readonly>
-                            </div>
-                        </div>
-                        <div>
-                            <span style="font-size:25px; margin-bottom:20px;">3. 전시/시설물 이름</span>
-                            <input id="exhibitname" class="inte" type="text" placeholder="전시/시설물 이름">
-                        </div>
-                        <div>
-                            <span style="font-size:25px; margin-bottom:20px;">4. 전시/시설물 설명</span>
-                            <textarea id="exhibitex" class="inte1" type="text" placeholder="전시/시설물 설명"></textarea>
-                        </div>
-                        <div>
-                            <span style="font-size:25px; margin-bottom:20px;">5. 동영상 업로드</span>
-                            <br>
-                            <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;- 동영상은 최대 2개까지 등록 가능합니다.</span>
-                            <div class="vbox">
-                                <div id="uploadvideo1" class="uploadvideo">
-                                    <input id="realUploadvideo1"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="video1()">
-                                        <video id="inv1" class="inv1" src="/img/plus.mp4"
-                                               onerror="this.src='/img/plus.mp4';"></video>
-                                    </div>
-                                    <div class="delete" id="delete1">
-                                        <button id="delbtn1" onclick="delete1()" class="delbtn">삭제</button>
-                                    </div>
-                                </div>
-                                <div id="uploadvideo2" class="uploadvideo">
-                                    <input id="realUploadvideo2"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="video2()">
-                                        <video id="inv2" class="inv1" src="/img/plus.mp4"
-                                               onerror="this.src='/img/plus.mp4';"></video>
-                                    </div>
-                                    <div class="delete" id="delete2">
-                                        <button id="delbtn2" onclick="delete2()" class="delbtn">삭제</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="margin:auto;">
-                            <span style="font-size:25px; margin-bottom:20px;">6. 이미지 업로드</span>
-                            <br>
-                            <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;- 이미지는 최대 6장까지 등록 가능합니다.</span>
-                            <div class="ibox">
-                                <div id="uploadimg1" class="uploadimg">
-                                    <input id="upimg1" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="img1()">
-                                        <img class="img" id="img1" src="img/plus.png"
-                                             onerror="this.src='/img/plus.png';">
-                                    </div>
-                                    <div class="delete"  id="delete3">
-                                        <button id="delbtn3" onclick="delete3()" class="delbtn">삭제</button>
-                                    </div>
-                                </div>
-                                <div id="uploadimg2" class="uploadimg">
-                                    <input id="upimg2" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="img2()">
-                                        <img class="img" id="img2" src="img/plus.png"
-                                             onerror="this.src='/img/plus.png';">
-                                    </div>
-                                    <div class="delete" id="delete4">
-                                        <button id="delbtn4"  onclick="delete4()" class="delbtn">삭제</button>
-                                    </div>
-                                </div>
-                                <div id="uploadimg3" class="uploadimg">
-                                    <input id="upimg3" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="img3()">
-                                        <img class="img" id="img3" src="img/plus.png"
-                                             onerror="this.src='/img/plus.png';">
-                                    </div>
-                                    <div class="delete" id="delete5">
-                                        <button id="delbtn5"  onclick="delete5()" class="delbtn">삭제</button>
-                                    </div>
-                                </div>
-                                <div id="uploadimg4" class="uploadimg">
-                                    <input id="upimg4" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="img4()">
-                                        <img class="img" id="img4" src="img/plus.png"
-                                             onerror="this.src='/img/plus.png';">
-                                    </div>
-                                    <div class="delete" id="delete6">
-                                        <button id="delbtn6"  onclick="delete6()" class="delbtn">삭제</button>
-                                    </div>
-                                </div>
-                                <div id="uploadimg5" class="uploadimg">
-                                    <input id="upimg5" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="img5()">
-                                        <img class="img" id="img5" src="img/plus.png"
-                                             onerror="this.src='/img/plus.png';">
-                                    </div>
-                                    <div class="delete" id="delete7">
-                                        <button id="delbtn7"  onclick="delete7()" class="delbtn">삭제</button>
-                                    </div>
-                                </div>
-                                <div id="uploadimg6" class="uploadimg">
-                                    <input id="upimg6" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="img6()">
-                                        <img class="img" id="img6" src="img/plus.png"
-                                             onerror="this.src='/img/plus.png';">
-                                    </div>
-                                    <div class="delete" id="delete8">
-                                        <button id="delbtn8"  onclick="delete8()" class="delbtn">삭제</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div style="margin-top:10px; height:130px;">
-                            <span style="font-size:25px; margin-bottom:20px;">7. 대표 아이콘 선택</span><br>
-                            <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;-지도에 표시되는 아이콘 선택</span><br>
-                            <a class="base" onclick="up()">&nbsp;&nbsp;아이콘 선택 버튼</a>
-                            <div class="chmarker">
-                                <img class="mainicon" id="mainicon" src="/img/marker/test/img.png">
-                            </div>
-                        </div>
-                        <div style="margin-top:10px; height:130px;">
-                            <span style="font-size:25px; margin-bottom:20px; ">8. AR 마커 선택</span><br>
-                            <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;-어플을 통해 AR로 표시되는 마커 이미지 선택</span><br>
-                            <a class="base" onclick="up1()">&nbsp;&nbsp;AR 마커 선택 버튼</a>
-                            <div class="chmarker">
-                                <img class="armarker" id="armarker" src="/img/marker/test/img_1.png">
-                            </div>
-                        </div>
-                        <div style="margin-top:10px;">
-                            <span style="font-size:25px; margin-bottom:20px;">9. 정보 표시 방식 선택</span><br>
-                            <div id="exprinttype" onchange="test1()">
-                                <input id="gps" type="radio" class="printtype" name="printtype" value="0" checked>
-                                <label for="gps">GPS방식</label>
-                                <input id="ved" type="radio" class="printtype" name="printtype" value="1">
-                                <label for="ved">영상인식 방식</label>
-                            </div>
-                            <div id="gpsbox" style="display:block;">
-                                ※ 서비스존 안에서 등록하는 전시/시설물의 위치를 지정해주세요.
-
-                                <div>
-                                    위도&nbsp;:&nbsp;<input id="ypoint" type="text" readonly>
-                                </div>
-                                <div>
-                                    경도&nbsp;:&nbsp;<input id="xpoint" type="text" readonly>
-                                </div>
-                            </div>
-                            <div id="vedbox" style="display:none;">
-                                ※ 전시 시설물을 카메라 전체에 담기는 거리에서 360도에서 2분간 촬영하여 업로드
-
-                                <div id="uploadvideo3" class="uploadvideo">
-                                    <input id="realUploadvideo3"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="video3()">
-                                        <video id="inv3" class="inv1" src="/img/plus.mp4"></video>
-                                    </div>
-                                    <div class="delete" id="delete9">
-                                        <button id="delbtn9" onclick="delete9()" class="delbtn">삭제</button>
-                                    </div>
-                                </div>
-                                <div style="width:80%; margin:auto;">
-                                    <button class="upbtn" onclick="">영상탐지 진행보기</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="width:80%; margin:auto;">
-                            <button class="upbtn" onclick="editexhibit()">저장하기</button>
-                        </div>
-                        <div style="width:80%; margin:auto;">
-                            <button class="upbtn" onclick="deleteexhibit()">삭제</button>
+                    <span style="width:100%; font-size:15px; font-style: normal; font-weight: 700;">지도 표시 마커 이미지</span>
+                </div>
+                <div style="width:43px;"></div>
+                <div>
+                    <span style="width:100%; font-size:15px; font-style: normal; font-weight: 700;">AR 마커 이미지</span>
+                </div>
+            </div>
+            <div class="mbox">
+                <div class="markerbox">
+                    <div class="markerbox1">
+                        <div class="semk">
+                            <img id="marker1" src="/img/marker/m1.png">
                         </div>
                     </div>
-                    <span id="pknum" hidden=""></span>
-                    <span id="seqnum" hidden=""></span>
-                    <p class="edit" style="display:none;">
-                        <button id="undo" class="disabled" onclick="undo()" disabled>UNDO</button>
-                        <button id="redo" class="disabled" onclick="redo()" disabled>REDO</button>
-                    </p>
                 </div>
+                <div style="width:20px;"></div>
+                <div class="markerbox">
+                    <div class="markerbox1">
+                        <div class="semk">
+                            <img id="marker2" src="/img/marker/m1.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="viewzonevideo1" >
+            <span style="width:100%; font-size:15px; font-style: normal; font-weight: 700;">영상 인식 진행도</span>
+            <div class="detectbox">
+                <div class="deper" style="margin-top:15px;">
+                    <div class="perbox">
+                        <div class="rabelper">
+                            라벨링 진행도
+                            <div class="rabelnum">
+                                20%
+                            </div>
+                        </div>
+                        <progress class="bar" value="20" max="100"></progress>
+                    </div>
+                </div>
+                <div style="height:20px;">
+                </div>
+                <div class="deper">
+                    <div class="perbox">
+                        <div class="rabelper">
+                            머신러닝 진행도
+                            <div class="rabelnum">
+                                20%
+                            </div>
+                        </div>
+                        <progress class="bar"  value="20" max="100"></progress>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="viewturnbox">
+            <button class="viewturnbtn" onclick="btn3()">전시/시설물이 등록된 서비스존 리스트 보기</button>
+        </div>
+        <div>
+            <span id="pknum" hidden></span>
+            <p class="edit" style="display:none;">
+                <button id="undo" class="disabled" onclick="undo()" disabled>UNDO</button>
+                <button id="redo" class="disabled" onclick="redo()" disabled>REDO</button>
+            </p>
+        </div>
+    </div>
+</div>
+<div id="menu_wrap2" class="tab1">
+    <div class="backbtn">
+        <img onclick="backbtn1()" style="border-radius: 8px 0px 0px 8px; background:#e0e0e0; position: relative; top: 577.5px;"
+             src="/img/servicezone/close.png">
+    </div>
+    <div  class="uptable1">
+        <div style="width:100%; margin-auto;">
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <h1 style="color: #1475E5; font-weight: 700;">
+                    SERVICE ZONE LIST
+                </h1>
+            </div>
+            <div class="viewzonebox2">
+                <div id="viewzonebox1" class="viewzonebox3">
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                        <div class="exzoneview">
+                            <span class="zoneexname" >전라 남도 여수시</span>
+                            <div class="exbtn">
+                                빛이드는 펜션
+                            </div>
+                            <span class="zoneexname">전라 남도 나주시</span>
+                            <div class="exbtn">
+                                빛가람 전망대
+                            </div>
+                            <span class="zoneexname">광주광역시</span>
+                            <div class="exbtn">
+                                304카페
+                            </div>
+                        </div>
+                    </div>
+                    <div style=" display: flex;
+                         justify-content: center;
+                         align-items: center;">
+                        <div style="width:90%;">
+                            <div class="zoneviewbox2" th:if="${userlist}!=null" th:each="Co : ${userlist}">
+                                <div class="tbox1">
+                                    <div class="extype" th:if="${Co.type}== 시설물">
+                                        시설물
+                                    </div>
+                                    <div class="extype" th:if="${Co.type}== 전시물">
+                                        전시물
+                                    </div>
+                                    <div class="extype" th:if="${Co.type}== 기타">
+                                        기타
+                                    </div>
+                                    <div class="exzone1" th:if="${Co.zonename}!= null"
+                                         th:text="${Co.zonename}"
+                                         th:value="${Co.zonename}">
+                                    </div>
+                                    <div class="exname1" th:if="${Co.name}!= null"
+                                         th:text="'시설물 이름 : ' +${Co.name}"
+                                         th:value="${Co.name}">
+                                    </div>
+                                </div>
+                                <div class="tbox2">
+                                    <div th:onclick="|javascript:selectexhibit(${Co.seq})|">
+                                        <img style="width:70px; height:50px;" src="/img/exhibit/zoneview.png">
+                                    </div>
+                                    <div style="width:20px;"></div>
+                                    <div  th:onclick="|javascript:selectexhibitview(${Co.seq})|">
+                                        <img style="width:70px; height:50px;" src="/img/exhibit/textview.png">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>
+</div>
 <div id="load"> <img src="/img/spinner.gif" alt="loading"></div>
 
 <div id="myModal" class="modal">
@@ -622,13 +554,13 @@ function close_pop2(flag) {
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <!--주소 검색 및 내위치-->
 <!--영역 그리기-->
-<script src="/js/map/map.js"></script>
+<script src="/js/map/map.js?Version=1"></script>
 <!-- 비디오 및 이미지 업로드 -->
 <script src="/js/file/file.js"></script>
 <script src="/js/marker/marker.js"></script>
 <script src="/js/main/sev.js"></script>
 <script src="/js/main/servicezonelist.js"></script>
-<script src="/js/exhibit/main.js?Version=1"></script>
+<script src="/js/exhibit/main.js"></script>
 
 <!--자동실행함수 서비스존 위치마커 표시 -->
 <script type="text/javascript">
@@ -636,7 +568,7 @@ function close_pop2(flag) {
 var clusterer = new kakao.maps.MarkerClusterer({
     map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
     averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-    minLevel: 7 // 클러스터 할 최소 지도 레벨
+    minLevel: 2 // 클러스터 할 최소 지도 레벨
 });
 
 var markers = [];
@@ -652,8 +584,8 @@ $.ajax({
                 let [point1,point2] = value.split(",");
 
                 var imageSrc = result.mlist[i], // 마커이미지의 주소입니다
-                    imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
-                    imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+                    imageSize = new kakao.maps.Size(64, 100), // 마커이미지의 크기입니다
+                    imageOption = {offset: new kakao.maps.Point(27, 100)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
                 // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
                 var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
