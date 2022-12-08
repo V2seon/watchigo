@@ -13,7 +13,32 @@ var boxlen = document.getElementsByClassName('choicebtn').length;
 for(let a=0; a<boxlen; a++){
     document.getElementsByClassName('choicebtn')[a].checked = false;
 }
-document.getElementById(pk).checked = true;
+var ttt = pk+'btn';
+console.log(ttt);
+document.getElementById(ttt).checked = true;
+for(let a=0; a<boxlen; a++){
+ if(document.getElementsByClassName('choicebtn')[a].checked == true){
+     document.getElementsByClassName('ckimg')[a].src =  "/img/exinsert/check.png";
+ }else if(document.getElementsByClassName('choicebtn')[a].checked == false){
+    document.getElementsByClassName('ckimg')[a].src =  "/img/exinsert/cknone.png";
+ }
+}
+
+var boxlen1 = document.getElementsByClassName('choicebtn1').length;
+for(let a=0; a<boxlen1; a++){
+    document.getElementsByClassName('choicebtn1')[a].checked = false;
+}
+var ttt1 = pk+'btn1';
+document.getElementById(ttt1).checked = true;
+for(let a=0; a<boxlen1; a++){
+ if(document.getElementsByClassName('choicebtn1')[a].checked == true){
+     document.getElementsByClassName('ckimg1')[a].src =  "/img/exinsert/check.png";
+ }else if(document.getElementsByClassName('choicebtn1')[a].checked == false){
+    document.getElementsByClassName('ckimg1')[a].src =  "/img/exinsert/cknone.png";
+ }
+}
+
+
 let sendData = {
             "pk" : pk
         };
@@ -143,7 +168,7 @@ function lock(){
         document.getElementById("typename").style.backgroundColor = "#FFFFFF";
     }else{
         document.getElementById("typename").readOnly = true;
-        document.getElementById("typename").style.backgroundColor = "#8C8C8C";
+        document.getElementById("typename").style.backgroundColor = "#E0E0E0";
     }
 
 }
@@ -280,6 +305,46 @@ function enterkey1(){
     }
 }
 
+
+function searching(){
+
+    var titleText = $('#titleText').val();
+    var selectKey = $('#selectKey').val();
+
+    const params = {
+        page: 0,
+        selectKey: selectKey,
+        titleText: titleText
+    }
+
+    const queryString = new URLSearchParams(params).toString();
+
+    const replaceUri = location.pathname + '?' + queryString;
+
+    history.pushState(null, '', replaceUri);
+
+    //값 가져오기 (페이지네이션)
+    const myPageQuery = new URLSearchParams(location.search);
+
+    var querydata = { "page" : myPageQuery.get('page'), "selectKey":myPageQuery.get('selectKey'),"titleText":myPageQuery.get('titleText')};
+
+    $.ajax({
+        url: "/exhibit_search",
+        data: querydata,
+        type:"POST",
+    }).done(function (fragment) {
+        $("#see").replaceWith(fragment);
+        console.log(fragment);
+    });
+
+}
+
+function enterkey(){
+    if(window.event.keyCode == 13){
+        searching();
+    }
+}
+
 // 정보 표현 방식
 var tt = 0;
 function test1(){
@@ -291,11 +356,23 @@ for(var i=0; i<tes.length; i++){
     }
 }
 if(tt == 0){
-document.getElementById("gpsbox").style.display='block';
-document.getElementById("vedbox").style.display='none';
+document.getElementById("ptckbox").style.borderRadius = "8px 8px 0px 0px";
+document.getElementById("ptckbox").style.backgroundColor = "#FFFFFF";
+document.getElementById("ptckbox1").style.backgroundColor = "transparent";
+document.getElementById("ptckbox").style.color = "#1474E5";
+document.getElementById("ptckbox1").style.color = "#FFFFFF";
+
+document.getElementById("gpssebox").style.display='block';
+document.getElementById("vedsebox").style.display='none';
 }else if(tt == 1){
-document.getElementById("gpsbox").style.display='none';
-document.getElementById("vedbox").style.display='block';
+document.getElementById("ptckbox").style.borderRadius = "8px 8px 0px 0px";
+document.getElementById("ptckbox").style.backgroundColor = "transparent";
+document.getElementById("ptckbox1").style.backgroundColor = "#FFFFFF";
+document.getElementById("ptckbox1").style.color = "#1474E5";
+document.getElementById("ptckbox").style.color = "#FFFFFF";
+
+document.getElementById("gpssebox").style.display='none';
+document.getElementById("vedsebox").style.display='block';
 }
 }
 
@@ -482,8 +559,8 @@ $.ajax({
 //            lock();
             document.getElementById('zonetext').innerText = result.zonename;
             document.getElementById('zonetext1').innerText = result.ex;
-            document.getElementById('viewvideo').src = "/file?fileName="+result.date+"/"+result.video1;
-            document.getElementById('viewimg').src = "/file?fileName="+result.date+"/"+result.img1;
+            document.getElementById('viewvideo').src = "/file1?fileName="+result.date+"/"+result.video1;
+            document.getElementById('viewimg').src = "/file1?fileName="+result.date+"/"+result.img1;
             document.getElementById('marker1').src = result.mainicon;
             document.getElementById('marker2').src = result.armarker;
 //            document.getElementById('pknum').innerText = result.pk;

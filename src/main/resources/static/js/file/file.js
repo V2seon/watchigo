@@ -214,6 +214,7 @@ function video3(){
             document.getElementById('delbtn9').style.display='block';
             document.getElementById('delete9').style.display='block';
             inv3.setAttribute("src", videourl9);
+            document.getElementById('uploadview3').style.display='none';
         })
     }
 }
@@ -223,4 +224,5 @@ document.getElementById('realUploadvideo3').value ="";
 inv3.src = "";
 document.getElementById('delbtn9').style.display='none';
 document.getElementById('delete9').style.display='none';
+document.getElementById('uploadview3').style.display='block';
 }

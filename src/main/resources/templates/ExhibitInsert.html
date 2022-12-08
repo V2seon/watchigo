@@ -7,244 +7,304 @@
     <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/main/main.css">
-
+    <link rel="stylesheet" href="css/exhibit/insert.css">
 </head>
 <body>
 <div th:insert="common/navbar.html">
 </div>
     <div class="map_wrap">
-        <div id="map" style="width:100%;height:98%;position:relative;overflow:hidden;">
+        <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;">
         </div>
         <div id="menu_wrap" class="bg_white">
-            <div class="option">
+            <div class="option" style="height:120px;">
                 <div>
-                    <input type="text" placeholder="아파트, 지역 및 학교명으로 검색 " value="" id="keyword" size="15" onkeyup="if(window.event.keyCode==13){sss()}">
-                    <button onclick="sss()">검색하기</button>
+                    <input class="srad" type="text" placeholder="아파트, 지역 및 학교명으로 검색 " value="" id="keyword" size="15" onkeyup="if(window.event.keyCode==13){sss()}">
                 </div>
+                <img class="backbtn99" onclick="backbtn1()" src="/img/srinsert/Arrow.png">
+                <span class="t2">EXHIBIT / FACILITY SETTING ──────</span>
             </div>
-            <h1>전시/시설물 리스트</h1>
             <div id="uptable">
-                <img onclick="backbtn1()" class="backbtn" src="/img/back.png">
                 <div>
-                    <div class="ser1">
-                        <span style="font-size:25px;">1. 서비스존 선택</span>
-
-                        <table class="table1" >
-                            <thead>
-                            <tr class="table1">
-                                <td>번호</td>
-                                <td>서비스 지역</td>
-                                <td>서비스존 이름</td>
-                                <td>선택</td>
-                            </tr>
-                            <tr class="table1" th:if="${userlist1}!=null" th:each="Co : ${userlist1}">
-                                <td>
-                                    <span th:if="${Co.pk}!= null"
-                                          th:text="${Co.pk}"
-                                          th:value="${Co.pk}">
-                                    </span>
-                                </td>
-                                <td>
-                                    <span th:if="${Co.address}!= null"
-                                          th:text="${Co.address}"
-                                          th:value="${Co.address}">
-                                    </span>
-                                </td>
-                                <td>
-                                    <span th:if="${Co.zonename}!= null"
-                                          th:text="${Co.zonename}"
-                                          th:value="${Co.zonename}">
-                                    </span>
-                                </td>
-                                <td>
+                    <div class="ser2">
+                        <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">서비스존 선택<img onclick="view()" class="dotbtn" src="/img/exinsert/dots.png"></span>
+                        <div class="viewzonebox1">
+                            <div th:if="${zonelist}!=null" th:each="Co : ${zonelist}" class="zonebox">
+                                <div class="dabox">
+                                    <div class="dzm" th:if="${Co.zonename}!= null"
+                                         th:text="${Co.zonename}"
+                                         th:value="${Co.zonename}">
+                                    </div>
+                                    <div class="dza" th:if="${Co.address1}!= null"
+                                         th:text="${Co.address1}"
+                                         th:value="${Co.address1}">
+                                    </div>
+                                </div>
+                                <div class="sebox">
                                     <label class="test_obj">
-                                        <input type="checkbox" class="choicebtn" style="background-color:red;" th:id="${Co.pk}"
-                                               th:onclick="|javascript:selectexzone(${Co.pk})|" th:value = ${Co.pk}>
-                                        <span>선택</span>
+                                        <input type="checkbox" class="choicebtn" style="background-color:red;" th:id="${Co.pk}+'btn'"
+                                               th:onclick="|javascript:selectexzone(${Co.pk})|" th:value = ${Co.pk} th:onchange="">
+                                        <img class="ckimg" th:id="${Co.pk}+'img'" src="/img/exinsert/cknone.png">
                                     </label>
-                                </td>
-                            </tr>
-                            </thead>
-                        </table>
-                        <h4 onclick="view()">더보기</h4>
-                        <div>
-                            <span style="font-size:25px; margin-bottom:20px;">2. 전시/시설물 분류</span>
-                            <div>
-                                <select id="lock" onchange="lock()">
-                                    <option selected="selected">전체</option>
-                                    <!--                        <option value="번호">번호</option>-->
-                                    <option value="시설물">시설물</option>
-                                    <option value="전시물">전시물</option>
-                                    <option value="기타">기타</option>
-                                </select>
-                                <input style="background-color:#8C8C8C;" id="tt11" type="text" placeholder="" readonly>
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <span style="font-size:25px; margin-bottom:20px;">3. 전시/시설물 이름</span>
-                            <input id="exhibitname" class="inte" type="text" placeholder="전시/시설물 이름">
+                        <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">전시/시설물 분류</span>
+                        <div style="margin-top:10px;margin-bottom:20px; width:97%;">
+                            <select class="selserzone"
+                                    name="selectKey" id="lock" onchange="lock()">
+                                <option selected="selected">전체</option>
+                                <!--                        <option value="번호">번호</option>-->
+                                <option value="시설물">시설물</option>
+                                <option value="전시물">전시물</option>
+                                <option value="기타">기타</option>
+                            </select>
+                            <input class="selserzonetxt" id="typename" type="text" placeholder=" " value="" readonly>
                         </div>
-                        <div>
-                            <span style="font-size:25px; margin-bottom:20px;">4. 전시/시설물 설명</span>
-                            <textarea id="exhibitex" class="inte1" type="text" placeholder="전시/시설물 설명"></textarea>
+                        <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">전시/시설물 이름</span>
+                        <div style="margin-top:10px;margin-bottom:20px; width:97%;">
+                            <input id="exhibitname" class="inte" type="text" placeholder="전시/시설물 이름을 입력해주세요.">
                         </div>
-                        <div>
-                            <span style="font-size:25px; margin-bottom:20px;">5. 동영상 업로드</span>
-                            <br>
-                            <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;- 동영상은 최대 2개까지 등록 가능합니다.</span>
+                        <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">전시/시설물 이름</span>
+                        <div style="margin-top:10px; margin-bottom:20px; width:97%;">
+                            <textarea id="exhibitex" class="inte1" type="text" placeholder="전시/시설물 설명을 입력해주세요."></textarea>
+                        </div>
+                        <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">전시/시설물 동영상 업로드</span>
+                        <div style="width:96%; margin-top:10px; margin-bottom:40px; height:180px; border: 1px dashed #E0E0E0; border-radius: 8px;">
                             <div class="vbox">
                                 <div id="uploadvideo1" class="uploadvideo">
                                     <input id="realUploadvideo1"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="video1()">
-                                        <video id="inv1" class="inv1" src="/img/plus.mp4"></video>
+                                    <div style="position:relative;" onclick="video1()">
+                                        <img id="uploadview" class="invimg1" src="/img/srinsert/upload.png">
+                                        <video id="inv1" class="inv1" src=""></video>
                                     </div>
                                     <div class="delete" id="delete1">
-                                        <button id="delbtn1" onclick="delete1()" class="delbtn">삭제</button>
+                                        <img id="delbtn1" onclick="delete1()" class="delbtn" src="/img/srinsert/delete.png">
                                     </div>
                                 </div>
+                                <div style="width:20px;"></div>
                                 <div id="uploadvideo2" class="uploadvideo">
                                     <input id="realUploadvideo2"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="video2()">
-                                        <video id="inv2" class="inv1" src="/img/plus.mp4"></video>
+                                    <div onclick="video2()">
+                                        <img id="uploadview2" class="invimg1" src="/img/srinsert/upload.png">
+                                        <video id="inv2" class="inv1" src=""></video>
                                     </div>
                                     <div class="delete" id="delete2">
-                                        <button id="delbtn2" onclick="delete2()" class="delbtn">삭제</button>
+                                        <img id="delbtn2" onclick="delete2()" class="delbtn" src="/img/srinsert/delete.png">
                                     </div>
                                 </div>
                             </div>
+                            <span style="text-align:center; display: flex; justify-content: center; align-items: center;
+                                    color: #BDBDBD;font-style: normal; font-weight: 300 font-size: 14px;">
+                            <img src="/img/srinsert/videoicon.png">&nbsp;동영상은 최대 2개까지 등록 가능합니다.
+                            </span>
                         </div>
-                        <div style="margin:auto;">
-                            <span style="font-size:25px; margin-bottom:20px;">6. 이미지 업로드</span>
-                            <br>
-                            <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;- 이미지는 최대 6장까지 등록 가능합니다.</span>
+                        <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">전시/시설물 이미지 업로드</span>
+                        <div style="width:96%; margin-top:10px; margin-bottom:40px; height:420px; border: 1px dashed #E0E0E0; border-radius: 8px;">
                             <div class="ibox">
                                 <div id="uploadimg1" class="uploadimg">
                                     <input id="upimg1" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="img1()">
-                                        <img class="img" id="img1" src="img/plus.png">
+                                    <div style="position:relative;" onclick="img1()">
+                                        <img class="img" id="img1" src="/img/srinsert/upload.png">
                                     </div>
                                     <div class="delete"  id="delete3">
-                                        <button id="delbtn3" onclick="delete3()" class="delbtn">삭제</button>
+                                        <img id="delbtn3" onclick="delete3()" class="delbtn" src="/img/srinsert/delete.png">
                                     </div>
                                 </div>
+                                <div style="width:20px;"></div>
+
                                 <div id="uploadimg2" class="uploadimg">
                                     <input id="upimg2" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="img2()">
-                                        <img class="img" id="img2" src="img/plus.png">
+                                    <div style="position:relative;" onclick="img2()">
+                                        <img class="img" id="img2" src="/img/srinsert/upload.png">
                                     </div>
                                     <div class="delete" id="delete4">
-                                        <button id="delbtn4"  onclick="delete4()" class="delbtn">삭제</button>
+                                        <img id="delbtn4" onclick="delete4()" class="delbtn" src="/img/srinsert/delete.png">
                                     </div>
                                 </div>
+                            </div>
+                            <div class="ibox">
                                 <div id="uploadimg3" class="uploadimg">
                                     <input id="upimg3" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="img3()">
-                                        <img class="img" id="img3" src="img/plus.png">
+                                    <div style="position:relative;" onclick="img3()">
+                                        <img class="img" id="img3" src="/img/srinsert/upload.png">
                                     </div>
                                     <div class="delete" id="delete5">
-                                        <button id="delbtn5"  onclick="delete5()" class="delbtn">삭제</button>
+                                        <img id="delbtn5" onclick="delete5()" class="delbtn" src="/img/srinsert/delete.png">
                                     </div>
                                 </div>
+                                <div style="width:20px;"></div>
                                 <div id="uploadimg4" class="uploadimg">
                                     <input id="upimg4" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="img4()">
-                                        <img class="img" id="img4" src="img/plus.png">
+                                    <div style="position:relative;" onclick="img4()">
+                                        <img class="img" id="img4" src="/img/srinsert/upload.png">
                                     </div>
                                     <div class="delete" id="delete6">
-                                        <button id="delbtn6"  onclick="delete6()" class="delbtn">삭제</button>
+                                        <img id="delbtn6" onclick="delete6()" class="delbtn" src="/img/srinsert/delete.png">
                                     </div>
                                 </div>
+                            </div>
+                            <div class="ibox">
                                 <div id="uploadimg5" class="uploadimg">
                                     <input id="upimg5" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="img5()">
-                                        <img class="img" id="img5" src="img/plus.png">
+                                    <div style="position:relative;" onclick="img5()">
+                                        <img class="img" id="img5" src="/img/srinsert/upload.png">
                                     </div>
+                                    <div style="width:20px;"></div>
                                     <div class="delete" id="delete7">
-                                        <button id="delbtn7"  onclick="delete7()" class="delbtn">삭제</button>
+                                        <img id="delbtn7" onclick="delete7()" class="delbtn" src="/img/srinsert/delete.png">
                                     </div>
                                 </div>
+                                <div style="width:20px;"></div>
                                 <div id="uploadimg6" class="uploadimg">
                                     <input id="upimg6" class="upimg" type="file" required style="display:none;" accept="image/*">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="img6()">
-                                        <img class="img" id="img6" src="img/plus.png">
+                                    <div style="position:relative;" onclick="img6()">
+                                        <img class="img" id="img6" src="/img/srinsert/upload.png">
                                     </div>
                                     <div class="delete" id="delete8">
-                                        <button id="delbtn8"  onclick="delete8()" class="delbtn">삭제</button>
+                                        <img id="delbtn8" onclick="delete8()" class="delbtn" src="/img/srinsert/delete.png">
+                                    </div>
+                                </div>
+                            </div>
+                            <span style="text-align:center; display: flex; justify-content: center; align-items: center;
+                                    color: #BDBDBD;font-style: normal; font-weight: 300 font-size: 14px;">
+                            <img src="/img/srinsert/imgicon.png">&nbsp;이미지는 최대 6개까지 등록 가능합니다.
+                        </span>
+                        </div>
+                        <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">대표 아이콘 선택</span>
+                        <div class="mibox">
+                            <div class="seibox">
+                                <span style=" color: #828282; font-weight: 300; font-size: 14px;">지도에 표시되는 아이콘 선택</span>
+                                <div class="seconbox" id="seconbox1" onclick="up()">
+                                    아이콘 선택
+                                </div>
+                            </div>
+                            <div class="mainicon1">
+                                <img class="mainicon" id="mainicon">
+                            </div>
+                        </div>
+                        <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">AR 마커 선택</span>
+                        <div class="mibox">
+                            <div class="seibox">
+                                <span style=" color: #828282; font-weight: 300; font-size: 14px;">어플을 통해 AR로 표시되는 마커 이미지 선택</span>
+                                <div class="seconbox" id="seconbox2" onclick="up1()">
+                                    AR 마커 선택
+                                </div>
+                            </div>
+                            <div class="mainicon1">
+                                <img class="armarker" id="armarker">
+                            </div>
+                        </div>
+                        <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">정보 표시 방식 선택</span>
+                        <div style="width:96%; margin-top:10px; margin-bottom:40px; border: 1px solid #E0E0E0; border-radius: 8px;">
+                            <div class="ptbox" id="exprinttype" onchange="test1()">
+                                <div class="ptckbox" id="ptckbox">
+                                    <input id="gps" type="radio" class="printtype" name="printtype" value="0" checked style="display:none;">
+                                    <label class="gps" for="gps">GPS방식</label>
+                                </div>
+                                <div class="ptckbox1" id="ptckbox1">
+                                    <input id="ved" type="radio" class="printtype" name="printtype" value="1" style="display:none;">
+                                    <label class="ved" for="ved">영상인식 방식</label>
+                                </div>
+                            </div>
+                            <div id="gpssebox" style="width:100%; height:100%;">
+                                <div class="pttext">
+                                  <img src="/img/exinsert/gps.png"> &nbsp;&nbsp;서비스존 안에서 등록하는 전시/시설물의 위치를 지정해주세요
+                                </div>
+                                <div class="gpsbox">
+                                    <div class="gpsbox1">
+                                        <div class="gpstext">
+                                            위도
+                                        </div>
+                                        <div>
+                                            <input class="pointbox" id="ypoint" type="text" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="gpsbox1">
+                                        <div class="gpstext">
+                                            경도
+                                        </div>
+                                        <div>
+                                            <input class="pointbox" id="xpoint" type="text" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="vedsebox" style="width:100%; height:100%; display:none;">
+                                <div class="pttext">
+                                    <img src="/img/exinsert/ved.png"> &nbsp;&nbsp;전시/시실물을 카메라 전체에 담기는 거리에서 360도에서 2분간 촬영
+                                </div>
+                                <div class="uploadved">
+                                    <div id="uploadvideo3" class="uploadvideo">
+                                        <input id="realUploadvideo3"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
+                                        <div style="position:relative;" onclick="video3()">
+                                            <img id="uploadview3" class="invimg1" src="/img/srinsert/upload.png">
+                                            <video id="inv3" class="inv1" src=""></video>
+                                        </div>
+                                        <div class="delete" id="delete9">
+                                            <img id="delbtn9" onclick="delete9()" class="delbtn" src="/img/srinsert/delete.png">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="viewzonevideo1" >
+                                    <div class="detectbox">
+                                        <div class="deper" style="margin-top:15px;">
+                                            <div class="perbox">
+                                                <div class="rabelper">
+                                                    라벨링 진행도
+                                                    <div class="rabelnum">
+                                                        20%
+                                                    </div>
+                                                </div>
+                                                <progress class="bar" value="20" max="100"></progress>
+                                            </div>
+                                        </div>
+                                        <div style="height:20px;">
+                                        </div>
+                                        <div class="deper">
+                                            <div class="perbox">
+                                                <div class="rabelper">
+                                                    머신러닝 진행도
+                                                    <div class="rabelnum">
+                                                        90%
+                                                    </div>
+                                                </div>
+                                                <progress class="bar"  value="90" max="100"></progress>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dtbtn">
+                                    <div class="dtbtn1">
+                                        영상탐지 진행보기
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <br>
-                        <div style="margin-top:10px; height:130px;">
-                            <span style="font-size:25px; margin-bottom:20px;">7. 대표 아이콘 선택</span><br>
-                            <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;-지도에 표시되는 아이콘 선택</span><br>
-                            <a class="base" onclick="up()">&nbsp;&nbsp;아이콘 선택 버튼</a>
-                            <div class="chmarker">
-                                <img class="mainicon" id="mainicon" src="/img/marker/test/img.png">
+                        <div style="width:96%;">
+                            <div style="float:left;" onclick="saveexhibit()">
+                                <img class="exbtn" src="/img/exinsert/save.png">
                             </div>
-                        </div>
-                        <div style="margin-top:10px; height:130px;">
-                            <span style="font-size:25px; margin-bottom:20px; ">8. AR 마커 선택</span><br>
-                            <span style="font-size:17px; margin-bottom:20px;">&nbsp;&nbsp;-어플을 통해 AR로 표시되는 마커 이미지 선택</span><br>
-                            <a class="base" onclick="up1()">&nbsp;&nbsp;AR 마커 선택 버튼</a>
-                            <div class="chmarker">
-                                <img class="armarker" id="armarker" src="/img/marker/test/img_1.png">
+                            <div style="float:right;">
+                                <img class="exbtn" src="/img/exinsert/delete.png">
                             </div>
-                        </div>
-                        <div style="margin-top:10px;">
-                            <span style="font-size:25px; margin-bottom:20px;">9. 정보 표시 방식 선택</span><br>
-                            <div id="exprinttype" onchange="test1()">
-                                <input id="gps" type="radio" class="printtype" name="printtype" value="0" checked>
-                                <label for="gps">GPS방식</label>
-                                <input id="ved" type="radio" class="printtype" name="printtype" value="1">
-                                <label for="ved">영상인식 방식</label>
-                            </div>
-                            <div id="gpsbox" style="display:block;">
-                                ※ 서비스존 안에서 등록하는 전시/시설물의 위치를 지정해주세요.
-
-                                <div>
-                                    위도&nbsp;:&nbsp;<input id="ypoint" type="text" readonly>
-                                </div>
-                                <div>
-                                    경도&nbsp;:&nbsp;<input id="xpoint" type="text" readonly>
-                                </div>
-                            </div>
-                            <div id="vedbox" style="display:none;">
-                                ※ 전시 시설물을 카메라 전체에 담기는 거리에서 360도에서 2분간 촬영하여 업로드
-
-                                <div id="uploadvideo3" class="uploadvideo">
-                                    <input id="realUploadvideo3"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
-                                    <div style="width:150px; height:150px; position:absolute;" onclick="video3()">
-                                        <video id="inv3" class="inv1" src="/img/plus.mp4"></video>
-                                    </div>
-                                    <div class="delete" id="delete9">
-                                        <button id="delbtn9" onclick="delete9()" class="delbtn">삭제</button>
-                                    </div>
-                                </div>
-                                <div style="width:80%; margin:auto;">
-                                    <button class="upbtn" onclick="">영상탐지 진행보기</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="width:80%; margin:auto;">
-                            <button class="upbtn" onclick="saveexhibit()">저장하기</button>
-                        </div>
-                        <div style="width:80%; margin:auto;">
-                            <button class="upbtn">삭제</button>
                         </div>
                     </div>
-                    <span id="pknum" hidden=""></span>
-                    <span id="seqnum" hidden=""></span>
-                    <p class="edit" style="display:none;">
-                        <button id="undo" class="disabled" onclick="undo()" disabled>UNDO</button>
-                        <button id="redo" class="disabled" onclick="redo()" disabled>REDO</button>
-                    </p>
+                    <div>
+                        <span id="pknum" hidden=""></span>
+                        <span id="seqnum" hidden=""></span>
+                        <p class="edit" style="display:none;">
+                            <button id="undo" class="disabled" onclick="undo()" disabled>UNDO</button>
+                            <button id="redo" class="disabled" onclick="redo()" disabled>REDO</button>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="custom_zoomcontrol radius_border">
-            <span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>
-            <span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
+        <div id="zoombtn1" class="custom_zoomcontrol radius_border">
+            <span onclick="zoomIn()"><img src="/img/servicezone/zoomin.png" alt="확대"></span>
+        </div>
+        <div id="zoombtn2" class="custom_zoomcontrol1 radius_border">
+            <span onclick="zoomOut()"><img src="/img/servicezone/zoomout.png" alt="축소"></span>
         </div>
     </div>
 <div id="load"> <img src="/img/spinner.gif" alt="loading"></div>
@@ -253,70 +313,75 @@
     <!-- Modal content -->
     <div class="modal-content">
         <span class="pop_bt" style="font-size: 13pt;" onClick="close_pop();">X</span>
-        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">아이콘 선택</span></b></span></p>
-        <div style="margin-bottom:30px;">
-            <div class="basemarker">
-                <img class="markerimg" src="/img/marker/location.png" onclick="semk(this)">
+        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt; color: #85BEFF;">아이콘 선택</span></b></span></p>
+        <div class="mkicbox" style="width:100%; margin-bottom:20px;">
+            <div class="bigbox">
+                <div class="basemarker" onclick="semk2('/img/marker/exhibit/camera.png')">
+                    <img class="markerimg" src="/img/marker/exhibit/camera.png">
+                </div>
+                <div class="basemarker" onclick="semk2('/img/marker/exhibit/checkmark.png')">
+                    <img class="markerimg" src="/img/marker/exhibit/checkmark.png">
+                </div>
+                <div class="basemarker" onclick="semk2('/img/marker/exhibit/creditcard.png')">
+                    <img class="markerimg" src="/img/marker/exhibit/creditcard.png">
+                </div>
+                <div class="basemarker" onclick="semk2('/img/marker/exhibit/download.png')">
+                    <img class="markerimg" src="/img/marker/exhibit/download.png">
+                </div>
+                <div class="basemarker" onclick="semk2('/img/marker/exhibit/fastforward.png')">
+                    <img class="markerimg" src="/img/marker/exhibit/fastforward.png">
+                </div>
             </div>
-            <div class="basemarker">
-                <img class="markerimg" src="/img/marker/m1.png" onclick="semk(this)">
-            </div>
-            <div class="basemarker">
-                <img class="markerimg" src="/img/marker/m2.png" onclick="semk(this)">
-            </div>
-            <div class="basemarker">
-                <img class="markerimg" src="/img/marker/m3.png" onclick="semk(this)">
-            </div>
-            <div class="basemarker">
-                <img class="markerimg" src="/img/marker/m4.png" onclick="semk(this)">
-            </div>
-            <div class="basemarker">
+            <div class="bigbox">
+                <div class="basemarker" onclick="semk2('/img/marker/exhibit/graph.png')">
+                    <img class="markerimg" src="/img/marker/exhibit/graph.png">
+                </div>
+                <div class="basemarker" onclick="semk2('/img/marker/exhibit/list.png')">
+                    <img class="markerimg" src="/img/marker/exhibit/list.png">
+                </div>
+                <div class="basemarker">
 
-            </div>
-            <div class="basemarker">
+                </div>
+                <div class="basemarker">
 
-            </div>
-            <div class="basemarker">
+                </div>
+                <div class="basemarker">
 
+                </div>
             </div>
-            <div class="basemarker">
+            <div class="bigbox">
+                <div class="basemarker">
 
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
             </div>
-            <div class="basemarker">
+            <div class="bigbox">
+                <div class="basemarker">
 
-            </div>
-            <div class="basemarker">
+                </div>
+                <div class="basemarker">
 
-            </div>
-            <div class="basemarker">
+                </div>
+                <div class="basemarker">
 
-            </div>
-            <div class="basemarker">
+                </div>
+                <div class="basemarker">
 
-            </div>
-            <div class="basemarker">
+                </div>
+                <div class="basemarker">
 
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
+                </div>
             </div>
         </div>
         <p><br /></p>
@@ -326,70 +391,75 @@
     <!-- Modal content -->
     <div class="modal-content">
         <span class="pop_bt" style="font-size: 13pt;" onClick="close_pop1();">X</span>
-        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">AR 마커 선택</span></b></span></p>
-        <div style="margin-bottom:30px;">
-            <div class="basemarker">
-                <img class="markerimg" src="/img/marker/location.png" onclick="searmk(this)">
+        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt; color: #85BEFF;">AR 마커 선택</span></b></span></p>
+        <div class="mkicbox" style="width:100%; margin-bottom:20px;">
+            <div class="bigbox">
+                <div class="basemarker" onclick="semk3('/img/marker/exhibit/camera.png')">
+                    <img class="markerimg" src="/img/marker/exhibit/camera.png">
+                </div>
+                <div class="basemarker" onclick="semk3('/img/marker/exhibit/checkmark.png')">
+                    <img class="markerimg" src="/img/marker/exhibit/checkmark.png">
+                </div>
+                <div class="basemarker" onclick="semk3('/img/marker/exhibit/creditcard.png')">
+                    <img class="markerimg" src="/img/marker/exhibit/creditcard.png">
+                </div>
+                <div class="basemarker" onclick="semk3('/img/marker/exhibit/download.png')">
+                    <img class="markerimg" src="/img/marker/exhibit/download.png">
+                </div>
+                <div class="basemarker" onclick="semk3('/img/marker/exhibit/fastforward.png')">
+                    <img class="markerimg" src="/img/marker/exhibit/fastforward.png">
+                </div>
             </div>
-            <div class="basemarker">
-                <img class="markerimg" src="/img/marker/m1.png" onclick="searmk(this)">
-            </div>
-            <div class="basemarker">
-                <img class="markerimg" src="/img/marker/m2.png" onclick="searmk(this)">
-            </div>
-            <div class="basemarker">
-                <img class="markerimg" src="/img/marker/m3.png" onclick="searmk(this)">
-            </div>
-            <div class="basemarker">
-                <img class="markerimg" src="/img/marker/m4.png" onclick="searmk(this)">
-            </div>
-            <div class="basemarker">
+            <div class="bigbox">
+                <div class="basemarker" onclick="semk3('/img/marker/exhibit/graph.png')">
+                    <img class="markerimg" src="/img/marker/exhibit/graph.png">
+                </div>
+                <div class="basemarker" onclick="semk3('/img/marker/exhibit/list.png')">
+                    <img class="markerimg" src="/img/marker/exhibit/list.png">
+                </div>
+                <div class="basemarker">
 
-            </div>
-            <div class="basemarker">
+                </div>
+                <div class="basemarker">
 
-            </div>
-            <div class="basemarker">
+                </div>
+                <div class="basemarker">
 
+                </div>
             </div>
-            <div class="basemarker">
+            <div class="bigbox">
+                <div class="basemarker">
 
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
             </div>
-            <div class="basemarker">
+            <div class="bigbox">
+                <div class="basemarker">
 
-            </div>
-            <div class="basemarker">
+                </div>
+                <div class="basemarker">
 
-            </div>
-            <div class="basemarker">
+                </div>
+                <div class="basemarker">
 
-            </div>
-            <div class="basemarker">
+                </div>
+                <div class="basemarker">
 
-            </div>
-            <div class="basemarker">
+                </div>
+                <div class="basemarker">
 
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
-            </div>
-            <div class="basemarker">
-
+                </div>
             </div>
         </div>
         <p><br /></p>
@@ -397,59 +467,44 @@
 </div>
 <div id="myModal3" class="modal">
     <!-- Modal content -->
-    <div class="modal-content">
+    <div class="modal-content1">
         <span class="pop_bt" style="font-size: 13pt;" onClick="close_pop3();">X</span>
-        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt;">서비스존 리스트</span></b></span></p>
-        <div id="see">
-            <select class="form-control form-control-sm"
-                    name="selectKey" id="selectKey1">
-                <option selected="selected">전체</option>
-                <!--                        <option value="번호">번호</option>-->
-                <option value="이름">이름</option>
-                <option value="상태">상태</option>
-                <option value="주소">주소</option>
-            </select>
+        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 25pt; color: #85BEFF;">SERVICE ZONE LIST</span></b></span></p>
+        <div>
+            <div class="option">
+                <div style="margin-bottom:20px;">
+                    <select class="selserzone1"
+                            name="selectKey" id="selectKey">
+                        <option selected="selected">전체</option>
+                        <option value="이름">이름</option>
+                        <option value="상태">상태</option>
+                        <option value="주소">주소</option>
+                    </select>
+                    <input class="selserzonetxt1" id="titleText" type="text" placeholder="검색어를 입력해주세요 " value="" onkeyup="enterkey()">
+                </div>
+            </div>
 
-            <input id="titleText1" type="text" placeholder="검색 " value="" onkeyup="enterkey2()">
-            <button type="submit" onclick="searching2()">검색하기</button>
-            <div style="margin-bottom:30px;">
-                <table class="table1" >
-                    <thead>
-                    <tr class="table1">
-                        <td>번호</td>
-                        <td>서비스 지역</td>
-                        <td>서비스존 이름</td>
-                        <td>선택</td>
-                    </tr>
-                    <tr class="table1" th:if="${userlist1}!=null" th:each="Co : ${userlist1}">
-                        <td>
-                                    <span th:if="${Co.pk}!= null"
-                                          th:text="${Co.pk}"
-                                          th:value="${Co.pk}">
-                                    </span>
-                        </td>
-                        <td>
-                                    <span th:if="${Co.address}!= null"
-                                          th:text="${Co.address}"
-                                          th:value="${Co.address}">
-                                    </span>
-                        </td>
-                        <td>
-                                    <span th:if="${Co.zonename}!= null"
-                                          th:text="${Co.zonename}"
-                                          th:value="${Co.zonename}">
-                                    </span>
-                        </td>
-                        <td>
-                            <label class="test_obj">
-                                <input type="checkbox" class="choicebtn" style="background-color:red;"
-                                       th:onclick="|javascript:selectexzone(${Co.pk})|">
-                                <span>선택</span>
-                            </label>
-                        </td>
-                    </tr>
-                    </thead>
-                </table>
+
+            <div id="see" class="viewzonebox2">
+                <div th:if="${zonelist}!=null" th:each="Co : ${zonelist}" class="zonebox">
+                    <div class="dabox">
+                        <div class="dzm" th:if="${Co.zonename}!= null"
+                             th:text="${Co.zonename}"
+                             th:value="${Co.zonename}">
+                        </div>
+                        <div class="dza" th:if="${Co.address1}!= null"
+                             th:text="${Co.address1}"
+                             th:value="${Co.address1}">
+                        </div>
+                    </div>
+                    <div class="sebox">
+                        <label class="test_obj">
+                            <input type="checkbox" class="choicebtn1" style="background-color:red;" th:id="${Co.pk}+'btn1'"
+                                   th:onclick="|javascript:selectexzone(${Co.pk})|" th:value = ${Co.pk} th:onchange="">
+                            <img class="ckimg1" th:id="${Co.pk}+'img1'" src="/img/exinsert/cknone.png">
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
         <p><br /></p>
@@ -468,18 +523,26 @@ function close_pop3(flag) {
 
 function up() {
         $('#myModal').show();
+        document.getElementById('seconbox1').style.backgroundColor= '#AFD1F9';
+        document.getElementById('seconbox1').style.color= '#FFFFFF';
 };
 //팝업 Close 기능
 function close_pop(flag) {
      $('#myModal').hide();
+     document.getElementById('seconbox1').style.backgroundColor= '#E0E0E0';
+     document.getElementById('seconbox1').style.color= '#333333';
 };
 
 function up1() {
         $('#myModal1').show();
+        document.getElementById('seconbox2').style.backgroundColor= '#AFD1F9';
+        document.getElementById('seconbox2').style.color= '#FFFFFF';
 };
 //팝업 Close 기능
 function close_pop1(flag) {
      $('#myModal1').hide();
+     document.getElementById('seconbox2').style.backgroundColor= '#E0E0E0';
+     document.getElementById('seconbox2').style.color= '#333333';
 };
 
 function up2() {
@@ -503,7 +566,6 @@ function close_pop2(flag) {
 <script src="/js/file/file.js"></script>
 <script src="/js/marker/marker.js"></script>
 <script src="/js/main/sev.js"></script>
-<script src="/js/main/servicezonelist.js"></script>
 <script src="/js/exhibit/main.js"></script>
 <!-- swal창 띄우기 -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

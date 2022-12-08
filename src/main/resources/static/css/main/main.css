@@ -250,19 +250,7 @@ font-size:16px;
 text-align:center;
 }
 
-.mainicon{
-width:63px;
-height:63px;
-background-color:gray;
-text-align:center;
-}
 
-.armarker{
-width:63px;
-height:63px;
-background-color:gray;
-text-align:center;
-}
 
 
 .base:hover{
@@ -292,7 +280,7 @@ font-weight:bold;
     border: 1px solid #888;
     width: 700px; /* Could be more or less, depending on screen size */
     height : 500px;;
-    overflow-y:auto;
+
     border: 1px solid #E0E0E0;
     border-radius: 8px;
 }
@@ -392,21 +380,17 @@ cursor:pointer;
 .choicebtn:hover{
 cursor:pointer;
 }
-
+.choicebtn1:hover{
+cursor:pointer;
+}
 .test_obj input[type="checkbox"] {
-        display: none;
-    }
+display: none;
+}
 
-    .test_obj input[type="checkbox"] + span {
-        display: inline-block;
-        padding: 15px 10px;
-        border: 1px solid #dfdfdf;
-        background-color: #ffffff;
-        text-align: center;
-        cursor: pointer;
-    }
-
-    .test_obj input[type="checkbox"]:checked + span {
-        background-color: #113a6b;
-        color: #ffffff;
-    }
+.test_obj input[type="checkbox"] + span {
+display: inline-block;
+padding: 15px 10px;
+background-color: #ffffff;
+text-align: center;
+cursor: pointer;
+}

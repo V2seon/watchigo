@@ -23,7 +23,7 @@ public interface ServiceZoneRepository extends JpaRepository<ServiceZoneEntity, 
     @Query(value = "SELECT * FROM servicezone " , nativeQuery = true)
     Page<ServiceZoneEntity> findAll(Pageable pageable);
 
-
-
+    @Query(value = "SELECT * FROM servicezone where seq = :seq order by pk desc limit 5 " , nativeQuery = true)
+    List<ServiceZoneEntity> findAll1(Long seq);
 
 }

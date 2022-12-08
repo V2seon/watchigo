@@ -109,13 +109,12 @@ public class Exhibitcontroller {
         model.addAttribute("lastBtnIndex", pagination.getLastBtnIndex()); //섹션 변경 위함
         model.addAttribute("totalPage", pagination.getTotalPages()); //끝 버튼 위함
 
-
         //서비스 엔티티 추가후 주석 풀고 사용
         Page<ServiceZoneEntity> pageList = serviceZoneService.selectALLTable(selectKey, titleText,s1.get().getAseq(), pageable);
 
-        model.addAttribute("userlist1", pageList); //페이지 객체 리스트
+        model.addAttribute("zonelist", pageList); //페이지 객체 리스트
 
-        return "ExhibitMain :: #see";
+        return "ExhibitInsert :: #see";
     }
 
     @RequestMapping(value = "/exhibit_search1", method = RequestMethod.POST)
@@ -126,7 +125,7 @@ public class Exhibitcontroller {
         HttpSession session = request.getSession();
         Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
 
-        Pageable pageable = PageRequest.of(page, 5,Sort.by("pk").descending());
+        Pageable pageable = PageRequest.of(page, 100);
         int totalPages = exhibitService.selectALLTable(selectKey, titleText,s1.get().getAseq(), pageable).getTotalPages();
         Pagination pagination = new Pagination(totalPages, page);
 
@@ -136,7 +135,6 @@ public class Exhibitcontroller {
         model.addAttribute("firstBtnIndex", pagination.getFirstBtnIndex()); //버튼 페이징 - 첫시작 인덱스
         model.addAttribute("lastBtnIndex", pagination.getLastBtnIndex()); //섹션 변경 위함
         model.addAttribute("totalPage", pagination.getTotalPages()); //끝 버튼 위함
-
 
         //서비스 엔티티 추가후 주석 풀고 사용
         Page<ExhibitEntity> pageList = exhibitService.selectALLTable(selectKey, titleText,s1.get().getAseq(), pageable);
@@ -169,7 +167,10 @@ public class Exhibitcontroller {
 //            Page<GradeType1DataEntity> pageList = Gradetype1DataService.selectALLTable2(selectKey, titleText, pageable);
 
         model.addAttribute("userlist1", memberEntities1); //페이지 객체 리스트
+        model.addAttribute("nowurl0", "/exhibit");
 
+        List<ServiceZoneEntity> s2 = serviceZoneRepository.findAll1(s1.get().getAseq());
+        model.addAttribute("zonelist", s2); //페이지 객체 리스트
             return "ExhibitInsert.html";
         }else{
             returnValue = "login.html";
@@ -312,7 +313,7 @@ public class Exhibitcontroller {
         HttpSession session = request.getSession();
         String id = (String) session.getAttribute("userid");
         String date = (String) session.getAttribute("date");
-        String DIR = "/home/AdminWatchigo/uploadfiles/exhibit/"+id+"/"+date+"/";
+        String DIR = "/home/AdminWatchigo/uploadfiles/exhibit/"+id+"/";
         File file = new File(DIR+fileName);
         final InputStream is = new FileInputStream(file);
         return os -> {
@@ -385,6 +386,7 @@ public class Exhibitcontroller {
 
         msg.put("video1",s1.get().getVideo1());
         msg.put("img1",s1.get().getImg1());
+        msg.put("date",s1.get().getDate());
         msg.put("zonename",s1.get().getZonename());
         msg.put("ex",s1.get().getEx());
         msg.put("center",s1.get().getPoint());
