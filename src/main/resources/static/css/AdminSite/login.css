@@ -52,6 +52,16 @@ height:20px;
 border-radius:5px;
 }
 
+.Login:hover{
+cursor:pointer;
+}
+
 .re:hover{
 cursor:pointer;
 }
+
+.Register:hover{
+cursor:pointer;
+}
+
+

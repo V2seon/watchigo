@@ -58,6 +58,11 @@ public class AdminSiteController {
         return "AdminSite/Partners.html";
     }
 
+    @GetMapping("/Payment")
+    public String Payment(Model m, HttpServletRequest request){
+        return "AdminSite/Payment.html";
+    }
+
     @GetMapping("/Register")
     public String Register(Model m, HttpServletRequest request){
         return "AdminSite/Register.html";

@@ -1,5 +1,8 @@
 package com.example.watchigo.service;
 
+import com.example.watchigo.dto.ServiceZoneDto;
+import com.example.watchigo.dto.UserDto;
+import com.example.watchigo.entity.ServiceZoneEntity;
 import com.example.watchigo.entity.UserEntity;
 import com.example.watchigo.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -22,5 +25,13 @@ public class LoginService {
             returnValue = 1;
         }
         return returnValue;
+    }
+
+
+    @Transactional
+    public Long save(UserDto userDto){
+        UserEntity userEntity = userDto.toEntity();
+        userRepository.save(userEntity);
+        return userDto.getA_SEQ();
     }
 }

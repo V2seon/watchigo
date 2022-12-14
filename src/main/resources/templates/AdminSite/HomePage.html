@@ -8,6 +8,9 @@
 	<link rel="stylesheet" type="text/css" id="applicationStylesheet" href="/css/AdminSite/Homepage.css"/>
 	<script id="applicationScript" type="text/javascript" src="/js/AdminSite/Homepage.js"></script>
 	<script src="/js/AdminSite/main.js"></script>
+	<link rel="stylesheet" href="css/AdminSite/login.css">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="https://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
 <div id="Homepage">
@@ -137,7 +140,7 @@
 			<span>고객센터</span>
 		</div>
 	</div>
-	<div id="Register" class="Register">
+	<div id="Register" class="Register" onclick="Register()">
 		<svg class="Rectangle_11">
 			<rect id="Rectangle_11" rx="25.5" ry="25.5" x="0" y="0" width="123" height="51">
 			</rect>
@@ -146,7 +149,7 @@
 			<span>회원가입</span>
 		</div>
 	</div>
-	<div id="Login" class="Login">
+	<div id="Login" class="Login" onclick="log()">
 		<svg class="Rectangle_11_b">
 			<rect id="Rectangle_11_b" rx="25.5" ry="25.5" x="0" y="0" width="123" height="51">
 			</rect>
@@ -155,6 +158,20 @@
 			<span>로그인</span>
 		</div>
 	</div>
+</div>
+<div class="loginbox" id="loginbox">
+	<h4 style="color:#FFFFFF; padding-left:20px; margin-top:20px; margin-bottom:15px;">LOGIN</h4>
+	<span class="id" >ID</span>
+	<div class="inbox">
+		<input class="inid" id="inid" type="text">
+	</div>
+	<span class="pw" >PASSWORD</span>
+	<div class="inbox">
+		<input class="inid" id="inpw" type="password">
+	</div>
+	<span onclick="home8()" class="re" style="color:#FFFFFF; padding-left:20px;">REGISTER</span>
+	<button onclick="login()" class="loginbtn" id="loginbtn">LOGIN</button><br>
+	<span hidden id="ppp">0</span>
 </div>
 </body>
 </html>
