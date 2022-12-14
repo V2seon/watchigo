@@ -23,9 +23,9 @@ public class AdminSiteController {
         return "AdminSite/Customer_Service.html";
     }
 
-    @GetMapping("/Introduction")
-    public String Introduction(Model m, HttpServletRequest request){
-        return "AdminSite/Introduction.html";
+    @GetMapping("/Intro")
+    public String Intro(Model m, HttpServletRequest request){
+        return "AdminSite/Intro.html";
     }
 
     @GetMapping("/AR_Factory")
@@ -43,9 +43,14 @@ public class AdminSiteController {
         return "AdminSite/Process.html";
     }
 
-    @GetMapping("/Payment")
-    public String Payment(Model m, HttpServletRequest request){
-        return "AdminSite/Payment.html";
+    @GetMapping("/Ask")
+    public String Ask(Model m, HttpServletRequest request){
+        return "AdminSite/Ask.html";
+    }
+
+    @GetMapping("/IP")
+    public String IP(Model m, HttpServletRequest request){
+        return "AdminSite/IP.html";
     }
 
     @GetMapping("/Partners")

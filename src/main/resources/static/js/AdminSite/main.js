@@ -1,34 +1,37 @@
 function home(){
 location.href="/"
 }
-function home2(){
-location.href="/Introduction"
+function Intro(){
+location.href="/Intro"
 }
-function home3(){
-location.href="/Payment"
+function Ask(){
+location.href="/Ask"
 }
-function home4(){
+function Process(){
 location.href="/Process"
 }
-function home5(){
+function WATCHIGO(){
 location.href="/WATCHIGO"
 }
-function home6(){
+function Partners(){
 location.href="/Partners"
 }
-function home7(){
+function AR_Factory(){
 location.href="/AR_Factory"
 }
-function home8(){
+function Register(){
 location.href="/Register"
 }
-function home9(){
+function Customer_Service(){
 location.href="/Customer_Service"
 }
-function home11(){
+function IP(){
+location.href="/IP"
+}
+function upload(){
 location.href="/upload"
 }
-function home10(){
+function userup(){
 location.href="/userup"
 }
 
