@@ -1,0 +1,41 @@
+.card-footer{
+width:100%;
+border: 1px solid #FFFFFF;
+text-align:center;
+display: flex;
+justify-content: center;
+align-items: center;
+
+}
+
+.page-item{
+color: #BDBDBD;
+width: 23px;
+height: 22px;
+margin-left:2.5px;
+margin-right:2.5px;
+border: 1px solid #E0E0E0;
+}
+
+.page-item:hover{
+cursor:pointer;
+}
+
+.active{
+color: #FFFFFF;
+background: #1475E5;
+}
+
+.page-item1{
+color: #1475E5;
+width: 23px;
+height: 22px;
+margin-left:2.5px;
+margin-right:2.5px;
+border: 1px solid #E0E0E0;
+background: #E0E0E0;
+}
+
+.page-item1:hover{
+cursor:pointer;
+}

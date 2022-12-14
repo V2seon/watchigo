@@ -15,7 +15,9 @@ for(let a=0; a<boxlen; a++){
 }
 var ttt = pk+'btn';
 console.log(ttt);
+if(document.getElementById(ttt)){
 document.getElementById(ttt).checked = true;
+}
 for(let a=0; a<boxlen; a++){
  if(document.getElementsByClassName('choicebtn')[a].checked == true){
      document.getElementsByClassName('ckimg')[a].src =  "/img/exinsert/check.png";
@@ -176,6 +178,8 @@ function lock(){
 // 페이징
 function paging(pageValue){
     const myPageQuery = new URLSearchParams(location.search);
+
+    console.log(pageValue);
 
     var titleText = myPageQuery.get('titleText');
     var selectKey = myPageQuery.get('selectKey');

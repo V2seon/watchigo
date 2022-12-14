@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>WATCHIGO</title>
     <link rel="stylesheet" href="css/nav/nav.css">
+    <script src="/js/nav/nav.js"></script>
 </head>
 <body>
 <nav class="menubar">
@@ -12,19 +13,19 @@
         <li class="icon">
             <img class="iconimg" src="/img/nav/mainlogo.png">
         </li>
-        <li th:class="${nowurl0 == '/servicezone' ? 'icon-active' : 'icon'}">
-            <a href="/servicezone">
+        <li th:class="${nowurl0 == '/servicezone' ? 'icon-active' : 'icon'}" onclick="move1()">
+            <a href="/servicezone" style="width:100%; height:100%;">
                 <img class="iconimg" th:src="${nowurl0 == '/servicezone' ? '/img/nav/sericonBlue.png' : '/img/nav/sericon.png'}">
             </a>
         </li>
-        <li th:class="${nowurl0 == '/exhibit' ? 'icon-active' : 'icon'}">
+        <li th:class="${nowurl0 == '/exhibit' ? 'icon-active' : 'icon'}"  onclick="move2()">
             <a href="/exhibit">
                 <img class="iconimg" th:src="${nowurl0 == '/exhibit' ? '/img/nav/exiconBlue.png' : '/img/nav/exicon.png'}">
             </a>
         </li>
-        <li th:class="${nowurl0 == '/0' ? 'icon-active' : 'icon'}">
-            <a>
-                <img class="iconimg" th:src="${nowurl0 == '/0' ? '/img/nav/AIBlue.png' : '/img/nav/AI.png'}">
+        <li th:class="${nowurl0 == '/aivideo' ? 'icon-active' : 'icon'}">
+            <a href="/aivideo">
+                <img class="iconimg" th:src="${nowurl0 == '/aivideo' ? '/img/nav/AIBlue.png' : '/img/nav/AI.png'}">
             </a>
         </li>
         <li th:class="${nowurl0 == '/0' ? 'icon-active' : 'icon'}">

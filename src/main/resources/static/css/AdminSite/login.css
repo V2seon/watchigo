@@ -1,0 +1,57 @@
+.loginbox{
+top:10%;
+left:70%;
+position:absolute;
+z-index : 10;
+width:300px;
+height:220px;
+background-color:rgba(25, 25, 25, 0.8);;
+border-radius:6px;
+display:none;
+}
+
+.inbox{
+width:100%;
+margin-bottom:20px;
+text-align:center;
+display: flex;
+justify-content: center;
+align-items: center;
+border-radius:6px;
+}
+
+.id{
+color:#FFFFFF;
+padding-left:18px;
+}
+
+.pw{
+padding-left:18px;
+color:#FFFFFF;
+}
+
+.inid{
+background-color:gray;
+width:90%;
+height:20px;
+border-radius:6px;
+padding-left:10px;
+}
+
+.loginbtn:hover{
+cursor:pointer;
+}
+
+.loginbtn{
+float:right;
+margin-right:18px;
+background-color:#FFFFFF;
+color:black;
+width:45px;
+height:20px;
+border-radius:5px;
+}
+
+.re:hover{
+cursor:pointer;
+}

@@ -81,7 +81,7 @@ public class ServiceZoneController {
 
             return  "ServicezoneMain.html";
         }else{
-            returnValue = "login.html";
+            returnValue = "/AdminSite/HomePage.html";
         }
         return returnValue;
     }
@@ -121,7 +121,7 @@ public class ServiceZoneController {
             model.addAttribute("nowurl0", "/servicezone");
             return "ServicezoneInsert.html";
         }else{
-            returnValue = "login.html";
+            returnValue = "/AdminSite/HomePage.html";
         }
         return returnValue;
     }

@@ -1,0 +1,102 @@
+.mainbox{
+padding-left:150px;
+padding-top:45px;
+padding-right:45px;
+}
+
+.aibox{
+height:190px;
+}
+
+.maintx{
+font-weight: 700;
+font-size: 30px;
+line-height: 35px;
+color: #1475E5;
+}
+
+.invideobtn{
+width: 310px;
+height: 60px;
+background: #1475E6;
+border-radius: 5px;
+text-align:center;
+display: flex;
+justify-content: center;
+align-items: center;
+float:right;
+margin-right:0.8%;
+margin-top:20px;
+color:#FFFFFF;
+}
+
+.invideobtn:hover{
+cursor:pointer;
+}
+
+.videobox{
+width: 99.2%;
+flex-wrap:wrap;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.bigvideo{
+margin-right:5%;
+margin-bottom:80px;
+width: 800px;
+height: 254px;
+background: #FFFFFF;
+border: 1px solid #E0E0E0;
+border-radius: 8px;
+}
+
+.videoview{
+width:31.75%;
+height:100%;
+float:left;
+border-radius: 8px 0px 0px 8px;
+}
+
+.textview{
+width:68.25%;
+height:100%;
+float:left;
+}
+
+.mt{
+margin-left:25px;
+margin-top:20px;
+margin-bottom:20px;
+font-weight: 700;
+font-size: 36px;
+line-height: 42px;
+}
+
+.st{
+margin-left:25px;
+font-weight: 500;
+font-size: 14px;
+line-height: 16px;
+}
+
+.bt{
+margin-top:40px;
+margin-left:25px;
+}
+
+.btn{
+float:left;
+margin-right:15px;
+}
+
+.btn:hover{
+cursor:pointer;
+}
+
+.imgview{
+width:100%;
+height:100%;
+border-radius: 8px 0px 0px 8px;
+}

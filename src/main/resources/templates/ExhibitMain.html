@@ -54,8 +54,16 @@
                                  th:text="${Co.zonename}"
                                  th:value="${Co.zonename}">
                             </div>
-                            <div class="exname" th:if="${Co.name}!= null"
+                            <div class="exname" th:if="${Co.type}== 시설물"
                                  th:text="'시설물 이름 : ' +${Co.name}"
+                                 th:value="${Co.name}">
+                            </div>
+                            <div class="exname" th:if="${Co.type}== 전시물"
+                                 th:text="'전시물 이름 : ' +${Co.name}"
+                                 th:value="${Co.name}">
+                            </div>
+                            <div class="exname" th:if="${Co.type}== 기타"
+                                 th:text="'기타 이름 : ' +${Co.name}"
                                  th:value="${Co.name}">
                             </div>
                         </div>

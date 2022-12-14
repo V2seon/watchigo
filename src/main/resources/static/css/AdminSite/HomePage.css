@@ -1,0 +1,631 @@
+.mediaViewInfo {
+	--web-view-name: Homepage;
+	--web-view-id: Homepage;
+	--web-scale-on-resize: true;
+	--web-enable-deep-linking: true;
+}
+:root {
+	--web-view-ids: Homepage;
+}
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	border: none;
+}
+#Homepage {
+	position: absolute;
+	width: 1920px;
+	height: 1357px;
+	background-color: rgba(255,255,255,1);
+	overflow: hidden;
+	--web-view-name: Homepage;
+	--web-view-id: Homepage;
+	--web-scale-on-resize: true;
+	--web-enable-deep-linking: true;
+}
+@keyframes  {
+
+
+}
+@keyframes  {
+
+
+}
+@keyframes  {
+
+
+}
+@keyframes  {
+
+
+}
+@keyframes  {
+
+
+}
+@keyframes  {
+
+
+}
+@keyframes  {
+
+
+}
+#BG {
+	position: absolute;
+	width: 1920px;
+	height: 1065px;
+	left: 0px;
+	top: 0px;
+	overflow: visible;
+}
+#Logo {
+	position: absolute;
+	width: 242px;
+	height: 117px;
+	left: 53px;
+	top: 7px;
+	overflow: visible;
+}
+#Footer {
+	position: absolute;
+	width: 1920px;
+	height: 411px;
+	left: 0px;
+	top: 946px;
+	overflow: visible;
+}
+#Rectangle_2 {
+	fill: rgba(250,203,14,1);
+	stroke: rgba(112,112,112,1);
+	stroke-width: 1px;
+	stroke-linejoin: miter;
+	stroke-linecap: butt;
+	stroke-miterlimit: 4;
+	shape-rendering: auto;
+}
+.Rectangle_2 {
+	position: absolute;
+	overflow: visible;
+	width: 1920px;
+	height: 135px;
+	left: 0px;
+	top: 0px;
+}
+#Rectangle_10 {
+	fill: rgba(26,26,26,1);
+}
+.Rectangle_10 {
+	position: absolute;
+	overflow: visible;
+	width: 1920px;
+	height: 276px;
+	left: 0px;
+	top: 135px;
+}
+#Legal_Jargon {
+	position: absolute;
+	width: 1893px;
+	height: 182px;
+	left: 27px;
+	top: 186px;
+	overflow: visible;
+}
+#n______212-88-02195______2019- {
+	left: 0px;
+	top: 71px;
+	position: absolute;
+	overflow: visible;
+	width: 744px;
+	height: 21px;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 15px;
+	color: rgba(255,255,255,1);
+}
+#n_____10___402_ {
+	left: 0px;
+	top: 101px;
+	position: absolute;
+	overflow: visible;
+	width: 736px;
+	height: 21px;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 15px;
+	color: rgba(255,255,255,1);
+}
+#n__ {
+	left: 0px;
+	top: 0px;
+	position: absolute;
+	overflow: hidden;
+	width: 148px;
+	height: 21px;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 15px;
+	color: rgba(255,255,255,1);
+}
+#E-mail_helptourplayzone {
+	left: 0px;
+	top: 131px;
+	position: absolute;
+	overflow: visible;
+	width: 269px;
+	height: 21px;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 15px;
+	color: rgba(255,255,255,1);
+}
+#Copyright_2022_ELFE_All_rights {
+	left: 0px;
+	top: 161px;
+	position: absolute;
+	overflow: visible;
+	width: 313px;
+	height: 21px;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 15px;
+	color: rgba(255,255,255,1);
+}
+#Text {
+	left: 1268px;
+	top: 161px;
+	position: absolute;
+	overflow: visible;
+	width: 70px;
+	height: 21px;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 15px;
+	color: rgba(255,255,255,1);
+}
+#Text_ {
+	left: 1431px;
+	top: 161px;
+	position: absolute;
+	overflow: visible;
+	width: 123px;
+	height: 21px;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 15px;
+	color: rgba(255,255,255,1);
+}
+#n_ {
+	left: 1685px;
+	top: 161px;
+	position: absolute;
+	overflow: visible;
+	width: 209px;
+	height: 21px;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 15px;
+	color: rgba(255,255,255,1);
+}
+#Phone_8202-1800-1483 {
+	left: 404px;
+	top: 131px;
+	position: absolute;
+	overflow: visible;
+	width: 204px;
+	height: 21px;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 15px;
+	color: rgba(255,255,255,1);
+}
+#Group_2 {
+	position: absolute;
+	width: 43px;
+	height: 43px;
+	left: 1733px;
+	top: 99px;
+	overflow: visible;
+}
+#Ellipse_1 {
+	fill: rgba(255,255,255,1);
+}
+.Ellipse_1 {
+	position: absolute;
+	overflow: visible;
+	width: 43px;
+	height: 43px;
+	left: 0px;
+	top: 0px;
+}
+#Mask_Group_8 {
+	position: absolute;
+	width: 25px;
+	height: 26px;
+	left: 9px;
+	top: 9px;
+	overflow: visible;
+}
+#Group_1 {
+	position: absolute;
+	width: 43px;
+	height: 43px;
+	left: 1802px;
+	top: 99px;
+	overflow: visible;
+}
+#Ellipse_2 {
+	fill: rgba(255,255,255,1);
+}
+.Ellipse_2 {
+	position: absolute;
+	overflow: visible;
+	width: 43px;
+	height: 43px;
+	left: 0px;
+	top: 0px;
+}
+#Mask_Group_9 {
+	position: absolute;
+	width: 22px;
+	height: 22px;
+	left: 11px;
+	top: 11px;
+	overflow: visible;
+}
+#Intro_ba {
+	position: absolute;
+	width: 102px;
+	height: 104px;
+	left: 181px;
+	top: 961px;
+	overflow: visible;
+	--web-animation: fadein 0.30000001192092896s ease-out;
+	--web-action-type: page;
+	--web-action-target: Intro.html;
+	cursor: pointer;
+}
+#Mask_Group_11 {
+	position: absolute;
+	width: 102px;
+	height: 74px;
+	left: 0px;
+	top: 0px;
+	overflow: visible;
+}
+#Text_bc {
+	left: 21px;
+	top: 84px;
+	position: absolute;
+	overflow: visible;
+	width: 61px;
+	white-space: nowrap;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 15px;
+	color: rgba(0,0,0,1);
+}
+#Watchigo {
+	position: absolute;
+	width: 102px;
+	height: 103px;
+	left: 428px;
+	top: 961px;
+	overflow: visible;
+	--web-animation: fadein 0.30000001192092896s ease-out;
+	--web-action-type: page;
+	--web-action-target: WATCHIGO_.html;
+	cursor: pointer;
+}
+#Mask_Group_10 {
+	position: absolute;
+	width: 102px;
+	height: 74px;
+	left: 0px;
+	top: 0px;
+	overflow: visible;
+}
+#WATCHGO {
+	left: 4px;
+	top: 84px;
+	position: absolute;
+	overflow: visible;
+	width: 89px;
+	white-space: nowrap;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 15px;
+	color: rgba(0,0,0,1);
+}
+#Process_bg {
+	position: absolute;
+	width: 102px;
+	height: 104px;
+	left: 675px;
+	top: 961px;
+	overflow: visible;
+	--web-animation: fadein 0.30000001192092896s ease-out;
+	--web-action-type: page;
+	--web-action-target: Process.html;
+	cursor: pointer;
+}
+#Mask_Group_3 {
+	position: absolute;
+	width: 102px;
+	height: 74px;
+	left: 0px;
+	top: 0px;
+	overflow: visible;
+}
+#Text_bi {
+	left: 21px;
+	top: 84px;
+	position: absolute;
+	overflow: visible;
+	width: 61px;
+	white-space: nowrap;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 15px;
+	color: rgba(0,0,0,1);
+}
+#AR_Factory_bj {
+	position: absolute;
+	width: 102px;
+	height: 103px;
+	left: 909px;
+	top: 961px;
+	overflow: visible;
+	--web-animation: fadein 0.30000001192092896s ease-out;
+	--web-action-type: page;
+	--web-action-target: AR_Factory.html;
+	cursor: pointer;
+}
+#Mask_Group_12 {
+	position: absolute;
+	width: 102px;
+	height: 74px;
+	left: 0px;
+	top: 0px;
+	overflow: visible;
+}
+#AR_FACTORY {
+	left: 2px;
+	top: 84px;
+	position: absolute;
+	overflow: visible;
+	width: 99px;
+	white-space: nowrap;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 15px;
+	color: rgba(0,0,0,1);
+}
+#Partners_bm {
+	position: absolute;
+	width: 102px;
+	height: 104px;
+	left: 1156px;
+	top: 961px;
+	overflow: visible;
+	--web-animation: fadein 0.30000001192092896s ease-out;
+	--web-action-type: page;
+	--web-action-target: Partners.html;
+	cursor: pointer;
+}
+#Mask_Group_5 {
+	position: absolute;
+	width: 102px;
+	height: 74px;
+	left: 0px;
+	top: 0px;
+	overflow: visible;
+}
+#Text_bo {
+	left: 29px;
+	top: 84px;
+	position: absolute;
+	overflow: visible;
+	width: 46px;
+	white-space: nowrap;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 15px;
+	color: rgba(0,0,0,1);
+}
+#Sub {
+	position: absolute;
+	width: 660px;
+	height: 48px;
+	left: 630px;
+	top: 533px;
+	overflow: visible;
+}
+#Rectangle_14 {
+	fill: rgba(250,203,14,1);
+}
+.Rectangle_14 {
+	position: absolute;
+	overflow: visible;
+	width: 660px;
+	height: 48px;
+	left: 0px;
+	top: 0px;
+}
+#n______ {
+	left: 49px;
+	top: 9px;
+	position: absolute;
+	overflow: visible;
+	width: 564px;
+	white-space: nowrap;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 22px;
+	color: rgba(0,0,0,1);
+}
+#Ask_bs {
+	position: absolute;
+	width: 102px;
+	height: 104px;
+	left: 1404px;
+	top: 961px;
+	overflow: visible;
+	--web-animation: fadein 0.30000001192092896s ease-out;
+	--web-action-type: page;
+	--web-action-target: Ask.html;
+	cursor: pointer;
+}
+#Mask_Group_6 {
+	position: absolute;
+	width: 102px;
+	height: 74px;
+	left: 0px;
+	top: 0px;
+	overflow: visible;
+}
+#Text_bu {
+	left: 21px;
+	top: 84px;
+	position: absolute;
+	overflow: visible;
+	width: 61px;
+	white-space: nowrap;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 15px;
+	color: rgba(0,0,0,1);
+}
+#Customer_Service_bv {
+	position: absolute;
+	width: 102px;
+	height: 104px;
+	left: 1651px;
+	top: 961px;
+	overflow: visible;
+	--web-animation: fadein 0.30000001192092896s ease-out;
+	--web-action-type: page;
+	--web-action-target: Customer_Service.html;
+	cursor: pointer;
+}
+#Mask_Group_7 {
+	position: absolute;
+	width: 102px;
+	height: 74px;
+	left: 0px;
+	top: 0px;
+	overflow: visible;
+}
+#Text_bx {
+	left: 21px;
+	top: 84px;
+	position: absolute;
+	overflow: visible;
+	width: 61px;
+	white-space: nowrap;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 15px;
+	color: rgba(0,0,0,1);
+}
+#Register {
+	position: absolute;
+	width: 123px;
+	height: 51px;
+	left: 1746px;
+	top: 40px;
+	overflow: visible;
+}
+#Rectangle_11 {
+	fill: rgba(250,203,14,1);
+}
+.Rectangle_11 {
+	position: absolute;
+	overflow: visible;
+	width: 123px;
+	height: 51px;
+	left: 0px;
+	top: 0px;
+}
+#Text_b {
+	left: 16px;
+	top: 9px;
+	position: absolute;
+	overflow: visible;
+	width: 93px;
+	white-space: nowrap;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 23px;
+	color: rgba(0,0,0,1);
+}
+#Login {
+	position: absolute;
+	width: 123px;
+	height: 51px;
+	left: 1573px;
+	top: 40px;
+	overflow: visible;
+}
+#Rectangle_11_b {
+	fill: rgba(250,203,14,1);
+}
+.Rectangle_11_b {
+	position: absolute;
+	overflow: visible;
+	width: 123px;
+	height: 51px;
+	left: 0px;
+	top: 0px;
+}
+#Text_ca {
+	left: 26px;
+	top: 9px;
+	position: absolute;
+	overflow: visible;
+	width: 70px;
+	white-space: nowrap;
+	text-align: left;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 23px;
+	color: rgba(0,0,0,1);
+}

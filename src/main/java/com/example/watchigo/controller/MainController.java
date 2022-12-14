@@ -17,9 +17,9 @@ public class MainController {
 
     private LoginService loginService;
 
-    @GetMapping("/")
+    @GetMapping("/login")
     public String main(Model m, HttpServletRequest request){
-        return "login.html";
+        return "/AdminSite/HomePage.html";
     }
 
     @ResponseBody

@@ -85,7 +85,7 @@ public class Exhibitcontroller {
 
             return  "ExhibitMain.html";
         }else{
-            returnValue = "login.html";
+            returnValue = "/AdminSite/HomePage.html";
         }
         return returnValue;
     }
@@ -112,7 +112,7 @@ public class Exhibitcontroller {
         //서비스 엔티티 추가후 주석 풀고 사용
         Page<ServiceZoneEntity> pageList = serviceZoneService.selectALLTable(selectKey, titleText,s1.get().getAseq(), pageable);
 
-        model.addAttribute("zonelist", pageList); //페이지 객체 리스트
+        model.addAttribute("userlist1", pageList); //페이지 객체 리스트
 
         return "ExhibitInsert :: #see";
     }
@@ -153,16 +153,16 @@ public class Exhibitcontroller {
         if(new SessionCheck().loginSessionCheck(request)){
         HttpSession session = request.getSession();
         Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
-        Page<ServiceZoneEntity> memberEntities1 = serviceZoneService.selectALLTable0(s1.get().getAseq(), pageable);
         pageable = PageRequest.of(page, 5, Sort.by("pk").descending());
+        Page<ServiceZoneEntity> memberEntities1 = serviceZoneService.selectALLTable0(s1.get().getAseq(), pageable);
         Pagination pagination1 = new Pagination(memberEntities1.getTotalPages(), page);
 
-        model.addAttribute("thisPage1", pagination1.getPage()); //현재 몇 페이지에 있는지 확인하기 위함
-        model.addAttribute("isNextSection1", pagination1.isNextSection()); //다음버튼 유무 확인하기 위함
-        model.addAttribute("isPrevSection1", pagination1.isPrevSection()); //이전버튼 유무 확인하기 위함
-        model.addAttribute("firstBtnIndex1", pagination1.getFirstBtnIndex()); //버튼 페이징 - 첫시작 인덱스
-        model.addAttribute("lastBtnIndex1", pagination1.getLastBtnIndex()); //섹션 변경 위함
-        model.addAttribute("totalPage1", pagination1.getTotalPages()); //끝 버튼 위함
+        model.addAttribute("thisPage", pagination1.getPage()); //현재 몇 페이지에 있는지 확인하기 위함
+        model.addAttribute("isNextSection", pagination1.isNextSection()); //다음버튼 유무 확인하기 위함
+        model.addAttribute("isPrevSection", pagination1.isPrevSection()); //이전버튼 유무 확인하기 위함
+        model.addAttribute("firstBtnIndex", pagination1.getFirstBtnIndex()); //버튼 페이징 - 첫시작 인덱스
+        model.addAttribute("lastBtnIndex", pagination1.getLastBtnIndex()); //섹션 변경 위함
+        model.addAttribute("totalPage", pagination1.getTotalPages()); //끝 버튼 위함
         //서비스 엔티티 추가후 주석 풀고 사용
 //            Page<GradeType1DataEntity> pageList = Gradetype1DataService.selectALLTable2(selectKey, titleText, pageable);
 
@@ -173,7 +173,7 @@ public class Exhibitcontroller {
         model.addAttribute("zonelist", s2); //페이지 객체 리스트
             return "ExhibitInsert.html";
         }else{
-            returnValue = "login.html";
+            returnValue = "/AdminSite/HomePage.html";
         }
         return returnValue;
     }
@@ -387,7 +387,7 @@ public class Exhibitcontroller {
         msg.put("video1",s1.get().getVideo1());
         msg.put("img1",s1.get().getImg1());
         msg.put("date",s1.get().getDate());
-        msg.put("zonename",s1.get().getZonename());
+        msg.put("zonename",s1.get().getName());
         msg.put("ex",s1.get().getEx());
         msg.put("center",s1.get().getPoint());
         msg.put("type",s1.get().getType());
