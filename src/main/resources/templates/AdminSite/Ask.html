@@ -6,6 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ask</title>
 	<style id="applicationStylesheet" type="text/css">
+	input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 		.mediaViewInfo {
 			--web-view-name: Ask;
 			--web-view-id: Ask;
@@ -95,6 +100,7 @@
 			left: 425px;
 			top: 395px;
 			overflow: visible;
+						z-index:10;
 		}
 		#Rectangle_24_ki {
 			fill: rgba(255,255,255,1);
@@ -113,10 +119,10 @@
 		.Rectangle_25 {
 			position: absolute;
 			overflow: visible;
-			width: 1070px;
-			height: 310px;
+			width: 460px;
+			height: 65px;
 			left: 0px;
-			top: 120px;
+			top: 112px;
 		}
 		#Rectangle_26 {
 			fill: rgba(255,255,255,1);
@@ -214,7 +220,7 @@
 			overflow: visible;
 			width: 205px;
 			height: 65px;
-			left: 763px;
+			left: 1000px;
 			top: 960px;
 		}
 		#Line_9 {
@@ -3645,7 +3651,7 @@
 <div id="Ask">
 	<div id="BG_kd">
 		<img id="asia-gc4b8cce51_1920" src="/img/AdminSite/asia-gc4b8cce51_1920.png">
-			
+
 		<svg class="Rectangle_50_kg">
 			<linearGradient id="Rectangle_50_kg" spreadMethod="pad" x1="0.5" x2="0.5" y1="0" y2="1">
 				<stop offset="0" stop-color="#000" stop-opacity="0"></stop>
@@ -3656,58 +3662,50 @@
 		</svg>
 	</div>
 	<div id="Fields">
-		<svg class="Rectangle_24_ki">
-			<rect id="Rectangle_24_ki" rx="6" ry="6" x="0" y="0" width="1070" height="65">
-			</rect>
-		</svg>
-		<svg class="Rectangle_25">
-			<rect id="Rectangle_25" rx="6" ry="6" x="0" y="0" width="1070" height="310">
-			</rect>
-		</svg>
-		<svg class="Rectangle_26">
-			<rect id="Rectangle_26" rx="6" ry="6" x="0" y="0" width="460" height="65">
-			</rect>
-		</svg>
-		<svg class="Rectangle_27">
-			<rect id="Rectangle_27" rx="6" ry="6" x="0" y="0" width="460" height="65">
-			</rect>
-		</svg>
-		<svg class="Rectangle_28">
-			<rect id="Rectangle_28" rx="6" ry="6" x="0" y="0" width="205" height="65">
-			</rect>
-		</svg>
-		<svg class="Rectangle_59">
-			<rect id="Rectangle_59" rx="6" ry="6" x="0" y="0" width="205" height="65">
-			</rect>
-		</svg>
-		<svg class="Rectangle_29">
-			<rect id="Rectangle_29" rx="6" ry="6" x="0" y="0" width="205" height="65">
-			</rect>
-		</svg>
-		<svg class="Rectangle_57">
-			<rect id="Rectangle_57" rx="6" ry="6" x="0" y="0" width="390" height="65">
-			</rect>
-		</svg>
-		<svg class="Rectangle_30">
-			<rect id="Rectangle_30" rx="6" ry="6" x="0" y="0" width="205" height="65">
-			</rect>
-		</svg>
-		<svg class="Rectangle_58">
-			<rect id="Rectangle_58" rx="6" ry="6" x="0" y="0" width="205" height="65">
-			</rect>
-		</svg>
-		<svg class="Rectangle_60">
-			<rect id="Rectangle_60" rx="6" ry="6" x="0" y="0" width="205" height="65">
-			</rect>
-		</svg>
-		<svg class="Line_9" viewBox="0 0 13 5">
-			<path id="Line_9" d="M 0 0 L 13 0">
-			</path>
-		</svg>
-		<svg class="Line_10" viewBox="0 0 13 5">
-			<path id="Line_10" d="M 0 0 L 13 0">
-			</path>
-		</svg>
+		<div>
+			<input type="text" style="padding: 15px; width:1200px; height: 60px; border-radius: 10px; font-size: 20px;"
+				   id="title" placeholder="제목을 입력하세요.">
+		</div>
+		<div class="Rectangle_25">
+<!--			내용 입력 폼-->
+			<textarea style="padding: 15px; width:1200px; height: 300px; border-radius: 10px; font-size: 20px;"
+					  id="content" cols="30" rows="10" placeholder="문의내용을 입력하세요."></textarea>
+		</div>
+		<div class="Rectangle_26">
+<!--			이름 입력폼-->
+			<input type="text" style="padding: 15px; width: 300px; height: 60px; border-radius: 10px; font-size: 20px;"
+				   id="name" placeholder="이름을 입력하세요.">
+		</div>
+		<div class="Rectangle_27">
+<!--			비밀번호 입력폼-->
+			<input type="password" style="padding: 15px; width: 300px; height: 60px; border-radius: 10px; font-size: 20px;"
+				   id="password" placeholder="비밀번호를 입력하세요.">
+		</div>
+		<div class="Rectangle_28">
+<!--			연락처 입력폼-->
+			<input type="number" style="padding: 15px; width: 300px; height: 60px; border-radius: 10px; font-size: 20px;"
+				   id="phonenumber" placeholder="연락처를 입력하세요." maxlength="11">
+		</div>
+		<div class="Rectangle_59">
+<!--			이메일 입력폼-->
+			<input type="text" style="padding: 15px; width: 300px; height: 60px; border-radius: 10px; font-size: 20px;"
+				   id="email2" placeholder="이메일을 입력하세요.">
+		</div>
+		<div class="Rectangle_60">
+			<button id="btnask" style="width: 205px; cursor:pointer;
+    height: 65px;
+    border-radius: 6px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 20px;
+    background: rgba(250,203,14,1);">
+				문의하기
+			</button>
+		</div>
+		<span hidden id="cknum">
+			0
+		</span>
+
 	</div>
 	<div id="Text_kv">
 		<div id="Text_kw">
@@ -3731,9 +3729,9 @@
 		<div id="Text_lb">
 			<span>이메일</span>
 		</div>
-		<div id="Text_lc">
-			<span>취소</span>
-		</div>
+<!--		<div id="Text_lc">-->
+<!--			<span>취소</span>-->
+<!--		</div>-->
 		<div id="Text_ld">
 			<span>문의하기</span>
 		</div>
@@ -3789,7 +3787,7 @@
 			</rect>
 		</svg>
 		<img onclick="home()" id="Logo_lk" src="/img/AdminSite/Logo_lk.png">
-			
+
 		<div id="Group_2_ll">
 			<div onclick="Intro()" id="Text_lm">
 				<span>회사소개</span>
@@ -3815,5 +3813,49 @@
 		</div>
 	</div>
 </div>
+<script>
+	const title = document.getElementById("title");
+	const content = document.getElementById("content");
+	const name = document.getElementById("name");
+	const password = document.getElementById("password");
+	const phonenumber = document.getElementById("phonenumber");
+	const email2 = document.getElementById("email2");
+	const btnask = document.getElementById("btnask");
+
+	btnask.addEventListener("click", function(){
+		if(title.value == ""){
+			alert("제목을 입력하세요.");
+			title.focus();
+			return false;
+		}
+		if(content.value == ""){
+			alert("문의내용을 입력하세요.");
+			content.focus();
+			return false;
+		}
+		if(name.value == ""){
+			alert("이름을 입력하세요.");
+			name.focus();
+			return false;
+		}
+		if(password.value == ""){
+			alert("비밀번호를 입력하세요.");
+			password.focus();
+			return false;
+		}
+		if(phonenumber.value == ""){
+			alert("연락처를 입력하세요.");
+			phonenumber.focus();
+			return false;
+		}
+		if(email2.value === ""){
+			alert("이메일을 입력하세요.");
+			email.focus();
+			return false;
+		}
+		alert("문의가 등록되었습니다.");
+		location.reload();
+	});
+</script>
 </body>
 </html>
