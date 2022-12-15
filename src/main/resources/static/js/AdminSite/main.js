@@ -34,6 +34,18 @@ location.href="/upload"
 function userup(){
 location.href="/userup"
 }
+function Plan(){
+location.href="/Plan"
+}
+function Press_Release(){
+location.href="/Press_Release"
+}
+function QA(){
+location.href="/QA"
+}
+function FAQ(){
+location.href="/FAQ"
+}
 
 function log(){
 if(document.getElementById('ppp').innerText == "0" ){
