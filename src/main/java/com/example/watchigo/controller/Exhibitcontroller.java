@@ -85,7 +85,7 @@ public class Exhibitcontroller {
 
             return  "ExhibitMain.html";
         }else{
-            returnValue = "/AdminSite/HomePage.html";
+            returnValue = "AdminSite/Homepage.html";
         }
         return returnValue;
     }
@@ -173,7 +173,7 @@ public class Exhibitcontroller {
         model.addAttribute("zonelist", s2); //페이지 객체 리스트
             return "ExhibitInsert.html";
         }else{
-            returnValue = "/AdminSite/HomePage.html";
+            returnValue = "AdminSite/Homepage.html";
         }
         return returnValue;
     }

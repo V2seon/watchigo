@@ -24,6 +24,8 @@ document.getElementById('mainicon').src = asd;
 close_pop();
 close_pop1();
 close_pop2();
+document.getElementById('mainicon').style.width = "41px";
+document.getElementById('mainicon').style.height = "70px";
 }
 
 function semk3(asd){

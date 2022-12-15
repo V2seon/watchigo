@@ -81,7 +81,7 @@ public class ServiceZoneController {
 
             return  "ServicezoneMain.html";
         }else{
-            returnValue = "/AdminSite/HomePage.html";
+            returnValue = "AdminSite/Homepage.html";
         }
         return returnValue;
     }
@@ -121,7 +121,7 @@ public class ServiceZoneController {
             model.addAttribute("nowurl0", "/servicezone");
             return "ServicezoneInsert.html";
         }else{
-            returnValue = "/AdminSite/HomePage.html";
+            returnValue = "AdminSite/HomePage.html";
         }
         return returnValue;
     }
@@ -449,10 +449,6 @@ public class ServiceZoneController {
                                    @RequestParam(required = false, defaultValue = "", value = "a")int a,
                                    @RequestParam(required = false, defaultValue = "", value = "pkzonenum")Long zonepknum){
         HttpSession session = request.getSession();
-
-
-
-
 
         String state = "";
         if(a == 0){

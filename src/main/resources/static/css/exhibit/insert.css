@@ -502,7 +502,7 @@ box-shadow: inset 0px 0px 5px white;
 
 .bigbox{
 width:100%;
-height:110px;
+height:150px;
 display: flex;
 justify-content: center;
 align-items: center;
@@ -510,7 +510,7 @@ align-items: center;
 
 .basemarker{
 width: 106px;
-height: 100px;
+height: 140px;
 margin-left:10px;
 margin-right:10px;
 float:right;
