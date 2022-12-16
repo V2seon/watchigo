@@ -31,8 +31,8 @@ location.href="/IP"
 function upload(){
 location.href="/upload"
 }
-function userup(){
-location.href="/userup"
+function Post(){
+location.href="/Post"
 }
 function Plan(){
 location.href="/Plan"

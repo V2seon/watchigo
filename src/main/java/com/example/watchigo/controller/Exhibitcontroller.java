@@ -65,8 +65,9 @@ public class Exhibitcontroller {
 
             model.addAttribute("userlist", memberEntities); //페이지 객체 리스트
 
+
+            pageable = PageRequest.of(page, 100, Sort.by("pk").descending());
             Page<ServiceZoneEntity> memberEntities1 = serviceZoneService.selectALLTable0(s1.get().getAseq(), pageable);
-            pageable = PageRequest.of(page, 5, Sort.by("pk").descending());
             Pagination pagination1 = new Pagination(memberEntities1.getTotalPages(), page);
 
             model.addAttribute("thisPage1", pagination1.getPage()); //현재 몇 페이지에 있는지 확인하기 위함

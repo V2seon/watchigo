@@ -88,6 +88,11 @@ public class AdminSiteController {
         return "AdminSite/FAQ.html";
     }
 
+    @GetMapping("/Post")
+    public String Post(Model m, HttpServletRequest request){
+        return "/AdminSite/Post.html";
+    }
+
     @GetMapping("/upload")
     public String upload(Model m, HttpServletRequest request){
         return "/AdminSite/upload.html";

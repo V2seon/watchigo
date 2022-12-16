@@ -198,7 +198,7 @@
              src="/img/servicezone/close.png">
     </div>
     <div  class="uptable1">
-        <div style="width:100%; margin-auto;">
+        <div style="width:100%; height:100%;">
             <div style="display: flex; justify-content: center; align-items: center;">
                 <h1 style="float:left; color: #1475E5; font-weight: 700;">
                     SERVICE ZONE LIST
@@ -208,24 +208,22 @@
                 <div id="viewzonebox4" class="viewzonebox3">
                     <div style="display: flex; justify-content: center; align-items: center;">
                         <div class="exzoneview">
-                            <span class="zoneexname" >전라 남도 여수시</span>
-                            <div class="exbtn">
-                                빛이드는 펜션
-                            </div>
-                            <span class="zoneexname">전라 남도 나주시</span>
-                            <div class="exbtn">
-                                빛가람 전망대
-                            </div>
-                            <span class="zoneexname">광주광역시</span>
-                            <div class="exbtn">
-                                304카페
+                            <div th:if="${userlist1}!=null" th:each="Co : ${userlist1}">
+                                <span class="zoneexname" th:if="${Co.address}!= null"
+                                      th:text="${Co.address}"
+                                      th:value="${Co.address}">전라 남도 여수시</span>
+                                <div class="exbtn"th:if="${Co.address}!= null"
+                                     th:text="${Co.address}"
+                                     th:value="${Co.address}">
+                                    빛이드는 펜션
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div style=" display: flex;
                          justify-content: center;
                          align-items: center;">
-                        <div style="width:90%;">
+                        <div class="bb1">
                             <div class="zoneviewbox2" th:if="${userlist}!=null" th:each="Co : ${userlist}">
                                 <div class="tbox1">
                                     <div class="extype" th:if="${Co.type}== 시설물">
@@ -242,7 +240,7 @@
                                          th:value="${Co.zonename}">
                                     </div>
                                     <div class="exname1" th:if="${Co.name}!= null"
-                                         th:text="'시설물 이름 : ' +${Co.name}"
+                                         th:text="${Co.name}"
                                          th:value="${Co.name}">
                                     </div>
                                 </div>
