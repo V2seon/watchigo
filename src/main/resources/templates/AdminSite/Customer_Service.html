@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="utf-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -3664,7 +3664,10 @@
 	window.application = new Application();
 	</script>
 	<script src="/js/AdminSite/main.js"></script>
+	<script src="/js/AdminSite/Customer.js"></script>
 	<link rel="stylesheet" href="css/AdminSite/custom.css">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="https://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
 <div id="Customer_Service">
@@ -3684,30 +3687,75 @@
 		<rect id="Rectangle_38" rx="0" ry="0" x="0" y="0" width="1920" height="111">
 		</rect>
 	</svg>
-	<div class="cubox">
+	<div class="cubox" id="cubox">
 		<div>
-			<div class="box1">
-				<div class="no">
-					1
+			<div class="box1" th:if="${list}!=null" th:each="Co : ${list}">
+				<div class="no" th:if="${Co.aseq}!= null"
+					 th:text="${Co.aseq}"
+					 th:value="${Co.aseq}">
 				</div>
-				<div class="type">
-					공지
+				<div class="type"th:if="${Co.atype}!= null"
+					 th:text="${Co.atype}"
+					 th:value="${Co.atype}">
 				</div>
-				<div class="title">
-					WATCHIGO 홈페이지 개편 관련
+				<div class="title" th:if="${Co.atitle}!= null"
+					 th:text="${Co.atitle}"
+					 th:value="${Co.atitle}">
 				</div>
-				<div class="name">
-					최고관리자
+				<div class="name" th:if="${Co.aname}!= null"
+					 th:text="${Co.aname}"
+					 th:value="${Co.aname}">
 				</div>
-				<div class="date">
-					2022-11-30
+				<div class="date" th:if="${Co.adate}!= null"
+					 th:text="${Co.adate}"
+					 th:value="${Co.adate}">
 				</div>
-				<div class="state">
-					상담중
+				<div class="state" th:if="${Co.astate}!= null"
+					 th:text="${Co.astate}"
+					 th:value="${Co.astate}">
 				</div>
 			</div>
 			<div class="box2">
+				<div style="margin-top:20px; display: flex; justify-content: center; align-items: center;" class="card-footer clearfix">
+					<div class="page-item1" th:onclick="|javascript:paging(0)|">
+						<a class="page-link" aria-label="Previous">
+							<<
+						</a>
+					</div>
 
+					<div class="page-item1 prev-page" th:if="${isPrevSection}"
+						 th:value="${thisSection}" th:onclick="|javascript:paging(${firstBtnIndex}-1)|">
+						<a class="page-link" aria-label="Previous">
+							<
+						</a>
+					</div>
+
+					<!--            onclick 구현-->
+					<div th:each="page: ${#numbers.sequence(firstBtnIndex,lastBtnIndex)}"
+						 id="pageItem" class="page-item" th:onclick="|javascript:paging(${page})|"
+						 th:classappend="${thisPage} ==  ${page} ?  'active'" th:value="${page}">
+						<a class="page-link">
+							<span th:text="${page+1}"></span>
+						</a>
+					</div>
+					<!--            onclick 구현-->
+
+					<!--다음버튼2-->
+					<div class="page-item1 next-page" th:if="${isNextSection}"
+						 th:onclick="|javascript:paging(${lastBtnIndex}+1)|"
+						 th:value="${thisSection}">
+						<a class="page-link" aria-label="Next">
+							>
+						</a>
+					</div>
+					<!--다음버튼2-->
+
+					<div class="page-item1" th:onclick="|javascript:paging(${totalPage})|">
+						<a class="page-link" id="pageItem2" aria-label="Previous">
+							>>
+						</a>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="Footer_fm">

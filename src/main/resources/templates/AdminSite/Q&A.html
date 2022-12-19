@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-<meta charset="utf-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Q&A</title>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Customer Service</title>
 	<style id="applicationStylesheet" type="text/css">
 	.mediaViewInfo {
 		--web-view-name: Customer Service;
@@ -26,7 +26,6 @@
 		width: 1920px;
 		height: 1556px;
 		background-color: rgba(0,0,0,1);
-		overflow: hidden;
 		--web-view-name: Customer Service;
 		--web-view-id: Customer_Service;
 		--web-scale-on-resize: true;
@@ -63,7 +62,7 @@
 	#BG_em {
 		opacity: 0.5;
 		position: absolute;
-		width: 1930px;
+		width: 1920px;
 		height: 688px;
 		left: 0px;
 		top: 0px;
@@ -142,57 +141,6 @@
 		height: 111px;
 		left: 0px;
 		top: 615px;
-	}
-	#Rectangle_39 {
-		fill: rgba(200,233,233,0.878);
-		stroke: rgba(255,255,255,1);
-		stroke-width: 1px;
-		stroke-linejoin: miter;
-		stroke-linecap: butt;
-		stroke-miterlimit: 4;
-		shape-rendering: auto;
-	}
-	.Rectangle_39 {
-		position: absolute;
-		overflow: visible;
-		width: 1920px;
-		height: 85px;
-		left: 0px;
-		top: 1123px;
-	}
-	#Rectangle_104 {
-		fill: rgba(26,26,26,1);
-		stroke: rgba(255,255,255,1);
-		stroke-width: 1px;
-		stroke-linejoin: miter;
-		stroke-linecap: butt;
-		stroke-miterlimit: 4;
-		shape-rendering: auto;
-	}
-	.Rectangle_104 {
-		position: absolute;
-		overflow: visible;
-		width: 1920px;
-		height: 170px;
-		left: 0px;
-		top: 1293px;
-	}
-	#Rectangle_94 {
-		fill: rgba(200,233,233,0.878);
-		stroke: rgba(255,255,255,1);
-		stroke-width: 1px;
-		stroke-linejoin: miter;
-		stroke-linecap: butt;
-		stroke-miterlimit: 4;
-		shape-rendering: auto;
-	}
-	.Rectangle_94 {
-		position: absolute;
-		overflow: visible;
-		width: 1920px;
-		height: 85px;
-		left: 0px;
-		top: 1208px;
 	}
 	#Rectangle_93 {
 		fill: rgba(255,255,255,1);
@@ -395,7 +343,7 @@
 		color: rgba(0,0,0,1);
 	}
 	#Text_fc {
-		left: 390px;
+		left: 444px;
 		top: 1058px;
 		position: absolute;
 		overflow: visible;
@@ -409,7 +357,7 @@
 		color: rgba(0,0,0,1);
 	}
 	#Text_fd {
-		left: 810px;
+		left: 840px;
 		top: 1058px;
 		position: absolute;
 		overflow: visible;
@@ -423,7 +371,7 @@
 		color: rgba(0,0,0,1);
 	}
 	#Text_fe {
-		left: 1196px;
+		left: 1244px;
 		top: 1064px;
 		position: absolute;
 		overflow: visible;
@@ -437,7 +385,7 @@
 		color: rgba(0,0,0,1);
 	}
 	#Text_ff {
-		left: 1388px;
+		left: 1418px;
 		top: 1064px;
 		position: absolute;
 		overflow: visible;
@@ -451,7 +399,7 @@
 		color: rgba(0,0,0,1);
 	}
 	#Text_fg {
-		left: 1550px;
+		left: 1555px;
 		top: 1064px;
 		position: absolute;
 		overflow: visible;
@@ -465,7 +413,7 @@
 		color: rgba(0,0,0,1);
 	}
 	#NO {
-		left: 283px;
+		left: 303px;
 		top: 1062px;
 		position: absolute;
 		overflow: visible;
@@ -3716,15 +3664,15 @@
 	window.application = new Application();
 	</script>
 	<script src="/js/AdminSite/main.js"></script>
+	<script src="/js/AdminSite/Customer.js"></script>
+	<link rel="stylesheet" href="css/AdminSite/custom.css">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="https://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
 <div id="Customer_Service">
 	<img id="BG_em" src="/img/AdminSite/BG_em.png">
-		
-	<svg class="Menu" viewBox="0 0 1942 859">
-		<path id="Menu" d="M 0 0 L 1942 0 L 1942 859 L 0 859 L 0 0 Z">
-		</path>
-	</svg>
+
 	<div id="Searchbar">
 		<svg class="Rectangle_22">
 			<rect id="Rectangle_22" rx="2" ry="2" x="0" y="0" width="953.547" height="75">
@@ -3739,61 +3687,88 @@
 		<rect id="Rectangle_38" rx="0" ry="0" x="0" y="0" width="1920" height="111">
 		</rect>
 	</svg>
-	<svg class="Rectangle_39">
-		<rect id="Rectangle_39" rx="0" ry="0" x="0" y="0" width="1920" height="85">
-		</rect>
-	</svg>
-	<svg class="Rectangle_104">
-		<rect id="Rectangle_104" rx="0" ry="0" x="0" y="0" width="1920" height="170">
-		</rect>
-	</svg>
-	<svg class="Rectangle_94">
-		<rect id="Rectangle_94" rx="0" ry="0" x="0" y="0" width="1920" height="85">
-		</rect>
-	</svg>
+	<div class="cubox" id="cubox">
+		<div>
+			<div class="box1" th:if="${list}!=null" th:each="Co : ${list}">
+				<div class="no" th:if="${Co.aseq}!= null"
+					 th:text="${Co.aseq}"
+					 th:value="${Co.aseq}">
+				</div>
+				<div class="type"th:if="${Co.atype}!= null"
+					 th:text="${Co.atype}"
+					 th:value="${Co.atype}">
+				</div>
+				<div class="title" th:if="${Co.atitle}!= null"
+					 th:text="${Co.atitle}"
+					 th:value="${Co.atitle}">
+				</div>
+				<div class="name" th:if="${Co.aname}!= null"
+					 th:text="${Co.aname}"
+					 th:value="${Co.aname}">
+				</div>
+				<div class="date" th:if="${Co.adate}!= null"
+					 th:text="${Co.adate}"
+					 th:value="${Co.adate}">
+				</div>
+				<div class="state" th:if="${Co.astate}!= null"
+					 th:text="${Co.astate}"
+					 th:value="${Co.astate}">
+				</div>
+			</div>
+			<div class="box2">
+				<div style="margin-top:20px; display: flex; justify-content: center; align-items: center;" class="card-footer clearfix">
+					<div class="page-item1" th:onclick="|javascript:paging1(0)|">
+						<a class="page-link" aria-label="Previous">
+							<<
+						</a>
+					</div>
+
+					<div class="page-item1 prev-page" th:if="${isPrevSection}"
+						 th:value="${thisSection}" th:onclick="|javascript:paging1(${firstBtnIndex}-1)|">
+						<a class="page-link" aria-label="Previous">
+							<
+						</a>
+					</div>
+
+					<!--            onclick 구현-->
+					<div th:each="page: ${#numbers.sequence(firstBtnIndex,lastBtnIndex)}"
+						 id="pageItem" class="page-item" th:onclick="|javascript:paging1(${page})|"
+						 th:classappend="${thisPage} ==  ${page} ?  'active'" th:value="${page}">
+						<a class="page-link">
+							<span th:text="${page+1}"></span>
+						</a>
+					</div>
+					<!--            onclick 구현-->
+
+					<!--다음버튼2-->
+					<div class="page-item1 next-page" th:if="${isNextSection}"
+						 th:onclick="|javascript:paging1(${lastBtnIndex}+1)|"
+						 th:value="${thisSection}">
+						<a class="page-link" aria-label="Next">
+							>
+						</a>
+					</div>
+					<!--다음버튼2-->
+
+					<div class="page-item1" th:onclick="|javascript:paging1(${totalPage})|">
+						<a class="page-link" id="pageItem2" aria-label="Previous">
+							>>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="Footer_fm">
+			<div>
+				<span style="width:1920px; color:#FFFFFF; font-size:15px; margin-left:30px; margin-top:60px;">Copyright 2022. ELFE All rights reserved.</span>
+			</div>
+		</div>
+	</div>
 	<svg class="Rectangle_93">
 		<rect id="Rectangle_93" rx="0" ry="0" x="0" y="0" width="1920" height="83">
 		</rect>
 	</svg>
-	<div id="WATCHGO___">
-		<span>WATCHIGO 홈페이지 개편 관련</span>
-	</div>
-	<div id="n_1_2_3_4_5_6_7_8_9_10">
-		<span> < 1 ></span>
-	</div>
-	<div id="n__ey">
-		<span>구축문의 관련</span>
-	</div>
-	<div id="Text_ez">
-		<span>최고관리자</span>
-	</div>
-	<div id="Text_e">
-		<span>최고관리자</span>
-	</div>
-	<div id="n_022-11-30">
-		<span>2022-11-30</span>
-	</div>
-	<div id="n_022-11-30_e">
-		<span>2022-11-30</span>
-	</div>
-	<div id="Text_fa">
-		<span>공지</span>
-	</div>
-	<div id="n__e">
-		<span>-</span>
-	</div>
-	<div id="n__fa">
-		<span>-</span>
-	</div>
-	<div id="Text_fb">
-		<span>공지</span>
-	</div>
-	<div id="n__fb">
-		<span>-</span>
-	</div>
-	<div id="n__fc">
-		<span>-</span>
-	</div>
+
 	<div id="Text_fc">
 		<span>구분</span>
 	</div>
@@ -3833,22 +3808,14 @@
 	<div id="Text_fl">
 		<span>고객센터</span>
 	</div>
-	<div id="Footer_fm">
-		<svg class="Rectangle_15_fn">
-			<rect id="Rectangle_15_fn" rx="0" ry="0" x="0" y="0" width="1920" height="139">
-			</rect>
-		</svg>
-		<div id="Copyright_2022_ELFE_All_rights_fo">
-			<span>Copyright 2022. ELFE All rights reserved.</span>
-		</div>
-	</div>
+
 	<div id="Overhead_fp">
 		<svg class="Rectangle_24_fq">
 			<rect id="Rectangle_24_fq" rx="0" ry="0" x="0" y="0" width="1920" height="104">
 			</rect>
 		</svg>
 		<img onclick="home()" id="Logo_fr" src="/img/AdminSite/Logo_fr.png">
-			
+
 		<div id="Group_2_fs">
 			<div onclick="Intro()" id="Text_ft">
 				<span>회사소개</span>
