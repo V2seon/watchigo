@@ -18,11 +18,6 @@ public class AdminSiteController {
         return "AdminSite/Homepage.html";
     }
 
-    @GetMapping("/Customer_Service")
-    public String Customer_Service(Model m, HttpServletRequest request){
-        return "AdminSite/Customer_Service.html";
-    }
-
     @GetMapping("/Intro")
     public String Intro(Model m, HttpServletRequest request){
         return "AdminSite/Intro.html";
@@ -73,21 +68,6 @@ public class AdminSiteController {
         return "AdminSite/Register.html";
     }
 
-    @GetMapping("/Press_Release")
-    public String Press_Release(Model m, HttpServletRequest request){
-        return "AdminSite/Press_Release.html";
-    }
-
-    @GetMapping("/QA")
-    public String QA(Model m, HttpServletRequest request){
-        return "AdminSite/Q&A.html";
-    }
-
-    @GetMapping("/FAQ")
-    public String FAQ(Model m, HttpServletRequest request){
-        return "AdminSite/FAQ.html";
-    }
-
     @GetMapping("/Post")
     public String Post(Model m, HttpServletRequest request){
         return "/AdminSite/Post.html";
@@ -101,6 +81,29 @@ public class AdminSiteController {
     @GetMapping("/userup")
     public String userup(Model m, HttpServletRequest request){
         return "/AdminSite/userup.html";
+    }
+
+
+
+
+    @GetMapping("/Customer_Service")
+    public String Customer_Service(Model m, HttpServletRequest request){
+        return "AdminSite/Customer_Service.html";
+    }
+
+    @GetMapping("/Press_Release")
+    public String Press_Release(Model m, HttpServletRequest request){
+        return "AdminSite/Press_Release.html";
+    }
+
+    @GetMapping("/QA")
+    public String QA(Model m, HttpServletRequest request){
+        return "AdminSite/Q&A.html";
+    }
+
+    @GetMapping("/FAQ")
+    public String FAQ(Model m, HttpServletRequest request){
+        return "AdminSite/FAQ.html";
     }
 
 
