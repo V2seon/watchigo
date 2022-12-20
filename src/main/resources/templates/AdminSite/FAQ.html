@@ -3700,7 +3700,7 @@
 				</div>
 				<div class="title" th:if="${Co.atitle}!= null"
 					 th:text="${Co.atitle}"
-					 th:value="${Co.atitle}">
+					 th:value="${Co.atitle}" th:onclick="|javascript:search(${Co.apk})|">
 				</div>
 				<div class="name" th:if="${Co.aname}!= null"
 					 th:text="${Co.aname}"

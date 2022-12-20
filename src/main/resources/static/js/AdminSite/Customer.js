@@ -174,3 +174,7 @@ function paging3(pageValue){
     });
 
 }
+
+function search(pk){
+console.log(pk);
+}

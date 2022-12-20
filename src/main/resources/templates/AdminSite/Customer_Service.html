@@ -508,6 +508,18 @@
 		font-size: 70px;
 		color: rgba(250,203,14,1);
 	}
+	#Text_fj1 {
+		left: 1573px;
+		top: 970px;
+		position: absolute;
+		width: 281px;
+		font-weight: bold;
+		font-size: 20px;
+		color: #FFFFFF;
+		border:1px solid gray;
+		border-radius:6px;
+		background-color:
+	}
 	#Have_a_question {
 		left: 483px;
 		top: 294px;
@@ -3700,7 +3712,7 @@
 				</div>
 				<div class="title" th:if="${Co.atitle}!= null"
 					 th:text="${Co.atitle}"
-					 th:value="${Co.atitle}">
+					 th:value="${Co.atitle}" th:onclick="|javascript:search(${Co.apk})|">
 				</div>
 				<div class="name" th:if="${Co.aname}!= null"
 					 th:text="${Co.aname}"
@@ -3801,6 +3813,9 @@
 	</div>
 	<div id="Text_fj">
 		<span>공지사항</span>
+	</div>
+	<div id="Text_fj1">
+		<span>글작성</span>
 	</div>
 	<div id="Have_a_question">
 		<span>Have a question?</span>

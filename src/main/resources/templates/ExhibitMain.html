@@ -212,9 +212,9 @@
                                 <span class="zoneexname" th:if="${Co.address}!= null"
                                       th:text="${Co.address}"
                                       th:value="${Co.address}">전라 남도 여수시</span>
-                                <div class="exbtn"th:if="${Co.address}!= null"
-                                     th:text="${Co.address}"
-                                     th:value="${Co.address}">
+                                <div class="exbtn"th:if="${Co.zonename}!= null"
+                                     th:text="${Co.zonename}"
+                                     th:value="${Co.zonename}" th:onclick="|javascript:search(${Co.pk})|">
                                     빛이드는 펜션
                                 </div>
                             </div>
@@ -223,7 +223,7 @@
                     <div style=" display: flex;
                          justify-content: center;
                          align-items: center;">
-                        <div class="bb1">
+                        <div class="bb1" id="bb1">
                             <div class="zoneviewbox2" th:if="${userlist}!=null" th:each="Co : ${userlist}">
                                 <div class="tbox1">
                                     <div class="extype" th:if="${Co.type}== 시설물">

@@ -761,3 +761,52 @@ $.ajax({
 });
 
 }
+
+// 전시/시설물이 등록된 서비스존 리스트 보기
+function search(pk){
+    const myPageQuery = new URLSearchParams(location.search);
+
+    var titleText = myPageQuery.get('titleText');
+    var selectKey = myPageQuery.get('selectKey');
+
+    $("#load").show();
+
+    //문자열 "null" 이 들어가는것 방지하기 위해 값이 null 이라면 공백 문자열 대입
+    if(titleText == null){
+        titleText = "";
+    }
+
+    // 대입 끝
+    var pageValue = 0;
+    //url 주소 바꾸기
+    const params = {
+        page: pageValue,
+        selectKey: selectKey,
+        titleText: titleText
+    }
+    const queryString = new URLSearchParams(params).toString();
+    const replaceUri = location.pathname + '?' + queryString;
+    history.pushState(null, '', replaceUri);
+    //url 주소 바꾸기 끝
+
+    var querydata = { "page" : pageValue, "selectKey":selectKey, "titleText":titleText, "pk":pk};
+
+    $.ajax({
+        url: "/exhibit_search2",
+        data: querydata,
+        type:"POST",
+    }).done(function (fragment) {
+        $("#bb1").replaceWith(fragment);
+        console.log(fragment);
+        $("#load").hide();
+
+    });
+
+    // $.ajax({
+    //     url: "/afc/afc01Paging",
+    //     data: querydata,
+    //     type:"POST",
+    // }).done(function (fragment) {
+    //     $("#pagination").replaceWith(fragment);
+    // });
+}

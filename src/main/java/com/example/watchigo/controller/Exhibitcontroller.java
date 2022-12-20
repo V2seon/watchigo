@@ -91,6 +91,7 @@ public class Exhibitcontroller {
         return returnValue;
     }
 
+
     @RequestMapping(value = "/exhibit_search", method = RequestMethod.POST)
     public String servicezone_search(Model model, HttpServletRequest request,
                                      @RequestParam(required = false ,defaultValue = "0" , value="page") int page,
@@ -140,11 +141,34 @@ public class Exhibitcontroller {
         //서비스 엔티티 추가후 주석 풀고 사용
         Page<ExhibitEntity> pageList = exhibitService.selectALLTable(selectKey, titleText,s1.get().getAseq(), pageable);
 
-        System.out.println(pageList);
-
         model.addAttribute("userlist", pageList); //페이지 객체 리스트
 
         return "ExhibitMain :: #viewzonebox1";
+    }
+
+    @RequestMapping(value = "/exhibit_search2", method = RequestMethod.POST)
+    public String servicezone_search2(Model model, HttpServletRequest request,
+                                     @RequestParam(required = false ,defaultValue = "0" , value="page") int page,
+                                     @RequestParam(required = false ,defaultValue = "" , value="selectKey") String selectKey,
+                                     @RequestParam(required = false ,defaultValue = "" , value="titleText") String titleText,
+                                     @RequestParam(required = false ,defaultValue = "" , value="pk") Long pk){
+        HttpSession session = request.getSession();
+        Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
+
+        Pageable pageable = PageRequest.of(page, 100,Sort.by("pk").descending());
+        Page<ExhibitEntity> exhibitEntities = exhibitRepository.findAseqApk(s1.get().getAseq(),pk,pageable);
+        Pagination pagination = new Pagination(exhibitEntities.getTotalPages(), page);
+
+        model.addAttribute("thisPage", pagination.getPage()); //현재 몇 페이지에 있는지 확인하기 위함
+        model.addAttribute("isNextSection", pagination.isNextSection()); //다음버튼 유무 확인하기 위함
+        model.addAttribute("isPrevSection", pagination.isPrevSection()); //이전버튼 유무 확인하기 위함
+        model.addAttribute("firstBtnIndex", pagination.getFirstBtnIndex()); //버튼 페이징 - 첫시작 인덱스
+        model.addAttribute("lastBtnIndex", pagination.getLastBtnIndex()); //섹션 변경 위함
+        model.addAttribute("totalPage", pagination.getTotalPages()); //끝 버튼 위함
+
+        model.addAttribute("userlist", exhibitEntities); //페이지 객체 리스트
+
+        return "ExhibitMain :: #bb1";
     }
 
     @GetMapping("/newexhibit")

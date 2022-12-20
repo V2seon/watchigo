@@ -23,5 +23,7 @@ public interface ExhibitRepository extends JpaRepository<ExhibitEntity, Long>, Q
     @Query(value = "SELECT * FROM exhibit " , nativeQuery = true)
     Page<ExhibitEntity> findAll(Pageable pageable);
 
+    @Query(value = "SELECT * FROM exhibit where userseq =:seq and pk=:pk" , nativeQuery = true)
+    Page<ExhibitEntity> findAseqApk(Long seq, Long pk, Pageable pageable);
 
 }
