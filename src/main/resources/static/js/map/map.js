@@ -342,7 +342,7 @@ if(serviceszone == null || serviceszone == ""){
            text: "이미지를 등록해주세요.",
            icon: "info" //"info,success,warning,error" 중 택1
           });
-}else if(marker1 == "/img/marker/img_2.png"){
+}else if(marker1 == null || marker1 == ""){
      swal({
            text: "마커를 선택해주세요.",
            icon: "info" //"info,success,warning,error" 중 택1
@@ -490,7 +490,7 @@ if(serviceszone == null || serviceszone == ""){
            text: "이미지를 등록해주세요.",
            icon: "info" //"info,success,warning,error" 중 택1
           });
-}else if(marker1 == "/img/marker/img_2.png"){
+}else if(marker1 == null || marker1 == ""){
       swal({
             text: "마커를 선택해주세요.",
             icon: "info" //"info,success,warning,error" 중 택1
@@ -735,7 +735,7 @@ $.ajax({
             document.getElementById('zonetext1').innerText = result.ex;
             document.getElementById('viewvideo').src = "/file?fileName="+result.date+"/"+result.video1;
             document.getElementById('viewimg').src = "/file?fileName="+result.date+"/"+result.img1;
-//            document.getElementById('pknum').innerText = result.pk;
+            document.getElementById('pknum').innerText = result.pk;
 //            console.log(document.getElementById('pknum').innerText);
 //            document.getElementById('marker1').src = result.marker;
             document.getElementById('zoombtn1').style.display = "none";
@@ -761,7 +761,7 @@ $.ajax({
 function deletezone(){
 swal({
   title: "서비스존 삭제",
-  text: "해당 서비스존을 삭제하시겠습니까?",
+  text: "삭제시 해당 서비스존 전시/시설물도 삭제됩니다.",
   icon: "warning",
   closeOnClickOutside : false,
   buttons : ["취소", "삭제"],
@@ -792,6 +792,29 @@ swal({
 
 }
 
+//수정페이지 이동
+function editgo(){
+var pk = document.getElementById('pknum').innerText;
+console.log("여기");
+let sendData = {
+            "pk" : pk
+}
+$.ajax({
+            url      : "/editgo",
+            data     : sendData,
+            type     : "GET",
+            success : function(result) {
+                location.href= "/editgo1";
+            },
+            error:function(request,status,error){
+                swal({
+                    text: "이동중 서버에 문제가 발생했습니다.",
+                    icon: "warning" //"info,success,warning,error" 중 택1
+                });
+            }
+        });
+}
+
 //서비스존 수정
 function editzone(){
 marker1 = document.getElementById('marker1').src;
@@ -816,15 +839,20 @@ if(serviceszone == null || serviceszone == ""){
           icon: "info" //"info,success,warning,error" 중 택1
           });
 }else if(viewzonename.value == null || viewzonename.value == ""){
-     swal({
-           text: "서비스존 이름을 입력해주세요.",
-           icon: "info" //"info,success,warning,error" 중 택1
-           });
+    swal({
+          text: "서비스존 이름을 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
 }else if(viewzoneex.value == null || viewzoneex.value == ""){
-      swal({
-            text: "서비스존 설명을 입력해주세요.",
-            icon: "info" //"info,success,warning,error" 중 택1
-            });
+    swal({
+          text: "서비스존 설명을 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(marker1 == null || marker1 == ""){
+    swal({
+          text: "마커를 선택해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
 }else{
 swal({
   title: "서비스존 수정",

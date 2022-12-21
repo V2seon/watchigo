@@ -410,20 +410,63 @@ public class ServiceZoneController {
         return msg;
     }
 
+    @GetMapping("/editgo")
+    public String editgo(Model model,HttpServletRequest request,
+                         @RequestParam(required = false, defaultValue = "", value = "pk") Long pk){
+        HttpSession session = request.getSession();
+        session.setAttribute("pk",pk);
+        return "ServicezoneEdit.html";
+    }
+
+    @GetMapping("/editgo1")
+    public String editgo(Model model,HttpServletRequest request){
+        String returnValue = "";
+        HttpSession session = request.getSession();
+        if(new SessionCheck().loginSessionCheck(request)){
+            model.addAttribute("nowurl0", "/servicezone");
+            Long pk = (Long) session.getAttribute("pk");
+            Optional<ServiceZoneEntity> s1 = serviceZoneRepository.findById(pk);
+            model.addAttribute("type",s1.get().getType());
+            model.addAttribute("address",s1.get().getAddress());
+            model.addAttribute("address1",s1.get().getAddress1());
+            model.addAttribute("zonename",s1.get().getZonename());
+            model.addAttribute("zoneex",s1.get().getEx());
+            model.addAttribute("marker",s1.get().getMarker());
+            model.addAttribute("date",s1.get().getDate());
+            model.addAttribute("vid1",s1.get().getVideo1());
+            model.addAttribute("vid2",s1.get().getVideo2());
+            model.addAttribute("img1",s1.get().getImg1());
+            model.addAttribute("img2",s1.get().getImg2());
+            model.addAttribute("img3",s1.get().getImg3());
+            model.addAttribute("img4",s1.get().getImg4());
+            model.addAttribute("img5",s1.get().getImg5());
+            model.addAttribute("img6",s1.get().getImg6());
+            model.addAttribute("state",s1.get().getState());
+            model.addAttribute("pk",pk);
+
+            model.addAttribute("s1",s1);
+            returnValue = "ServicezoneEdit.html";
+        }else{
+            returnValue = "AdminSite/HomePage.html";
+        }
+        return returnValue;
+    }
+
     @PostMapping("/deletezone")
     public String delete(@RequestParam(required = false, defaultValue = "", value = "pk")Long pk){
-        System.out.println("인덱스값");
-        System.out.println(pk);
         Optional<ServiceZoneEntity> s1 = serviceZoneRepository.findById(pk);
         if(s1.get().getType() == 0){
             serviceZoneRepository.deleteById(pk);
             rentangleRepository.deleteById(pk);
+            exhibitRepository.deleteBypk(pk);
         }else if(s1.get().getType() == 1){
             serviceZoneRepository.deleteById(pk);
             circleRepository.deleteById(pk);
+            exhibitRepository.deleteBypk(pk);
         }else if(s1.get().getType() == 2){
             serviceZoneRepository.deleteById(pk);
             polygonRepository.deleteByApk(pk);
+            exhibitRepository.deleteBypk(pk);
         }
         return "ServicezoneMain :: Success";
     }

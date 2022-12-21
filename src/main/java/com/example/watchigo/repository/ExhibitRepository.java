@@ -5,9 +5,12 @@ import com.example.watchigo.entity.ServiceZoneEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +20,11 @@ public interface ExhibitRepository extends JpaRepository<ExhibitEntity, Long>, Q
     Page<ExhibitEntity> findAseq(Long seq, Pageable pageable);
 
     Optional<ExhibitEntity> findByname(String name);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM exhibit WHERE pk=:pk", nativeQuery = true)
+    Integer deleteBypk(Long pk);
 
     List<ExhibitEntity> findByuserseq(Long userseq);
 

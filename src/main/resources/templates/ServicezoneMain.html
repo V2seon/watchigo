@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="css/main/main.css">
+    <link rel="stylesheet" href="css/main/main.css?Version=1">
     <link rel="stylesheet" href="css/nav/nav.css">
     <link rel="stylesheet" href="css/servicezone/main.css">
 </head>
@@ -112,6 +112,17 @@
         <div id="viewzoneimg" class="viewzonevideo">
             <img id="viewimg" class="viewimg"  src="/img/plus.png">
         </div>
+        <div class="bbox">
+            <div class="mbox">
+                <div class="btn">
+                    <img src="/img/AIvideo/13.png" onclick="editgo()">
+                </div>
+<!--                <div style="width:20px;"></div>-->
+<!--                <div class="btn">-->
+<!--                    <img src="/img/AIvideo/del.png" onclick="deletezone()">-->
+<!--                </div>-->
+            </div>
+        </div>
         <div>
             <span id="pknum" hidden></span>
             <p class="edit" style="display:none;">
@@ -135,7 +146,7 @@
 </div>
 
 
-<div id="load"> <img src="/img/spinner.gif" alt="loading"></div>
+<div id="load"><img src="/img/spinner.gif" alt="loading"></div>
 
 <div id="myModal" class="modal">
     <!-- Modal content -->
@@ -373,7 +384,7 @@ function close_pop2(flag) {
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <!--주소 검색 및 내위치-->
 <!--영역 그리기-->
-<script src="/js/map/map.js"></script>
+<script src="/js/map/map.js?Version=1"></script>
 <!-- 비디오 및 이미지 업로드 -->
 <script src="/js/file/file.js"></script>
 <script src="/js/file/filesev.js"></script>

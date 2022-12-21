@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>WATCHIGO</title>
+
+    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/main/main.css">
+    <link rel="stylesheet" href="css/nav/nav.css">
+    <link rel="stylesheet" href="css/servicezone/insert.css">
+</head>
+<body>
+<div th:insert="common/navbar.html"></div>
+<div class="map_wrap">
+    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+    <div id="menu_wrap" class="bg_white">
+        <div class="option" style="height:120px;">
+            <div>
+                <input class="srad" type="text" placeholder="아파트, 지역 및 학교명으로 검색 " value="" id="keyword" size="15" onkeyup="if(window.event.keyCode==13){sss()}">
+            </div>
+            <img class="backbtn99" onclick="backbtn()" src="/img/srinsert/Arrow.png">
+            <span class="t2">SERVICE ZONE SETTING ────────</span>
+        </div>
+        <div id="uptable">
+            <div>
+                <div class="ser2">
+                    <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">영역선택 툴</span>
+                    <div style="width:100%">
+                        <div class="boxname">
+                            <div style="float:left;">
+                                <div style="font-size:18px;" class="drwbtn" onclick="selectOverlay('RECTANGLE')">
+                                    <img id="reimg" th:src="${type == 0 ? '/img/srinsert/RentangleBlue.png' : '/img/srinsert/Rentangle.png'} ">
+                                </div>
+                            </div>
+                            <div style="float:left; margin-left:20px;">
+                                <div style="font-size:18px;" class="drwbtn" onclick="selectOverlay('CIRCLE')">
+                                    <img id="ciimg" th:src="${type== 1 ? '/img/srinsert/CircleBlue.png' : '/img/srinsert/Circle.png'}">
+                                </div>
+                            </div>
+                            <div style="float:left; margin-left:20px;">
+                                <div style="font-size:18px;" class="drwbtn" onclick="selectOverlay('POLYGON')">
+                                    <img id="plimg" th:src="${type == 2 ? '/img/srinsert/PolygonBlue.png' : '/img/srinsert/Polygon.png'}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="zguidebox">
+                        <span class="zguide">영역선택 툴을 선택해주세요</span>
+                    </div>
+                    <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">설정영역주소</span>
+                    <div>
+                        <input th:value="${address}" style="margin-top:10px;" id="address" class="inte" type="text" placeholder="설정영역 입력">
+                        <input th:value="${address1}" style="margin-bottom:40px;" id="address1" class="inte" type="text" placeholder="상세주소 입력">
+                    </div>
+                    <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">서비스존 이름</span>
+                    <div>
+                        <div>
+                            <input th:value="${zonename}" style="margin-top:10px; margin-bottom:40px;" id="zonename" class="inte" type="text" placeholder="서비스존 이름">
+                        </div>
+                    </div>
+                    <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">서비스존 설명</span>
+                    <div>
+                        <textarea th:value="${zoneex}" th:text="${zoneex}" style="margin-bottom:40px;" id="zoneex" class="inte1" type="text" placeholder="서비스존 설명"></textarea>
+                    </div>
+                    <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">서비스존 동영상 업로드</span>
+                    <div style="width:93.5%; margin-top:10px; margin-bottom:40px; height:180px; border: 1px dashed #E0E0E0; border-radius: 8px;">
+                        <div class="vbox">
+                            <div id="uploadvideo1" class="uploadvideo">
+                                <input id="realUploadvideo1"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
+                                <div style="position:relative;" onclick="video1()">
+                                    <img th:style="${vid1 ==null ? 'display:block' : 'display:none'}" id="uploadview" class="invimg1" src="/img/srinsert/upload.png">
+                                    <video id="inv1" class="inv1"  th:src="'/file?fileName='+${date}+'/'+${vid1}"
+                                           onerror="this.onerror=null; this.src='';"></video>
+                                </div>
+                                <div th:style="${vid1 !='' ? 'display:block' : 'display:none'}" class="delete" id="delete1">
+                                    <img id="delbtn1" onclick="delete1()" class="delbtn" src="/img/srinsert/delete.png">
+                                </div>
+                            </div>
+                            <div style="width:20px;"></div>
+                            <div id="uploadvideo2" class="uploadvideo">
+                                <input id="realUploadvideo2"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
+                                <div onclick="video2()">
+                                    <img th:style="${vid2 ==null ? 'display:block' : 'display:none'}" id="uploadview2" class="invimg1" src="/img/srinsert/upload.png">
+                                    <video id="inv2" class="inv1" th:src="'/file?fileName='+${date}+'/'+${vid2}"
+                                           onerror="this.onerror=null; this.src='';"></video>
+                                </div>
+                                <div th:style="${vid2 !='' ? 'display:block' : 'display:none'}" class="delete" id="delete2">
+                                    <img id="delbtn2" onclick="delete2()" class="delbtn" src="/img/srinsert/delete.png">
+                                </div>
+                            </div>
+                        </div>
+                        <span style="text-align:center; display: flex; justify-content: center; align-items: center;
+                                    color: #BDBDBD;font-style: normal; font-weight: 300 font-size: 14px;">
+                            <img src="/img/srinsert/videoicon.png">&nbsp;동영상은 최대 2개까지 등록 가능합니다.
+                        </span>
+                    </div>
+                    <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">서비스존 이미지 업로드</span>
+
+                    <div style="width:93.5%; margin-top:10px; margin-bottom:40px; height:420px; border: 1px dashed #E0E0E0; border-radius: 8px;">
+                        <div class="ibox">
+                            <div id="uploadimg1" class="uploadimg">
+                                <input id="upimg1" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                <div style="position:relative;" onclick="img1()">
+                                    <img th:style="${img1 !=null ? 'display:block' : 'display:none'}" class="img" id="img1"
+                                         th:src="'/file?fileName='+${date}+'/'+${img1}"
+                                         onerror="this.onerror=null; this.src='/img/srinsert/upload.png';">
+                                </div>
+                                <div th:style="${img1 !='' ? 'display:block' : 'display:none'}" class="delete"  id="delete3">
+                                    <img id="delbtn3" onclick="delete3()" class="delbtn" src="/img/srinsert/delete.png">
+                                </div>
+                            </div>
+                            <div style="width:20px;"></div>
+
+                            <div id="uploadimg2" class="uploadimg">
+                                <input id="upimg2" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                <div style="position:relative;" onclick="img2()">
+                                    <img th:style="${img2 !=null ? 'display:block' : 'display:none'}" class="img" id="img2"
+                                         th:src="'/file?fileName='+${date}+'/'+${img2}"
+                                         onerror="this.onerror=null; this.src='/img/srinsert/upload.png';">
+                                </div>
+                                <div th:style="${img2 !='' ? 'display:block' : 'display:none'}" class="delete" id="delete4">
+                                    <img id="delbtn4" onclick="delete4()" class="delbtn" src="/img/srinsert/delete.png">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ibox">
+                            <div id="uploadimg3" class="uploadimg">
+                                <input id="upimg3" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                <div style="position:relative;" onclick="img3()">
+                                    <img th:style="${img3 !=null ? 'display:block' : 'display:none'}" class="img" id="img3"
+                                         th:src="'/file?fileName='+${date}+'/'+${img3}"
+                                         onerror="this.onerror=null; this.src='/img/srinsert/upload.png';">
+                                </div>
+                                <div th:style="${img3 !='' ? 'display:block' : 'display:none'}" class="delete" id="delete5">
+                                    <img id="delbtn5" onclick="delete5()" class="delbtn" src="/img/srinsert/delete.png">
+                                </div>
+                            </div>
+                            <div style="width:20px;"></div>
+                            <div id="uploadimg4" class="uploadimg">
+                                <input id="upimg4" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                <div style="position:relative;" onclick="img4()">
+                                    <img th:style="${img4 !=null ? 'display:block' : 'display:none'}" class="img" id="img4"
+                                         th:src="'/file?fileName='+${date}+'/'+${img4}"
+                                         onerror="this.onerror=null; this.src='/img/srinsert/upload.png';">
+                                </div>
+                                <div th:style="${img4 !='' ? 'display:block' : 'display:none'}" class="delete" id="delete6">
+                                    <img id="delbtn6" onclick="delete6()" class="delbtn" src="/img/srinsert/delete.png">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ibox">
+                            <div id="uploadimg5" class="uploadimg">
+                                <input id="upimg5" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                <div style="position:relative;" onclick="img5()">
+                                    <img th:style="${img5 !=null ? 'display:block' : 'display:none'}" class="img" id="img5"
+                                         th:src="'/file?fileName='+${date}+'/'+${img5}"
+                                         onerror="this.onerror=null; this.src='/img/srinsert/upload.png';">
+                                </div>
+                                <div style="width:20px;"></div>
+                                <div th:style="${img5 !='' ? 'display:block' : 'display:none'}" class="delete" id="delete7">
+                                    <img id="delbtn7" onclick="delete7()" class="delbtn" src="/img/srinsert/delete.png">
+                                </div>
+                            </div>
+                            <div style="width:20px;"></div>
+                            <div id="uploadimg6" class="uploadimg">
+                                <input id="upimg6" class="upimg" type="file" required style="display:none;" accept="image/*">
+                                <div style="position:relative;" onclick="img6()">
+                                    <img th:style="${img6 !=null ? 'display:block' : 'display:none'}" class="img" id="img6"
+                                         th:src="'/file?fileName='+${date}+'/'+${img6}"
+                                         onerror="this.onerror=null; this.src='/img/srinsert/upload.png';">
+                                </div>
+                                <div th:style="${img6 !='' ? 'display:block' : 'display:none'}" class="delete" id="delete8">
+                                    <img id="delbtn8" onclick="delete8()" class="delbtn" src="/img/srinsert/delete.png">
+                                </div>
+                            </div>
+                        </div>
+                        <span style="text-align:center; display: flex; justify-content: center; align-items: center;
+                                    color: #BDBDBD;font-style: normal; font-weight: 300 font-size: 14px;">
+                            <img src="/img/srinsert/imgicon.png">&nbsp;이미지는 최대 6개까지 등록 가능합니다.
+                        </span>
+                    </div>
+                    <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">마커 선택</span>
+                    <div style="width:93.5%; border-radius: 8px; height:185px; margin-top:10px; margin-bottom:40px; border: 1px solid #E0E0E0;">
+                        <div class="mbox">
+                            <div class="markerbox">
+                                <div class="markerse" id="markerse1" onclick="up()">
+                                    기본 마커 선택
+                                </div>
+                                <div class="markerse" id="markerse2" onclick="up1()">
+                                    인기 마커 선택
+                                </div>
+                                <div class="markerse" id="markerse3" onclick="up2()">
+                                    커스텀 마커 선택
+                                </div>
+                            </div>
+                            <div style="width:20px;"></div>
+                            <div class="markerbox">
+                                <div class="markerbox1">
+                                    <div class="semk">
+                                        <img id="marker1" th:src="${marker}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">서비스존 전시 / 시설물 목록</span>
+                    <div id="exbox" style="width:93.5%; border-radius: 8px; height:100px; margin-top:10px; margin-bottom:40px; border: 1px solid #E0E0E0;">
+
+                    </div>
+                    <div style="width:93.5%;">
+                        <div class="mbox">
+                            <div class="submitbox">
+                                <img onclick="editzone()" src="/img/srinsert/save.png">
+                            </div>
+                            <div style="width:20px;"></div>
+                            <div th:if="${state == '등록중'}" class="submitbox">
+                                <img onclick="editzone1()" src="/img/srinsert/save1.png">
+                            </div>
+                            <div th:if="${state == '출시' || state == '승인대기'}" class="submitbox">
+                                <img onclick="" src="/img/srinsert/nonsave.png">
+                            </div>
+                            <div style="width:20px;"></div>
+                            <div class="submitbox">
+                                <img src="/img/srinsert/del.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <span th:text="${pk}" id="pknum" hidden></span>
+    <div id="zoombtn1" class="custom_zoomcontrol radius_border">
+        <span onclick="zoomIn()"><img src="/img/servicezone/zoomin.png" alt="확대"></span>
+    </div>
+    <div id="zoombtn2" class="custom_zoomcontrol1 radius_border">
+        <span onclick="zoomOut()"><img src="/img/servicezone/zoomout.png" alt="축소"></span>
+    </div>
+</div>
+<div id="load"> <img src="/img/spinner.gif" alt="loading"></div>
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="pop_bt" style="font-size: 13pt;" onClick="close_pop();">X</span>
+        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt; color: #85BEFF;">기본 마커</span></b></span></p>
+        <div class="mkicbox" style="width:100%; margin-bottom:20px;">
+            <div class="bigbox">
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m5.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m1.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m2.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m3.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m4.png" onclick="semk1(this)">
+                </div>
+            </div>
+            <div class="bigbox">
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m6.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m7.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+            </div>
+            <div class="bigbox">
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+            </div>
+            <div class="bigbox">
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+            </div>
+        </div>
+        <p><br /></p>
+    </div>
+</div>
+<div id="myModal1" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="pop_bt" style="font-size: 13pt;" onClick="close_pop1();">X</span>
+        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt; color: #85BEFF;">인기 마커</span></b></span></p>
+        <div class="mkicbox" style="width:100%; margin-bottom:20px;">
+            <div class="bigbox">
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m5.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m1.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m2.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m3.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m4.png" onclick="semk1(this)">
+                </div>
+            </div>
+            <div class="bigbox">
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m6.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m7.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+            </div>
+            <div class="bigbox">
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+            </div>
+            <div class="bigbox">
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+            </div>
+        </div>
+        <p><br /></p>
+    </div>
+</div>
+<div id="myModal2" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="pop_bt" style="font-size: 13pt;" onClick="close_pop2();">X</span>
+        <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 35pt; color: #85BEFF;">커스텀 마커</span></b></span></p>
+        <div class="mkicbox" style="width:100%; margin-bottom:20px;">
+            <div class="bigbox">
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m5.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m1.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m2.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m3.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m4.png" onclick="semk1(this)">
+                </div>
+            </div>
+            <div class="bigbox">
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m6.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+                    <img class="markerimg" src="/img/marker/m7.png" onclick="semk1(this)">
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+            </div>
+            <div class="bigbox">
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+            </div>
+            <div class="bigbox">
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+                <div class="basemarker">
+
+                </div>
+            </div>
+        </div>
+        <p><br /></p>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+function up() {
+        $('#myModal').show();
+        document.getElementById('markerse1').style.backgroundColor= '#AFD1F9';
+        document.getElementById('markerse1').style.color= '#FFFFFF';
+};
+//팝업 Close 기능
+function close_pop(flag) {
+     $('#myModal').hide();
+     document.getElementById('markerse1').style.backgroundColor= '#F2F2F2';
+     document.getElementById('markerse1').style.color= '#333333';
+};
+
+function up1() {
+        $('#myModal1').show();
+        document.getElementById('markerse2').style.backgroundColor= '#AFD1F9';
+        document.getElementById('markerse2').style.color= '#FFFFFF';
+};
+//팝업 Close 기능
+function close_pop1(flag) {
+     $('#myModal1').hide();
+     document.getElementById('markerse2').style.backgroundColor= '#F2F2F2';
+     document.getElementById('markerse2').style.color= '#333333';
+};
+
+function up2() {
+        $('#myModal2').show();
+        document.getElementById('markerse3').style.backgroundColor= '#AFD1F9';
+        document.getElementById('markerse3').style.color= '#FFFFFF';
+};
+//팝업 Close 기능
+function close_pop2(flag) {
+     $('#myModal2').hide();
+     document.getElementById('markerse3').style.backgroundColor= '#F2F2F2';
+     document.getElementById('markerse3').style.color= '#333333';
+};
+
+</script>
+<!--로컬-->
+<!--<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=02733eb431496d9133c0f58496aa64fb&libraries=services,clusterer,drawing"></script>-->
+<!--서버-->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=00cb19549df691541ac9bf9f0256e498&libraries=services,clusterer,drawing"></script>
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+<!--주소 검색 및 내위치-->
+<!--영역 그리기-->
+<script src="/js/map/map.js?Version=1"></script>
+<!-- 비디오 및 이미지 업로드 -->
+<script src="/js/file/file.js"></script>
+<script src="/js/file/filesev.js"></script>
+<script src="/js/marker/marker.js"></script>
+<script src="/js/main/sev.js"></script>
+<script src="/js/main/servicezonelist.js"></script>
+
+<!-- swal창 띄우기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</body>
+</html>
