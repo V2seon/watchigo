@@ -442,7 +442,23 @@ public class ServiceZoneController {
             model.addAttribute("img5",s1.get().getImg5());
             model.addAttribute("img6",s1.get().getImg6());
             model.addAttribute("state",s1.get().getState());
+            model.addAttribute("center",s1.get().getZonecenter());
             model.addAttribute("pk",pk);
+
+            if (s1.get().getType() == 0){
+                Optional<RentangleEntiry> r1 = rentangleRepository.findById(pk);
+                model.addAttribute("data",r1.get().getAspoint()+"&"+r1.get().getAepoint());
+            }else if(s1.get().getType() == 1){
+                Optional<CircleEntity> c1 = circleRepository.findById(pk);
+                model.addAttribute("data",c1.get().getAcenter() + "&" + c1.get().getAradius());
+            }else if(s1.get().getType() == 2){
+                List<PolygonEntity> p1 = polygonRepository.findByApk(pk);
+                String data = "";
+                for(int i =0; i<p1.size(); i++){
+                    data = data + p1.get(i).getApoint1()+"&" ;
+                }
+                model.addAttribute("data",data);
+            }
 
             model.addAttribute("s1",s1);
             returnValue = "ServicezoneEdit.html";

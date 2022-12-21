@@ -260,6 +260,7 @@ function printPolygon(polygons) {
 	}
 	checkexhibit(message);
     ckexhibit = polygons[0].points;
+    console.log(ckexhibit);
     findexplogon();
 }
 
@@ -1007,8 +1008,6 @@ $.ajax({
             $(".id1").remove();
         for(var i=0; i<result.point.length; i++){
             var [s1, s2]  = result.point[i].split(',');
-            console.log(s1);
-            console.log(s2);
             if(insideploygon([s1,s2],ckexhibit) == true){
                 $("#exbox")
                .append("<span class='id1'>" + result.name[i] + "<br></span>");
@@ -1055,13 +1054,12 @@ $.ajax({
     type : "POST",
     success : function(result){
             $(".id1").remove();
+
         var sw = new kakao.maps.LatLng(ckexhibit.y, ckexhibit.x),
             ne = new kakao.maps.LatLng(ckexhibit1.y, ckexhibit1.x),
             lb = new kakao.maps.LatLngBounds(sw, ne);
         for(var i=0; i<result.point.length; i++){
             var [s1, s2]  = result.point[i].split(',');
-            console.log(sw);
-            console.log(ne);
 
             var l1 = new kakao.maps.LatLng(s1, s2);
 
@@ -1077,5 +1075,215 @@ $.ajax({
 
 }
 
+var sspp1 = "";
+var sspp2 = "";
+var eepp1 = "";
+var eepp2 = "";
+var pol11 = [];
 
+// 수정페이지 자동함수
+window.onload=function(){
+var type = document.getElementById('type').innerText;
+var data = document.getElementById('data').innerText;
+var center = document.getElementById('center').innerText;
+
+let [s1, s2] =  center.split(',');
+// 좌표 포지션 생성
+var newPosition = new kakao.maps.LatLng(s1, s2)
+// 이동
+map.setLevel(2, {anchor: newPosition});
+map.setCenter(newPosition);
+
+if(type == "0"){
+serviceszone = data ;
+rectangle.setMap(null);
+polygon.setMap(null);
+circle.setMap(null);
+
+let [sp1, sp2] = data.split('&');
+let [ep1, ep2] = sp1.split(',');
+let [ep3, ep4] = sp2.split(',');
+
+sspp1 = Number (ep1);
+sspp2 = Number (ep2);
+eepp1 = Number (ep3);
+eepp2 = Number (ep4);
+
+var sw = new kakao.maps.LatLng(ep1, ep2),
+   ne = new kakao.maps.LatLng(ep3, ep4);
+// 사각형을 구성하는 영역정보를 생성합니다
+// 사각형을 생성할 때 영역정보는 LatLngBounds 객체로 넘겨줘야 합니다
+var rectangleBounds = new kakao.maps.LatLngBounds(sw, ne);
+// 지도에 표시할 사각형을 생성합니다
+rectangle = new kakao.maps.Rectangle({
+   bounds: rectangleBounds, // 그려질 사각형의 영역정보입니다
+   strokeWeight: 4, // 선의 두께입니다
+   strokeColor: '#FF3DE5', // 선의 색깔입니다
+   strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+   strokeStyle: 'shortdashdot', // 선의 스타일입니다
+   fillColor: '#FF8AEF', // 채우기 색깔입니다
+   fillOpacity: 0.8 // 채우기 불투명도 입니다
+});
+
+// 지도에 사각형을 표시합니다
+rectangle.setMap(map);
+findexrectangle1();
+}
+else if(type == "1"){
+serviceszone = data ;
+
+// 지도에 표시할 원을 생성합니다
+rectangle.setMap(null);
+circle.setMap(null);
+polygon.setMap(null);
+
+let [sp1, sp2] = data.split('&');
+let [ce1, ce2] = sp1.split(',');
+
+sspp1 = Number (ce1);
+sspp2 = Number (ce2);
+eepp1 = Number (sp2);
+
+circle = new kakao.maps.Circle({
+    center : new kakao.maps.LatLng(ce1, ce2),  // 원의 중심좌표 입니다
+    radius: sp2, // 미터 단위의 원의 반지름입니다
+    strokeWeight: 5, // 선의 두께입니다
+    strokeColor: '#75B8FA', // 선의 색깔입니다
+    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+    strokeStyle: 'dashed', // 선의 스타일 입니다
+    fillColor: '#CFE7FF', // 채우기 색깔입니다
+    fillOpacity: 0.7  // 채우기 불투명도 입니다
+});
+
+// 지도에 원을 표시합니다
+circle.setMap(map);
+insidecircle1(sp2);
+}
+else if(type == "2"){
+serviceszone = data;
+
+rectangle.setMap(null);
+circle.setMap(null);
+polygon.setMap(null);
+
+let p1 = data.split('&');
+var polygonPath = [];
+for(var i=0; i<(p1.length)-1; i++){
+    let [p, s] = p1[i].split(',');
+    polygonPath[i] = new kakao.maps.LatLng(p,s)
+}
+pol11 = polygonPath;
+// 지도에 표시할 다각형을 생성합니다
+polygon = new kakao.maps.Polygon({
+    path:polygonPath, // 그려질 다각형의 좌표 배열입니다
+    strokeWeight: 3, // 선의 두께입니다
+    strokeColor: '#39DE2A', // 선의 색깔입니다
+    strokeOpacity: 0.8, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+    strokeStyle: 'longdash', // 선의 스타일입니다
+    fillColor: '#A2FF99', // 채우기 색깔입니다
+    fillOpacity: 0.7 // 채우기 불투명도 입니다
+});
+
+// 지도에 다각형을 표시합니다
+polygon.setMap(map);
+findexplogon1();
+}
+}
+
+// edit 사각형 확인 함수
+function findexrectangle1(){
+$.ajax({
+    url : "/findexpoint",
+    type : "POST",
+    success : function(result){
+            $(".id1").remove();
+        var sw = new kakao.maps.LatLng(sspp1, sspp2),
+            ne = new kakao.maps.LatLng(eepp1, eepp2),
+            lb = new kakao.maps.LatLngBounds(sw, ne);
+        for(var i=0; i<result.point.length; i++){
+            var [s1, s2]  = result.point[i].split(',');
+
+            var l1 = new kakao.maps.LatLng(s1, s2);
+
+            if(lb.contain(l1) == true){
+                $("#exbox")
+               .append("<span class='id1'>" + result.name[i] + "<br></span>");
+            };
+        }
+    },
+    error: function (e) {
+    }
+});
+
+}
+
+// edit 원 확인 함수
+function insidecircle1(radius){
+var line = new kakao.maps.Polyline();
+$.ajax({
+    url : "/findexpoint",
+    type : "POST",
+    success : function(result){
+            $(".id1").remove();
+        for(var i=0; i<result.point.length; i++){
+            var [s1, s2]  = result.point[i].split(',');
+            var path = [
+                        new kakao.maps.LatLng(s1,s2),
+                        new kakao.maps.LatLng(sspp1,sspp2)
+                        ]
+            line.setPath(path);
+            var dist = line.getLength();
+            if( dist <= radius){
+                $("#exbox")
+               .append("<span class='id1'>" + result.name[i] + "<br></span>");
+            }
+        }
+    },
+    error: function (e) {
+    }
+});
+}
+
+// edit 다각형 확인 함수
+function insideploygon1(point, vs) {
+
+    var x = point[0],
+        y = point[1];
+
+    var inside = false;
+
+    for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+        var xi = vs[i].Ma,
+            yi = vs[i].La
+        var xj = vs[j].Ma,
+            yj = vs[j].La;
+
+        var intersect = ((yi > y) != (yj > y)) &&
+            (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+    }
+
+    return inside;
+}
+
+// edit 다각형 전시/시설물 좌표값 가져오기
+function findexplogon1(){
+$.ajax({
+    url : "/findexpoint",
+    type : "POST",
+    success : function(result){
+            $(".id1").remove();
+        for(var i=0; i<result.point.length; i++){
+            var [s1, s2]  = result.point[i].split(',');
+            if(insideploygon1([s1,s2],pol11) == true){
+                $("#exbox")
+               .append("<span class='id1'>" + result.name[i] + "<br></span>");
+            }
+        }
+    },
+    error: function (e) {
+    }
+});
+
+}
 
