@@ -422,7 +422,6 @@ swal({
             if(realUpload6.files[0] != null){
                 formData.append('files', realUpload6.files[0]);
             }
-
             $.ajax({
                     type: "POST",
                     enctype: 'multipart/form-data',
@@ -820,10 +819,26 @@ $.ajax({
 function editzone(){
 marker1 = document.getElementById('marker1').src;
 const pkzonenum = document.getElementById('pknum').innerText;
-const viewaddress = document.getElementById('viewaddress');
-const viewaddress1 = document.getElementById('viewaddress1');
-const viewzonename = document.getElementById('viewzonename');
-const viewzoneex = document.getElementById('viewzoneex');
+const viewaddress = document.getElementById('address');
+const viewaddress1 = document.getElementById('address1');
+const viewzonename = document.getElementById('zonename');
+const viewzoneex = document.getElementById('zoneex');
+const inv1 = document.getElementById('inv1');
+const inv2 = document.getElementById('inv2');
+const img1 = document.getElementById('img1');
+const img2 = document.getElementById('img2');
+const img3 = document.getElementById('img3');
+const img4 = document.getElementById('img4');
+const img5 = document.getElementById('img5');
+const img6 = document.getElementById('img6');
+
+var srcbox = [inv1.src ,inv2.src, img1.src,img2.src, img3.src, img4.src, img5.src, img6.src];
+for(var i=0; i<srcbox.length; i++){
+var [ee,rr,dd,ff,cc] = srcbox[i].split('/');
+srcbox[i] = cc;
+}
+console.log(srcbox);
+
 if(serviceszone == null || serviceszone == ""){
     swal({
           text: "서비스존 영역을 설정해주세요.",
@@ -868,21 +883,29 @@ swal({
     var videotype1 = ""; var videotype2 = ""; var imgtype1 = ""; var imgtype2 = "";
     var imgtype3 = ""; var imgtype4 = ""; var imgtype5 = ""; var imgtype6 = "";
     if(viewrealUploadvideo1.files[0] != null ){
-    videotype1 = viewrealUploadvideo1.files[0].name}
+    videotype1 = viewrealUploadvideo1.files[0].name
+    }else{videotype1 = srcbox[0]}
     if(viewrealUploadvideo2.files[0] != null ){
-    videotype2 = viewrealUploadvideo2.files[0].name}
+    videotype2 = viewrealUploadvideo2.files[0].name
+    }else{videotype2 = srcbox[1]}
     if(viewrealUpload1.files[0] != null){
-    imgtype1 = viewrealUpload1.files[0].name}
+    imgtype1 = viewrealUpload1.files[0].name
+    }else{imgtype1 = srcbox[2]}
     if(viewrealUpload2.files[0] != null){
-    imgtype2 = viewrealUpload2.files[0].name}
+    imgtype2 = viewrealUpload2.files[0].name
+    }else{imgtype2 = srcbox[3]}
     if(viewrealUpload3.files[0] != null){
-    imgtype3 = viewrealUpload3.files[0].name}
+    imgtype3 = viewrealUpload3.files[0].name
+    }else{imgtype3 = srcbox[4]}
     if(viewrealUpload4.files[0] != null){
-    imgtype4 = viewrealUpload4.files[0].name}
+    imgtype4 = viewrealUpload4.files[0].name
+    }else{imgtype4 = srcbox[5]}
     if(viewrealUpload5.files[0] != null){
-    imgtype5 = viewrealUpload5.files[0].name}
+    imgtype5 = viewrealUpload5.files[0].name
+    }else{imgtype5 = srcbox[6]}
     if(viewrealUpload6.files[0] != null){
-    imgtype6 = viewrealUpload6.files[0].name}
+    imgtype6 = viewrealUpload6.files[0].name
+    }else{imgtype6 = srcbox[7]}
     const a = 0;
     let sendData = {
                 "address" : viewaddress.value,
