@@ -44,7 +44,7 @@
                                 <label class="test_obj">
                                     <input type="checkbox" class="choicebtn" style="background-color:red;" th:id="${Co.pk}+'btn'"
                                            th:onclick="|javascript:selectexzone(${Co.pk})|" th:value = ${Co.pk} th:onchange="">
-                                    <img class="ckimg" th:id="${Co.pk}+'img'" src="/img/exinsert/cknone.png">
+                                    <img class="ckimg" th:id="${Co.pk}+'img'" th:src="${pk eq Co.pk ? '/img/exinsert/check.png' : '/img/exinsert/cknone.png'}">
                                 </label>
                             </div>
                         </div>
@@ -59,7 +59,8 @@
                             <option th:selected="${type == '전시물'}" value="전시물">전시물</option>
                             <option th:selected="${type == '기타'}" value="기타">기타</option>
                         </select>
-                        <input th:value="${typename}" class="selserzonetxt" id="typename" type="text" placeholder=" " value="" readonly>
+                        <input th:value="${typename}" class="selserzonetxt" id="typename" type="text" placeholder=" " value=""
+                               th:readonly="${type == '기타' ? false : 'readonly'}">
                     </div>
                     <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">전시/시설물 이름</span>
                     <div style="margin-top:10px;margin-bottom:20px; width:97%;">
@@ -517,7 +518,7 @@
                             <label class="test_obj">
                                 <input type="checkbox" class="choicebtn1" style="background-color:red;" th:id="${Co.pk}+'btn1'"
                                        th:onclick="|javascript:selectexzone(${Co.pk})|" th:value = ${Co.pk} th:onchange="">
-                                <img class="ckimg1" th:id="${Co.pk}+'img1'" src="/img/exinsert/cknone.png">
+                                <img class="ckimg1" th:id="${Co.pk}+'img1'" th:src="${pk eq Co.pk ? '/img/exinsert/check.png' : '/img/exinsert/cknone.png'}">
                             </label>
                         </div>
                     </div>
