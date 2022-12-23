@@ -14,7 +14,6 @@ for(let a=0; a<boxlen; a++){
     document.getElementsByClassName('choicebtn')[a].checked = false;
 }
 var ttt = pk+'btn';
-console.log(ttt);
 if(document.getElementById(ttt)){
 document.getElementById(ttt).checked = true;
 }
@@ -39,7 +38,6 @@ for(let a=0; a<boxlen1; a++){
     document.getElementsByClassName('ckimg1')[a].src =  "/img/exinsert/cknone.png";
  }
 }
-
 
 let sendData = {
             "pk" : pk
@@ -389,8 +387,6 @@ function saveexhibit(){
 mainicon = document.getElementById("mainicon").src;
 armarker = document.getElementById("armarker").src;
 $('#load').show();
-console.log(zonepk);
-console.log(choice1.options[choice1.selectedIndex].value);
 const typename = document.getElementById("typename").value;
 console.log(document.getElementById("exhibitname").value);
 console.log(document.getElementById("exhibitex").value);

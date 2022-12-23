@@ -469,6 +469,33 @@ public class Exhibitcontroller {
 
             List<ServiceZoneEntity> s2 = serviceZoneRepository.findAll1(s1.get().getAseq());
             model.addAttribute("zonelist", s2); //페이지 객체 리스트
+            Optional<ExhibitEntity> ex = exhibitRepository.findById((Long) session.getAttribute("pk"));
+
+            System.out.println(ex.get().getZonename());
+            model.addAttribute("seq", ex.get().getSeq());
+            model.addAttribute("pk", ex.get().getPk());
+            model.addAttribute("zonename", ex.get().getZonename());
+            model.addAttribute("exname", ex.get().getName());
+            model.addAttribute("ex", ex.get().getEx());
+            model.addAttribute("type", ex.get().getType());
+            model.addAttribute("typename", ex.get().getTypename());
+            model.addAttribute("date",ex.get().getDate());
+            model.addAttribute("vid1",ex.get().getVideo1());
+            model.addAttribute("vid2",ex.get().getVideo2());
+            model.addAttribute("img1",ex.get().getImg1());
+            model.addAttribute("img2",ex.get().getImg2());
+            model.addAttribute("img3",ex.get().getImg3());
+            model.addAttribute("img4",ex.get().getImg4());
+            model.addAttribute("img5",ex.get().getImg5());
+            model.addAttribute("img6",ex.get().getImg6());
+            model.addAttribute("mainicon",ex.get().getMainicon());
+            model.addAttribute("armarker",ex.get().getArmarker());
+            model.addAttribute("printtype",ex.get().getPrinttype());
+
+            String ex1[] =ex.get().getPoint().split(",");
+            model.addAttribute("ypoint",ex1[0]);
+            model.addAttribute("xpoint",ex1[1]);
+
             return "ExhibitEdit.html";
         }else{
             returnValue = "AdminSite/Homepage.html";

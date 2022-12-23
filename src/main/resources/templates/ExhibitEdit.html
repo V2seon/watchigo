@@ -55,19 +55,19 @@
                                 name="selectKey" id="lock" onchange="lock()">
                             <option selected="selected">전체</option>
                             <!--                        <option value="번호">번호</option>-->
-                            <option value="시설물">시설물</option>
-                            <option value="전시물">전시물</option>
-                            <option value="기타">기타</option>
+                            <option th:selected="${type == '시설물'}" value="시설물">시설물</option>
+                            <option th:selected="${type == '전시물'}" value="전시물">전시물</option>
+                            <option th:selected="${type == '기타'}" value="기타">기타</option>
                         </select>
-                        <input class="selserzonetxt" id="typename" type="text" placeholder=" " value="" readonly>
+                        <input th:value="${typename}" class="selserzonetxt" id="typename" type="text" placeholder=" " value="" readonly>
                     </div>
                     <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">전시/시설물 이름</span>
                     <div style="margin-top:10px;margin-bottom:20px; width:97%;">
-                        <input id="exhibitname" class="inte" type="text" placeholder="전시/시설물 이름을 입력해주세요.">
+                        <input th:value="${exname}" id="exhibitname" class="inte" type="text" placeholder="전시/시설물 이름을 입력해주세요.">
                     </div>
                     <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">전시/시설물 설명</span>
                     <div style="margin-top:10px; margin-bottom:20px; width:97%;">
-                        <textarea id="exhibitex" class="inte1" type="text" placeholder="전시/시설물 설명을 입력해주세요."></textarea>
+                        <textarea th:value="${ex}" th:text="${ex}" id="exhibitex" class="inte1" type="text" placeholder="전시/시설물 설명을 입력해주세요."></textarea>
                     </div>
                     <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">전시/시설물 동영상 업로드</span>
                     <div style="width:96%; margin-top:10px; margin-bottom:40px; height:180px; border: 1px dashed #E0E0E0; border-radius: 8px;">
@@ -75,10 +75,11 @@
                             <div id="uploadvideo1" class="uploadvideo">
                                 <input id="realUploadvideo1"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
                                 <div style="position:relative;" onclick="video1()">
-                                    <img id="uploadview" class="invimg1" src="/img/srinsert/upload.png">
-                                    <video id="inv1" class="inv1" src=""></video>
+                                    <img th:style="${vid1 == '' ? 'display:block' : 'display:none'}" id="uploadview" class="invimg1" src="/img/srinsert/upload.png">
+                                    <video id="inv1" class="inv1"  th:src="'/file1?fileName='+${date}+'/'+${vid1}"
+                                           onerror="this.onerror=null; this.src='';"></video>
                                 </div>
-                                <div class="delete" id="delete1">
+                                <div th:style="${vid1 != '' ? 'display:block' : 'display:none'}" class="delete" id="delete1">
                                     <img id="delbtn1" onclick="delete1()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
@@ -86,10 +87,11 @@
                             <div id="uploadvideo2" class="uploadvideo">
                                 <input id="realUploadvideo2"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
                                 <div onclick="video2()">
-                                    <img id="uploadview2" class="invimg1" src="/img/srinsert/upload.png">
-                                    <video id="inv2" class="inv1" src=""></video>
+                                    <img th:style="${vid2 == '' ? 'display:block' : 'display:none'}" id="uploadview2" class="invimg1" src="/img/srinsert/upload.png">
+                                    <video id="inv2" class="inv1" th:src="'/file1?fileName='+${date}+'/'+${vid2}"
+                                           onerror="this.onerror=null; this.src='';"></video>
                                 </div>
-                                <div class="delete" id="delete2">
+                                <div th:style="${vid2 != '' ? 'display:block' : 'display:none'}" class="delete" id="delete2">
                                     <img id="delbtn2" onclick="delete2()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
@@ -105,9 +107,11 @@
                             <div id="uploadimg1" class="uploadimg">
                                 <input id="upimg1" class="upimg" type="file" required style="display:none;" accept="image/*">
                                 <div style="position:relative;" onclick="img1()">
-                                    <img class="img" id="img1" src="/img/srinsert/upload.png">
+                                    <img th:style="${img1 != null ? 'display:block' : 'display:none'}" class="img" id="img1"
+                                         th:src="'/file1?fileName='+${date}+'/'+${img1}"
+                                         onerror="this.onerror=null; this.src='/img/srinsert/upload.png';">
                                 </div>
-                                <div class="delete"  id="delete3">
+                                <div th:style="${img1 !='' ? 'display:block' : 'display:none'}" class="delete"  id="delete3">
                                     <img id="delbtn3" onclick="delete3()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
@@ -116,9 +120,11 @@
                             <div id="uploadimg2" class="uploadimg">
                                 <input id="upimg2" class="upimg" type="file" required style="display:none;" accept="image/*">
                                 <div style="position:relative;" onclick="img2()">
-                                    <img class="img" id="img2" src="/img/srinsert/upload.png">
+                                    <img th:style="${img2 != null ? 'display:block' : 'display:none'}" class="img" id="img2"
+                                         th:src="'/file1?fileName='+${date}+'/'+${img2}"
+                                         onerror="this.onerror=null; this.src='/img/srinsert/upload.png';">
                                 </div>
-                                <div class="delete" id="delete4">
+                                <div th:style="${img2 !='' ? 'display:block' : 'display:none'}" class="delete" id="delete4">
                                     <img id="delbtn4" onclick="delete4()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
@@ -127,9 +133,11 @@
                             <div id="uploadimg3" class="uploadimg">
                                 <input id="upimg3" class="upimg" type="file" required style="display:none;" accept="image/*">
                                 <div style="position:relative;" onclick="img3()">
-                                    <img class="img" id="img3" src="/img/srinsert/upload.png">
+                                    <img th:style="${img3 !=null ? 'display:block' : 'display:none'}" class="img" id="img3"
+                                         th:src="'/file1?fileName='+${date}+'/'+${img3}"
+                                         onerror="this.onerror=null; this.src='/img/srinsert/upload.png';">
                                 </div>
-                                <div class="delete" id="delete5">
+                                <div th:style="${img3 !='' ? 'display:block' : 'display:none'}" class="delete" id="delete5">
                                     <img id="delbtn5" onclick="delete5()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
@@ -137,9 +145,11 @@
                             <div id="uploadimg4" class="uploadimg">
                                 <input id="upimg4" class="upimg" type="file" required style="display:none;" accept="image/*">
                                 <div style="position:relative;" onclick="img4()">
-                                    <img class="img" id="img4" src="/img/srinsert/upload.png">
+                                    <img th:style="${img4 !=null ? 'display:block' : 'display:none'}" class="img" id="img4"
+                                         th:src="'/file1?fileName='+${date}+'/'+${img4}"
+                                         onerror="this.onerror=null; this.src='/img/srinsert/upload.png';">
                                 </div>
-                                <div class="delete" id="delete6">
+                                <div th:style="${img4 !='' ? 'display:block' : 'display:none'}" class="delete" id="delete6">
                                     <img id="delbtn6" onclick="delete6()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
@@ -148,10 +158,12 @@
                             <div id="uploadimg5" class="uploadimg">
                                 <input id="upimg5" class="upimg" type="file" required style="display:none;" accept="image/*">
                                 <div style="position:relative;" onclick="img5()">
-                                    <img class="img" id="img5" src="/img/srinsert/upload.png">
+                                    <img th:style="${img5 !=null ? 'display:block' : 'display:none'}" class="img" id="img5"
+                                         th:src="'/file1?fileName='+${date}+'/'+${img5}"
+                                         onerror="this.onerror=null; this.src='/img/srinsert/upload.png';">
                                 </div>
                                 <div style="width:20px;"></div>
-                                <div class="delete" id="delete7">
+                                <div th:style="${img5 !='' ? 'display:block' : 'display:none'}" class="delete" id="delete7">
                                     <img id="delbtn7" onclick="delete7()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
@@ -159,9 +171,11 @@
                             <div id="uploadimg6" class="uploadimg">
                                 <input id="upimg6" class="upimg" type="file" required style="display:none;" accept="image/*">
                                 <div style="position:relative;" onclick="img6()">
-                                    <img class="img" id="img6" src="/img/srinsert/upload.png">
+                                    <img th:style="${img6 !=null ? 'display:block' : 'display:none'}" class="img" id="img6"
+                                         th:src="'/file1?fileName='+${date}+'/'+${img6}"
+                                         onerror="this.onerror=null; this.src='/img/srinsert/upload.png';">
                                 </div>
-                                <div class="delete" id="delete8">
+                                <div th:style="${img6 !='' ? 'display:block' : 'display:none'}" class="delete" id="delete8">
                                     <img id="delbtn8" onclick="delete8()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
@@ -180,7 +194,7 @@
                             </div>
                         </div>
                         <div class="mainicon1">
-                            <img  class="mainicon" id="mainicon">
+                            <img style="width: 41px; height: 70px;" th:src="${mainicon}" class="mainicon" id="mainicon">
                         </div>
                     </div>
                     <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">AR 마커 선택</span>
@@ -192,18 +206,18 @@
                             </div>
                         </div>
                         <div class="mainicon1">
-                            <img class="armarker" id="armarker">
+                            <img th:src="${armarker}" class="armarker" id="armarker">
                         </div>
                     </div>
                     <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">정보 표시 방식 선택</span>
                     <div style="width:96%; margin-top:10px; margin-bottom:40px; border: 1px solid #E0E0E0; border-radius: 8px;">
                         <div class="ptbox" id="exprinttype" onchange="test1()">
                             <div class="ptckbox" id="ptckbox">
-                                <input id="gps" type="radio" class="printtype" name="printtype" value="0" checked style="display:none;">
+                                <input id="gps" type="radio" class="printtype" name="printtype" value="0" th:checked="${printtype == 0}" style="display:none;">
                                 <label class="gps" for="gps">GPS방식</label>
                             </div>
                             <div class="ptckbox1" id="ptckbox1">
-                                <input id="ved" type="radio" class="printtype" name="printtype" value="1" style="display:none;">
+                                <input id="ved" type="radio" class="printtype" name="printtype" value="1" th:checked="${printtype == 1}" style="display:none;">
                                 <label class="ved" for="ved">영상인식 방식</label>
                             </div>
                         </div>
@@ -217,7 +231,7 @@
                                         위도
                                     </div>
                                     <div>
-                                        <input class="pointbox" id="ypoint" type="text" readonly>
+                                        <input th:value="${ypoint}" class="pointbox" id="ypoint" type="text" readonly>
                                     </div>
                                 </div>
                                 <div class="gpsbox1">
@@ -225,7 +239,7 @@
                                         경도
                                     </div>
                                     <div>
-                                        <input class="pointbox" id="xpoint" type="text" readonly>
+                                        <input th:value="${xpoint}" class="pointbox" id="xpoint" type="text" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -293,6 +307,7 @@
                 <div>
                     <span id="pknum" hidden=""></span>
                     <span id="seqnum" hidden=""></span>
+                    <span th:text="${data}" id="data" hidden></span>
                     <p class="edit" style="display:none;">
                         <button id="undo" class="disabled" onclick="undo()" disabled>UNDO</button>
                         <button id="redo" class="disabled" onclick="redo()" disabled>REDO</button>
@@ -555,6 +570,10 @@
 
 <!--모달-->
 <script type="text/javascript">
+window.onload=function(){
+test1();
+}
+
 function view() {
         $('#myModal3').show();
 };
