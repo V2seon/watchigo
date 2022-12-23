@@ -69,11 +69,11 @@
                             <div id="uploadvideo1" class="uploadvideo">
                                 <input id="realUploadvideo1"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
                                 <div style="position:relative;" onclick="video1()">
-                                    <img th:style="${vid1 ==null ? 'display:block' : 'display:none'}" id="uploadview" class="invimg1" src="/img/srinsert/upload.png">
+                                    <img th:style="${vid1 == '' ? 'display:block' : 'display:none'}" id="uploadview" class="invimg1" src="/img/srinsert/upload.png">
                                     <video id="inv1" class="inv1"  th:src="'/file?fileName='+${date}+'/'+${vid1}"
                                            onerror="this.onerror=null; this.src='';"></video>
                                 </div>
-                                <div th:style="${vid1 !='' ? 'display:block' : 'display:none'}" class="delete" id="delete1">
+                                <div th:style="${vid1 != '' ? 'display:block' : 'display:none'}" class="delete" id="delete1">
                                     <img id="delbtn1" onclick="delete1()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
@@ -81,11 +81,11 @@
                             <div id="uploadvideo2" class="uploadvideo">
                                 <input id="realUploadvideo2"  type="file" class="vedioupload" accept="video/*" required multiple style="display:none;">
                                 <div onclick="video2()">
-                                    <img th:style="${vid2 ==null ? 'display:block' : 'display:none'}" id="uploadview2" class="invimg1" src="/img/srinsert/upload.png">
+                                    <img th:style="${vid2 == '' ? 'display:block' : 'display:none'}" id="uploadview2" class="invimg1" src="/img/srinsert/upload.png">
                                     <video id="inv2" class="inv1" th:src="'/file?fileName='+${date}+'/'+${vid2}"
                                            onerror="this.onerror=null; this.src='';"></video>
                                 </div>
-                                <div th:style="${vid2 !='' ? 'display:block' : 'display:none'}" class="delete" id="delete2">
+                                <div th:style="${vid2 != '' ? 'display:block' : 'display:none'}" class="delete" id="delete2">
                                     <img id="delbtn2" onclick="delete2()" class="delbtn" src="/img/srinsert/delete.png">
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
                             <div id="uploadimg1" class="uploadimg">
                                 <input id="upimg1" class="upimg" type="file" required style="display:none;" accept="image/*">
                                 <div style="position:relative;" onclick="img1()">
-                                    <img th:style="${img1 !=null ? 'display:block' : 'display:none'}" class="img" id="img1"
+                                    <img th:style="${img1 != null ? 'display:block' : 'display:none'}" class="img" id="img1"
                                          th:src="'/file?fileName='+${date}+'/'+${img1}"
                                          onerror="this.onerror=null; this.src='/img/srinsert/upload.png';">
                                 </div>
@@ -115,7 +115,7 @@
                             <div id="uploadimg2" class="uploadimg">
                                 <input id="upimg2" class="upimg" type="file" required style="display:none;" accept="image/*">
                                 <div style="position:relative;" onclick="img2()">
-                                    <img th:style="${img2 !=null ? 'display:block' : 'display:none'}" class="img" id="img2"
+                                    <img th:style="${img2 != null ? 'display:block' : 'display:none'}" class="img" id="img2"
                                          th:src="'/file?fileName='+${date}+'/'+${img2}"
                                          onerror="this.onerror=null; this.src='/img/srinsert/upload.png';">
                                 </div>
@@ -210,7 +210,7 @@
                     </div>
                     <div style="width:93.5%;">
                         <div class="mbox">
-                            <div class="submitbox">
+                            <div class="submitbox" th:if="${state == '등록중'}">
                                 <img onclick="editzone()" src="/img/srinsert/save.png">
                             </div>
                             <div style="width:20px;"></div>
@@ -218,11 +218,11 @@
                                 <img onclick="editzone1()" src="/img/srinsert/save1.png">
                             </div>
                             <div th:if="${state == '출시' || state == '승인대기'}" class="submitbox">
-                                <img onclick="" src="/img/srinsert/nonsave.png">
+                                <img onclick="editzone2()" src="/img/srinsert/nonsave.png">
                             </div>
                             <div style="width:20px;"></div>
                             <div class="submitbox">
-                                <img src="/img/srinsert/del.png">
+                                <img src="/img/srinsert/del.png" onclick="deletezone()">
                             </div>
                         </div>
                     </div>
@@ -478,6 +478,114 @@
 </div>
 
 <script type="text/javascript">
+// 수정페이지 자동함수
+window.onload=function(){
+var type = document.getElementById('type').innerText;
+var data = document.getElementById('data').innerText;
+var center = document.getElementById('center').innerText;
+
+let [s1, s2] =  center.split(',');
+// 좌표 포지션 생성
+var newPosition = new kakao.maps.LatLng(s1, s2)
+// 이동
+map.setLevel(2, {anchor: newPosition});
+map.setCenter(newPosition);
+
+if(type == "0"){
+serviceszone = data ;
+rectangle.setMap(null);
+polygon.setMap(null);
+circle.setMap(null);
+
+let [sp1, sp2] = data.split('&');
+let [ep1, ep2] = sp1.split(',');
+let [ep3, ep4] = sp2.split(',');
+
+sspp1 = Number (ep1);
+sspp2 = Number (ep2);
+eepp1 = Number (ep3);
+eepp2 = Number (ep4);
+
+var sw = new kakao.maps.LatLng(ep1, ep2),
+   ne = new kakao.maps.LatLng(ep3, ep4);
+// 사각형을 구성하는 영역정보를 생성합니다
+// 사각형을 생성할 때 영역정보는 LatLngBounds 객체로 넘겨줘야 합니다
+var rectangleBounds = new kakao.maps.LatLngBounds(sw, ne);
+// 지도에 표시할 사각형을 생성합니다
+rectangle = new kakao.maps.Rectangle({
+   bounds: rectangleBounds, // 그려질 사각형의 영역정보입니다
+   strokeWeight: 4, // 선의 두께입니다
+   strokeColor: '#FF3DE5', // 선의 색깔입니다
+   strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+   strokeStyle: 'shortdashdot', // 선의 스타일입니다
+   fillColor: '#FF8AEF', // 채우기 색깔입니다
+   fillOpacity: 0.8 // 채우기 불투명도 입니다
+});
+
+// 지도에 사각형을 표시합니다
+rectangle.setMap(map);
+findexrectangle1();
+}
+else if(type == "1"){
+serviceszone = data ;
+
+// 지도에 표시할 원을 생성합니다
+rectangle.setMap(null);
+circle.setMap(null);
+polygon.setMap(null);
+
+let [sp1, sp2] = data.split('&');
+let [ce1, ce2] = sp1.split(',');
+
+sspp1 = Number (ce1);
+sspp2 = Number (ce2);
+eepp1 = Number (sp2);
+
+circle = new kakao.maps.Circle({
+    center : new kakao.maps.LatLng(ce1, ce2),  // 원의 중심좌표 입니다
+    radius: sp2, // 미터 단위의 원의 반지름입니다
+    strokeWeight: 5, // 선의 두께입니다
+    strokeColor: '#75B8FA', // 선의 색깔입니다
+    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+    strokeStyle: 'dashed', // 선의 스타일 입니다
+    fillColor: '#CFE7FF', // 채우기 색깔입니다
+    fillOpacity: 0.7  // 채우기 불투명도 입니다
+});
+
+// 지도에 원을 표시합니다
+circle.setMap(map);
+insidecircle1(sp2);
+}
+else if(type == "2"){
+serviceszone = data;
+
+rectangle.setMap(null);
+circle.setMap(null);
+polygon.setMap(null);
+
+let p1 = data.split('&');
+var polygonPath = [];
+for(var i=0; i<(p1.length)-1; i++){
+    let [p, s] = p1[i].split(',');
+    polygonPath[i] = new kakao.maps.LatLng(p,s)
+}
+pol11 = polygonPath;
+// 지도에 표시할 다각형을 생성합니다
+polygon = new kakao.maps.Polygon({
+    path:polygonPath, // 그려질 다각형의 좌표 배열입니다
+    strokeWeight: 3, // 선의 두께입니다
+    strokeColor: '#39DE2A', // 선의 색깔입니다
+    strokeOpacity: 0.8, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+    strokeStyle: 'longdash', // 선의 스타일입니다
+    fillColor: '#A2FF99', // 채우기 색깔입니다
+    fillOpacity: 0.7 // 채우기 불투명도 입니다
+});
+
+// 지도에 다각형을 표시합니다
+polygon.setMap(map);
+findexplogon1();
+}
+}
 
 function up() {
         $('#myModal').show();
@@ -524,7 +632,6 @@ function close_pop2(flag) {
 <!--주소 검색 및 내위치-->
 <!--영역 그리기-->
 <script src="/js/map/map.js?Version=1"></script>
-<script src="/js/map/edit.js?Version=1"></script>
 <!-- 비디오 및 이미지 업로드 -->
 <script src="/js/file/file.js"></script>
 <script src="/js/file/filesev.js"></script>

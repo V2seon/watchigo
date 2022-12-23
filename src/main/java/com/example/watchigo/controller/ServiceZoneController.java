@@ -415,7 +415,7 @@ public class ServiceZoneController {
                          @RequestParam(required = false, defaultValue = "", value = "pk") Long pk){
         HttpSession session = request.getSession();
         session.setAttribute("pk",pk);
-        return "ServicezoneEdit.html";
+        return "redirect:";
     }
 
     @GetMapping("/editgo1")
@@ -518,6 +518,8 @@ public class ServiceZoneController {
             state = "출시";
         }
 
+        System.out.println(zonetype);
+
         int type = 0;
         if(zonetype.equals("RECTANGLE")){
             type = 0;
@@ -533,16 +535,8 @@ public class ServiceZoneController {
         for (int i=0; i<filedata.length; i++) {
             System.out.println(filedata[i]);
         }
-        String [] dbfiledata = {ser.get().getVideo1(), ser.get().getVideo2(), ser.get().getImg1(), ser.get().getImg2(),
-                ser.get().getImg3(), ser.get().getImg4(), ser.get().getImg5(), ser.get().getImg6()};
 
         String text1[] = marker1.split("3020");
-
-        for (int i=0; i<filedata.length; i++){
-            if(filedata[i].equals(null) || filedata[i].equals("")){
-                filedata[i] = dbfiledata[i];
-            }
-        }
 
         // 폴더명 넘기기
         session.setAttribute("sdf",ser.get().getDate());

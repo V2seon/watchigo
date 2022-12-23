@@ -563,6 +563,7 @@ $.ajax({
 //            lock();
             document.getElementById('zonetext').innerText = result.zonename;
             document.getElementById('zonetext1').innerText = result.ex;
+            document.getElementById('pknum').innerText = result.pk;
             document.getElementById('viewvideo').src = "/file1?fileName="+result.date+"/"+result.video1;
             document.getElementById('viewimg').src = "/file1?fileName="+result.date+"/"+result.img1;
             document.getElementById('marker1').src = result.mainicon;
@@ -809,4 +810,26 @@ function search(pk){
     // }).done(function (fragment) {
     //     $("#pagination").replaceWith(fragment);
     // });
+}
+
+//수정페이지 이동
+function editgo(){
+var pk = document.getElementById('pknum').innerText;
+let sendData = {
+            "pk" : pk
+}
+$.ajax({
+            url      : "/exeditgo",
+            data     : sendData,
+            type     : "GET",
+            success : function(result) {
+                location.href= "/exeditgo1";
+            },
+            error:function(request,status,error){
+                swal({
+                    text: "이동중 서버에 문제가 발생했습니다.",
+                    icon: "warning" //"info,success,warning,error" 중 택1
+                });
+            }
+        });
 }

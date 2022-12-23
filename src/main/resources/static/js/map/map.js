@@ -497,7 +497,7 @@ if(serviceszone == null || serviceszone == ""){
            });
 }else{
 swal({
-	    title : "저장하시겠습니까?",
+	    title : "출시요청을 하시겠습니까?",
     	icon  : "info",
     	closeOnClickOutside : false
 }).then(function(){
@@ -817,6 +817,8 @@ $.ajax({
 
 //서비스존 수정
 function editzone(){
+var type = document.getElementById('type').innerText;
+if(type == "0"){zonetype = "RECTANGLE";}else if(type == "1"){zonetype = "CIRCLE";}else if(type == "2"){zonetype = "POLYGON";}
 marker1 = document.getElementById('marker1').src;
 const pkzonenum = document.getElementById('pknum').innerText;
 const viewaddress = document.getElementById('address');
@@ -835,10 +837,17 @@ const img6 = document.getElementById('img6');
 var srcbox = [inv1.src ,inv2.src, img1.src,img2.src, img3.src, img4.src, img5.src, img6.src];
 for(var i=0; i<srcbox.length; i++){
 var [ee,rr,dd,ff,cc] = srcbox[i].split('/');
-srcbox[i] = cc;
-}
+if(cc != null){
+    console.log(cc);
+    if(cc == "srinsert"){
+        srcbox[i] = "";
+    }else{
+        srcbox[i] = cc;
+    }
+}else{
+srcbox[i] = "";
+}}
 console.log(srcbox);
-
 if(serviceszone == null || serviceszone == ""){
     swal({
           text: "서비스존 영역을 설정해주세요.",
@@ -882,29 +891,29 @@ swal({
     // 파일여부 확인
     var videotype1 = ""; var videotype2 = ""; var imgtype1 = ""; var imgtype2 = "";
     var imgtype3 = ""; var imgtype4 = ""; var imgtype5 = ""; var imgtype6 = "";
-    if(viewrealUploadvideo1.files[0] != null ){
-    videotype1 = viewrealUploadvideo1.files[0].name
+    if(realUploadvideo1.files[0] != null ){
+    videotype1 = realUploadvideo1.files[0].name
     }else{videotype1 = srcbox[0]}
-    if(viewrealUploadvideo2.files[0] != null ){
-    videotype2 = viewrealUploadvideo2.files[0].name
+    if(realUploadvideo2.files[0] != null ){
+    videotype2 = realUploadvideo2.files[0].name
     }else{videotype2 = srcbox[1]}
-    if(viewrealUpload1.files[0] != null){
-    imgtype1 = viewrealUpload1.files[0].name
+    if(realUpload1.files[0] != null){
+    imgtype1 = realUpload1.files[0].name
     }else{imgtype1 = srcbox[2]}
-    if(viewrealUpload2.files[0] != null){
-    imgtype2 = viewrealUpload2.files[0].name
+    if(realUpload2.files[0] != null){
+    imgtype2 = realUpload2.files[0].name
     }else{imgtype2 = srcbox[3]}
-    if(viewrealUpload3.files[0] != null){
-    imgtype3 = viewrealUpload3.files[0].name
+    if(realUpload3.files[0] != null){
+    imgtype3 = realUpload3.files[0].name
     }else{imgtype3 = srcbox[4]}
-    if(viewrealUpload4.files[0] != null){
-    imgtype4 = viewrealUpload4.files[0].name
+    if(realUpload4.files[0] != null){
+    imgtype4 = realUpload4.files[0].name
     }else{imgtype4 = srcbox[5]}
-    if(viewrealUpload5.files[0] != null){
-    imgtype5 = viewrealUpload5.files[0].name
+    if(realUpload5.files[0] != null){
+    imgtype5 = realUpload5.files[0].name
     }else{imgtype5 = srcbox[6]}
-    if(viewrealUpload6.files[0] != null){
-    imgtype6 = viewrealUpload6.files[0].name
+    if(realUpload6.files[0] != null){
+    imgtype6 = realUpload6.files[0].name
     }else{imgtype6 = srcbox[7]}
     const a = 0;
     let sendData = {
@@ -932,31 +941,31 @@ swal({
         type : "POST",
         success : function(result){
             var formData = new FormData();
-            if(viewrealUploadvideo1.files[0] != null){
-                formData.append('files', viewrealUploadvideo1.files[0]);
+            if(realUploadvideo1.files[0] != null){
+                formData.append('files', realUploadvideo1.files[0]);
             }
-            if(viewrealUploadvideo2.files[0] != null){
-                formData.append('files', viewrealUploadvideo2.files[0]);
+            if(realUploadvideo2.files[0] != null){
+                formData.append('files', realUploadvideo2.files[0]);
             }
-            if(viewrealUpload1.files[0] != null){
-                formData.append('files', viewrealUpload1.files[0]);
+            if(realUpload1.files[0] != null){
+                formData.append('files', realUpload1.files[0]);
             }
-            if(viewrealUpload2.files[0] != null){
-                formData.append('files', viewrealUpload2.files[0]);
+            if(realUpload2.files[0] != null){
+                formData.append('files', realUpload2.files[0]);
             }
-            if(viewrealUpload3.files[0] != null){
-                formData.append('files', viewrealUpload3.files[0]);
+            if(realUpload3.files[0] != null){
+                formData.append('files', realUpload3.files[0]);
             }
-            if(viewrealUpload4.files[0] != null){
-                formData.append('files', viewrealUpload4.files[0]);
+            if(realUpload4.files[0] != null){
+                formData.append('files', realUpload4.files[0]);
             }
-            if(viewrealUpload5.files[0] != null){
-                formData.append('files', viewrealUpload5.files[0]);
+            if(realUpload5.files[0] != null){
+                formData.append('files', realUpload5.files[0]);
             }
-            if(viewrealUpload6.files[0] != null){
-                formData.append('files', viewrealUpload6.files[0]);
+            if(realUpload6.files[0] != null){
+                formData.append('files', realUpload6.files[0]);
             }
-            if(viewrealUploadvideo1.files[0] == null && viewrealUploadvideo2.files[0] == null && viewrealUpload1.files[0] == null && viewrealUpload2.files[0] == null && viewrealUpload3.files[0] == null && viewrealUpload4.files[0] == null && viewrealUpload5.files[0] == null && viewrealUpload6.files[0] == null){
+            if(realUploadvideo1.files[0] == null && realUploadvideo2.files[0] == null && realUpload1.files[0] == null && realUpload2.files[0] == null && realUpload3.files[0] == null && realUpload4.files[0] == null && realUpload5.files[0] == null && realUpload6.files[0] == null){
                    location.href = "/servicezone";
             }else{
                 $.ajax({
@@ -986,8 +995,376 @@ swal({
         }
     });
 
-  }else{
-    location.href = "/servicezone";
+  }
+});
+}
+}
+
+//서비스존 수정 출시
+function editzone1(){
+var type = document.getElementById('type').innerText;
+if(type == "0"){zonetype = "RECTANGLE";}else if(type == "1"){zonetype = "CIRCLE";}else if(type == "2"){zonetype = "POLYGON";}
+marker1 = document.getElementById('marker1').src;
+const pkzonenum = document.getElementById('pknum').innerText;
+const viewaddress = document.getElementById('address');
+const viewaddress1 = document.getElementById('address1');
+const viewzonename = document.getElementById('zonename');
+const viewzoneex = document.getElementById('zoneex');
+const inv1 = document.getElementById('inv1');
+const inv2 = document.getElementById('inv2');
+const img1 = document.getElementById('img1');
+const img2 = document.getElementById('img2');
+const img3 = document.getElementById('img3');
+const img4 = document.getElementById('img4');
+const img5 = document.getElementById('img5');
+const img6 = document.getElementById('img6');
+
+var srcbox = [inv1.src ,inv2.src, img1.src,img2.src, img3.src, img4.src, img5.src, img6.src];
+for(var i=0; i<srcbox.length; i++){
+var [ee,rr,dd,ff,cc] = srcbox[i].split('/');
+if(cc != null){
+    console.log(cc);
+    if(cc == "srinsert"){
+        srcbox[i] = "";
+    }else{
+        srcbox[i] = cc;
+    }
+}else{
+srcbox[i] = "";
+}}
+console.log(srcbox);
+if(serviceszone == null || serviceszone == ""){
+    swal({
+          text: "서비스존 영역을 설정해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(viewaddress.value == null || viewaddress.value == ""){
+    swal({
+          text: "설정영역 주소를 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(viewaddress1.value == null || viewaddress1.value == ""){
+    swal({
+          text: "설정영역 상세주소를 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(viewzonename.value == null || viewzonename.value == ""){
+    swal({
+          text: "서비스존 이름을 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(viewzoneex.value == null || viewzoneex.value == ""){
+    swal({
+          text: "서비스존 설명을 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(marker1 == null || marker1 == ""){
+    swal({
+          text: "마커를 선택해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else{
+swal({
+  title: "서비스존 출시요청",
+  text: "해당 서비스존을 출시요청 하시겠습니까?",
+  icon: "info",
+  closeOnClickOutside : false,
+  buttons : ["취소", "요청"],
+}).then((result) => {
+  if (result) {
+	$('#load').show();
+    // 파일여부 확인
+    var videotype1 = ""; var videotype2 = ""; var imgtype1 = ""; var imgtype2 = "";
+    var imgtype3 = ""; var imgtype4 = ""; var imgtype5 = ""; var imgtype6 = "";
+    if(realUploadvideo1.files[0] != null ){
+    videotype1 = realUploadvideo1.files[0].name
+    }else{videotype1 = srcbox[0]}
+    if(realUploadvideo2.files[0] != null ){
+    videotype2 = realUploadvideo2.files[0].name
+    }else{videotype2 = srcbox[1]}
+    if(realUpload1.files[0] != null){
+    imgtype1 = realUpload1.files[0].name
+    }else{imgtype1 = srcbox[2]}
+    if(realUpload2.files[0] != null){
+    imgtype2 = realUpload2.files[0].name
+    }else{imgtype2 = srcbox[3]}
+    if(realUpload3.files[0] != null){
+    imgtype3 = realUpload3.files[0].name
+    }else{imgtype3 = srcbox[4]}
+    if(realUpload4.files[0] != null){
+    imgtype4 = realUpload4.files[0].name
+    }else{imgtype4 = srcbox[5]}
+    if(realUpload5.files[0] != null){
+    imgtype5 = realUpload5.files[0].name
+    }else{imgtype5 = srcbox[6]}
+    if(realUpload6.files[0] != null){
+    imgtype6 = realUpload6.files[0].name
+    }else{imgtype6 = srcbox[7]}
+    const a = 1;
+    let sendData = {
+                "address" : viewaddress.value,
+                "address1" : viewaddress1.value,
+                "zonename" : viewzonename.value,
+                "zoneex" : viewzoneex.value,
+                "zonetype" : zonetype,
+                "serviceszone" : serviceszone,
+                "inv1" : videotype1,
+                "inv2" : videotype2,
+                "ini1" : imgtype1,
+                "ini2" : imgtype2,
+                "ini3" : imgtype3,
+                "ini4" : imgtype4,
+                "ini5" : imgtype5,
+                "ini6" : imgtype6,
+                "a" : a,
+                "pkzonenum": pkzonenum,
+                "marker1" : marker1
+            };
+    $.ajax({
+        url : "/editzone",
+        data : sendData,
+        type : "POST",
+        success : function(result){
+            var formData = new FormData();
+            if(realUploadvideo1.files[0] != null){
+                formData.append('files', realUploadvideo1.files[0]);
+            }
+            if(realUploadvideo2.files[0] != null){
+                formData.append('files', realUploadvideo2.files[0]);
+            }
+            if(realUpload1.files[0] != null){
+                formData.append('files', realUpload1.files[0]);
+            }
+            if(realUpload2.files[0] != null){
+                formData.append('files', realUpload2.files[0]);
+            }
+            if(realUpload3.files[0] != null){
+                formData.append('files', realUpload3.files[0]);
+            }
+            if(realUpload4.files[0] != null){
+                formData.append('files', realUpload4.files[0]);
+            }
+            if(realUpload5.files[0] != null){
+                formData.append('files', realUpload5.files[0]);
+            }
+            if(realUpload6.files[0] != null){
+                formData.append('files', realUpload6.files[0]);
+            }
+            if(realUploadvideo1.files[0] == null && realUploadvideo2.files[0] == null && realUpload1.files[0] == null && realUpload2.files[0] == null && realUpload3.files[0] == null && realUpload4.files[0] == null && realUpload5.files[0] == null && realUpload6.files[0] == null){
+                   location.href = "/servicezone";
+            }else{
+                $.ajax({
+                        type: "POST",
+                        enctype: 'multipart/form-data',
+                        url: "/upload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        cache: false,
+                        success: function (data) {
+                            $('#load').hide();
+                           location.href = "/servicezone";
+                        },
+                        error: function (e) {
+
+                            swal({
+                                     text: "사진 업로드 실패",
+                                     icon: "warning" //"info,success,warning,error" 중 택1
+                                 });
+                        }
+                    });
+            }
+
+        },
+        error:function(request,status,error){
+        }
+    });
+
+  }
+});
+}
+}
+
+//서비스존 수정 출시취소
+function editzone2(){
+var type = document.getElementById('type').innerText;
+if(type == "0"){zonetype = "RECTANGLE";}else if(type == "1"){zonetype = "CIRCLE";}else if(type == "2"){zonetype = "POLYGON";}
+marker1 = document.getElementById('marker1').src;
+const pkzonenum = document.getElementById('pknum').innerText;
+const viewaddress = document.getElementById('address');
+const viewaddress1 = document.getElementById('address1');
+const viewzonename = document.getElementById('zonename');
+const viewzoneex = document.getElementById('zoneex');
+const inv1 = document.getElementById('inv1');
+const inv2 = document.getElementById('inv2');
+const img1 = document.getElementById('img1');
+const img2 = document.getElementById('img2');
+const img3 = document.getElementById('img3');
+const img4 = document.getElementById('img4');
+const img5 = document.getElementById('img5');
+const img6 = document.getElementById('img6');
+
+var srcbox = [inv1.src ,inv2.src, img1.src,img2.src, img3.src, img4.src, img5.src, img6.src];
+for(var i=0; i<srcbox.length; i++){
+var [ee,rr,dd,ff,cc] = srcbox[i].split('/');
+if(cc != null){
+    console.log(cc);
+    if(cc == "srinsert"){
+        srcbox[i] = "";
+    }else{
+        srcbox[i] = cc;
+    }
+}else{
+srcbox[i] = "";
+}}
+console.log(srcbox);
+if(serviceszone == null || serviceszone == ""){
+    swal({
+          text: "서비스존 영역을 설정해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(viewaddress.value == null || viewaddress.value == ""){
+    swal({
+          text: "설정영역 주소를 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(viewaddress1.value == null || viewaddress1.value == ""){
+    swal({
+          text: "설정영역 상세주소를 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(viewzonename.value == null || viewzonename.value == ""){
+    swal({
+          text: "서비스존 이름을 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(viewzoneex.value == null || viewzoneex.value == ""){
+    swal({
+          text: "서비스존 설명을 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(marker1 == null || marker1 == ""){
+    swal({
+          text: "마커를 선택해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else{
+swal({
+  title: "서비스존 출시취소",
+  text: "해당 서비스존을 출시취소 하시겠습니까?",
+  icon: "info",
+  closeOnClickOutside : false,
+  buttons : ["취소", "확인"],
+}).then((result) => {
+  if (result) {
+	$('#load').show();
+    // 파일여부 확인
+    var videotype1 = ""; var videotype2 = ""; var imgtype1 = ""; var imgtype2 = "";
+    var imgtype3 = ""; var imgtype4 = ""; var imgtype5 = ""; var imgtype6 = "";
+    if(realUploadvideo1.files[0] != null ){
+    videotype1 = realUploadvideo1.files[0].name
+    }else{videotype1 = srcbox[0]}
+    if(realUploadvideo2.files[0] != null ){
+    videotype2 = realUploadvideo2.files[0].name
+    }else{videotype2 = srcbox[1]}
+    if(realUpload1.files[0] != null){
+    imgtype1 = realUpload1.files[0].name
+    }else{imgtype1 = srcbox[2]}
+    if(realUpload2.files[0] != null){
+    imgtype2 = realUpload2.files[0].name
+    }else{imgtype2 = srcbox[3]}
+    if(realUpload3.files[0] != null){
+    imgtype3 = realUpload3.files[0].name
+    }else{imgtype3 = srcbox[4]}
+    if(realUpload4.files[0] != null){
+    imgtype4 = realUpload4.files[0].name
+    }else{imgtype4 = srcbox[5]}
+    if(realUpload5.files[0] != null){
+    imgtype5 = realUpload5.files[0].name
+    }else{imgtype5 = srcbox[6]}
+    if(realUpload6.files[0] != null){
+    imgtype6 = realUpload6.files[0].name
+    }else{imgtype6 = srcbox[7]}
+    const a = 0;
+    let sendData = {
+                "address" : viewaddress.value,
+                "address1" : viewaddress1.value,
+                "zonename" : viewzonename.value,
+                "zoneex" : viewzoneex.value,
+                "zonetype" : zonetype,
+                "serviceszone" : serviceszone,
+                "inv1" : videotype1,
+                "inv2" : videotype2,
+                "ini1" : imgtype1,
+                "ini2" : imgtype2,
+                "ini3" : imgtype3,
+                "ini4" : imgtype4,
+                "ini5" : imgtype5,
+                "ini6" : imgtype6,
+                "a" : a,
+                "pkzonenum": pkzonenum,
+                "marker1" : marker1
+            };
+    $.ajax({
+        url : "/editzone",
+        data : sendData,
+        type : "POST",
+        success : function(result){
+            var formData = new FormData();
+            if(realUploadvideo1.files[0] != null){
+                formData.append('files', realUploadvideo1.files[0]);
+            }
+            if(realUploadvideo2.files[0] != null){
+                formData.append('files', realUploadvideo2.files[0]);
+            }
+            if(realUpload1.files[0] != null){
+                formData.append('files', realUpload1.files[0]);
+            }
+            if(realUpload2.files[0] != null){
+                formData.append('files', realUpload2.files[0]);
+            }
+            if(realUpload3.files[0] != null){
+                formData.append('files', realUpload3.files[0]);
+            }
+            if(realUpload4.files[0] != null){
+                formData.append('files', realUpload4.files[0]);
+            }
+            if(realUpload5.files[0] != null){
+                formData.append('files', realUpload5.files[0]);
+            }
+            if(realUpload6.files[0] != null){
+                formData.append('files', realUpload6.files[0]);
+            }
+            if(realUploadvideo1.files[0] == null && realUploadvideo2.files[0] == null && realUpload1.files[0] == null && realUpload2.files[0] == null && realUpload3.files[0] == null && realUpload4.files[0] == null && realUpload5.files[0] == null && realUpload6.files[0] == null){
+                   location.href = "/servicezone";
+            }else{
+                $.ajax({
+                        type: "POST",
+                        enctype: 'multipart/form-data',
+                        url: "/upload",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        cache: false,
+                        success: function (data) {
+                            $('#load').hide();
+                           location.href = "/servicezone";
+                        },
+                        error: function (e) {
+
+                            swal({
+                                     text: "사진 업로드 실패",
+                                     icon: "warning" //"info,success,warning,error" 중 택1
+                                 });
+                        }
+                    });
+            }
+
+        },
+        error:function(request,status,error){
+        }
+    });
+
   }
 });
 }
@@ -1103,115 +1480,6 @@ var sspp2 = "";
 var eepp1 = "";
 var eepp2 = "";
 var pol11 = [];
-
-// 수정페이지 자동함수
-window.onload=function(){
-var type = document.getElementById('type').innerText;
-var data = document.getElementById('data').innerText;
-var center = document.getElementById('center').innerText;
-
-let [s1, s2] =  center.split(',');
-// 좌표 포지션 생성
-var newPosition = new kakao.maps.LatLng(s1, s2)
-// 이동
-map.setLevel(2, {anchor: newPosition});
-map.setCenter(newPosition);
-
-if(type == "0"){
-serviceszone = data ;
-rectangle.setMap(null);
-polygon.setMap(null);
-circle.setMap(null);
-
-let [sp1, sp2] = data.split('&');
-let [ep1, ep2] = sp1.split(',');
-let [ep3, ep4] = sp2.split(',');
-
-sspp1 = Number (ep1);
-sspp2 = Number (ep2);
-eepp1 = Number (ep3);
-eepp2 = Number (ep4);
-
-var sw = new kakao.maps.LatLng(ep1, ep2),
-   ne = new kakao.maps.LatLng(ep3, ep4);
-// 사각형을 구성하는 영역정보를 생성합니다
-// 사각형을 생성할 때 영역정보는 LatLngBounds 객체로 넘겨줘야 합니다
-var rectangleBounds = new kakao.maps.LatLngBounds(sw, ne);
-// 지도에 표시할 사각형을 생성합니다
-rectangle = new kakao.maps.Rectangle({
-   bounds: rectangleBounds, // 그려질 사각형의 영역정보입니다
-   strokeWeight: 4, // 선의 두께입니다
-   strokeColor: '#FF3DE5', // 선의 색깔입니다
-   strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-   strokeStyle: 'shortdashdot', // 선의 스타일입니다
-   fillColor: '#FF8AEF', // 채우기 색깔입니다
-   fillOpacity: 0.8 // 채우기 불투명도 입니다
-});
-
-// 지도에 사각형을 표시합니다
-rectangle.setMap(map);
-findexrectangle1();
-}
-else if(type == "1"){
-serviceszone = data ;
-
-// 지도에 표시할 원을 생성합니다
-rectangle.setMap(null);
-circle.setMap(null);
-polygon.setMap(null);
-
-let [sp1, sp2] = data.split('&');
-let [ce1, ce2] = sp1.split(',');
-
-sspp1 = Number (ce1);
-sspp2 = Number (ce2);
-eepp1 = Number (sp2);
-
-circle = new kakao.maps.Circle({
-    center : new kakao.maps.LatLng(ce1, ce2),  // 원의 중심좌표 입니다
-    radius: sp2, // 미터 단위의 원의 반지름입니다
-    strokeWeight: 5, // 선의 두께입니다
-    strokeColor: '#75B8FA', // 선의 색깔입니다
-    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'dashed', // 선의 스타일 입니다
-    fillColor: '#CFE7FF', // 채우기 색깔입니다
-    fillOpacity: 0.7  // 채우기 불투명도 입니다
-});
-
-// 지도에 원을 표시합니다
-circle.setMap(map);
-insidecircle1(sp2);
-}
-else if(type == "2"){
-serviceszone = data;
-
-rectangle.setMap(null);
-circle.setMap(null);
-polygon.setMap(null);
-
-let p1 = data.split('&');
-var polygonPath = [];
-for(var i=0; i<(p1.length)-1; i++){
-    let [p, s] = p1[i].split(',');
-    polygonPath[i] = new kakao.maps.LatLng(p,s)
-}
-pol11 = polygonPath;
-// 지도에 표시할 다각형을 생성합니다
-polygon = new kakao.maps.Polygon({
-    path:polygonPath, // 그려질 다각형의 좌표 배열입니다
-    strokeWeight: 3, // 선의 두께입니다
-    strokeColor: '#39DE2A', // 선의 색깔입니다
-    strokeOpacity: 0.8, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-    strokeStyle: 'longdash', // 선의 스타일입니다
-    fillColor: '#A2FF99', // 채우기 색깔입니다
-    fillOpacity: 0.7 // 채우기 불투명도 입니다
-});
-
-// 지도에 다각형을 표시합니다
-polygon.setMap(map);
-findexplogon1();
-}
-}
 
 // edit 사각형 확인 함수
 function findexrectangle1(){

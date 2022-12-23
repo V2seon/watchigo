@@ -420,6 +420,7 @@ public class Exhibitcontroller {
         msg.put("seq",String.valueOf(s1.get().getSeq()));
         msg.put("mainicon",s1.get().getMainicon());
         msg.put("armarker",s1.get().getArmarker());
+        msg.put("pk",String.valueOf(s1.get().getSeq()));
 
 
         return msg;
@@ -434,6 +435,47 @@ public class Exhibitcontroller {
 
         return "ExhibitMain :: Success";
     }
+
+    @GetMapping("/exeditgo")
+    public String exeditgo(Model model,HttpServletRequest request,
+                         @RequestParam(required = false, defaultValue = "", value = "pk") Long pk){
+        HttpSession session = request.getSession();
+        session.setAttribute("pk",pk);
+        return "redirect:";
+    }
+
+    @GetMapping("/exeditgo1")
+    public String exeditgo1(Model model, HttpServletRequest request, Pageable pageable,
+                          @RequestParam(required = false, defaultValue = "0", value = "page") int page){
+        String returnValue = "";
+        if(new SessionCheck().loginSessionCheck(request)){
+            HttpSession session = request.getSession();
+            Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
+            pageable = PageRequest.of(page, 5, Sort.by("pk").descending());
+            Page<ServiceZoneEntity> memberEntities1 = serviceZoneService.selectALLTable0(s1.get().getAseq(), pageable);
+            Pagination pagination1 = new Pagination(memberEntities1.getTotalPages(), page);
+
+            model.addAttribute("thisPage", pagination1.getPage()); //현재 몇 페이지에 있는지 확인하기 위함
+            model.addAttribute("isNextSection", pagination1.isNextSection()); //다음버튼 유무 확인하기 위함
+            model.addAttribute("isPrevSection", pagination1.isPrevSection()); //이전버튼 유무 확인하기 위함
+            model.addAttribute("firstBtnIndex", pagination1.getFirstBtnIndex()); //버튼 페이징 - 첫시작 인덱스
+            model.addAttribute("lastBtnIndex", pagination1.getLastBtnIndex()); //섹션 변경 위함
+            model.addAttribute("totalPage", pagination1.getTotalPages()); //끝 버튼 위함
+            //서비스 엔티티 추가후 주석 풀고 사용
+//            Page<GradeType1DataEntity> pageList = Gradetype1DataService.selectALLTable2(selectKey, titleText, pageable);
+
+            model.addAttribute("userlist1", memberEntities1); //페이지 객체 리스트
+            model.addAttribute("nowurl0", "/exhibit");
+
+            List<ServiceZoneEntity> s2 = serviceZoneRepository.findAll1(s1.get().getAseq());
+            model.addAttribute("zonelist", s2); //페이지 객체 리스트
+            return "ExhibitEdit.html";
+        }else{
+            returnValue = "AdminSite/Homepage.html";
+        }
+        return returnValue;
+    }
+
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/editexhibit")
