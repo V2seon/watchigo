@@ -847,7 +847,7 @@ if(cc != null){
 }else{
 srcbox[i] = "";
 }}
-console.log(srcbox);
+
 if(serviceszone == null || serviceszone == ""){
     swal({
           text: "서비스존 영역을 설정해주세요.",

@@ -503,7 +503,6 @@ public class Exhibitcontroller {
         return returnValue;
     }
 
-
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/editexhibit")
     public Object editexhibit(Model model, HttpServletRequest request,
