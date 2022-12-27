@@ -3,7 +3,6 @@ margin-top: 20px;
 height: 40px;
 width: 380px;
 border-radius: 8px;
-background-image: url(/img/servicezone/serch.png);
 background-repeat: no-repeat;
 background-position: 20px center;
 background-color:#F9F9F9;
@@ -314,6 +313,26 @@ border-radius: 8px;
 }
 
 .submitbox:hover{
+cursor:pointer;
+}
+
+.searchclear {
+position: absolute;
+left: 40px;
+top: 35px;
+}
+
+.searchclear:hover{
+cursor:pointer;
+}
+
+.searchclear1 {
+position: absolute;
+right: 20px;
+top: 16px;
+}
+
+.searchclear1:hover{
 cursor:pointer;
 }
 

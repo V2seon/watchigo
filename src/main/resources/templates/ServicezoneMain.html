@@ -16,14 +16,14 @@
         <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
         <div id="menu_wrap" class="bg_white">
             <div class="option">
-                <div>
+                <div style="position: relative;">
                     <input class="srad" type="text" placeholder="아파트, 지역 및 학교명으로 검색 " value="" id="keyword" size="15" onkeyup="if(window.event.keyCode==13){sss()}">
+                    <img class="searchclear" src="/img/servicezone/serch.png" onclick="sss()">
                 </div>
-
             <h1 class="t1">SERVICE ZONE LIST ────────────</h1>
             <div id="intable">
                 <div class="option">
-                    <div style="margin-bottom:20px;">
+                    <div style="position: relative; margin-bottom:20px;">
                         <select class="selserzone"
                                 name="selectKey" id="selectKey">
                             <option selected="selected">전체</option>
@@ -34,6 +34,7 @@
                         </select>
 
                         <input class="selserzonetxt" id="titleText" type="text" placeholder="검색어를 입력해주세요 " value="" onkeyup="enterkey()">
+                        <img class="searchclear1" src="/img/servicezone/serch.png" onclick="searching()">
                     </div>
                 </div>
                 <div class="viewzonebox1">
@@ -397,7 +398,7 @@ function close_pop2(flag) {
 var clusterer = new kakao.maps.MarkerClusterer({
     map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
     averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-    minLevel: 2 // 클러스터 할 최소 지도 레벨
+    minLevel: 3 // 클러스터 할 최소 지도 레벨
 });
 
 var markers = [];

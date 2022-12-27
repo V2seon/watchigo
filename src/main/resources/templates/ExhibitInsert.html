@@ -20,6 +20,7 @@
             <div class="option" style="height:120px;">
                 <div>
                     <input class="srad" type="text" placeholder="아파트, 지역 및 학교명으로 검색 " value="" id="keyword" size="15" onkeyup="if(window.event.keyCode==13){sss()}">
+                    <img class="searchclear" src="/img/servicezone/serch.png" onclick="sss()">
                 </div>
                 <img class="backbtn99" onclick="backbtn1()" src="/img/srinsert/Arrow.png">
                 <span class="t2">EXHIBIT / FACILITY SETTING ──────</span>
@@ -198,8 +199,12 @@
                         <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">정보 표시 방식 선택</span>
                         <div style="width:96%; margin-top:10px; margin-bottom:40px; border: 1px solid #E0E0E0; border-radius: 8px;">
                             <div class="ptbox" id="exprinttype" onchange="test1()">
+                                <div class="ptckbox2" id="ptckbox2">
+                                    <input id="asd" type="radio" class="printtype" name="printtype" value="2" checked style="display:none;">
+                                    <label class="asd" for="asd">공간좌표 방식</label>
+                                </div>
                                 <div class="ptckbox" id="ptckbox">
-                                    <input id="gps" type="radio" class="printtype" name="printtype" value="0" checked style="display:none;">
+                                    <input id="gps" type="radio" class="printtype" name="printtype" value="0" style="display:none;">
                                     <label class="gps" for="gps">GPS방식</label>
                                 </div>
                                 <div class="ptckbox1" id="ptckbox1">
@@ -207,7 +212,38 @@
                                     <label class="ved" for="ved">영상인식 방식</label>
                                 </div>
                             </div>
-                            <div id="gpssebox" style="width:100%; height:100%;">
+                            <div id="sebox" style="width:100%; height:100%;">
+                                <div class="pttext">
+                                    <img src="/img/exinsert/gps.png"> &nbsp;&nbsp;공간지도 안에서 등록하는 전시/시설물의 좌표를 입력해주세요
+                                </div>
+                                <div class="gpsbox">
+                                    <div class="gpsbox2">
+                                        <div class="gpstext">
+                                            X
+                                        </div>
+                                        <div>
+                                            <input class="pointbox1" id="X" type="text" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="gpsbox2">
+                                        <div class="gpstext">
+                                            Y
+                                        </div>
+                                        <div>
+                                            <input class="pointbox1" id="Y" type="text" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="gpsbox2">
+                                        <div class="gpstext">
+                                            Z
+                                        </div>
+                                        <div>
+                                            <input class="pointbox1" id="Z" type="text" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="gpssebox" style="width:100%; height:100%; display:none;">
                                 <div class="pttext">
                                   <img src="/img/exinsert/gps.png"> &nbsp;&nbsp;서비스존 안에서 등록하는 전시/시설물의 위치를 지정해주세요
                                 </div>
@@ -473,7 +509,7 @@
         <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 25pt; color: #85BEFF;">SERVICE ZONE LIST</span></b></span></p>
         <div style="height:552px;">
             <div class="option">
-                <div style="margin-bottom:20px;">
+                <div style="position: relative; margin-bottom:20px;">
                     <select class="selserzone1"
                             name="selectKey" id="selectKey">
                         <option selected="selected">전체</option>
@@ -482,6 +518,7 @@
                         <option value="주소">주소</option>
                     </select>
                     <input class="selserzonetxt1" id="titleText" type="text" placeholder="검색어를 입력해주세요 " value="" onkeyup="enterkey()">
+                    <img class="searchclear1" src="/img/servicezone/serch.png" onclick="searching()">
                 </div>
             </div>
 

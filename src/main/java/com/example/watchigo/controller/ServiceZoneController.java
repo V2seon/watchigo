@@ -57,10 +57,10 @@ public class ServiceZoneController {
         if(new SessionCheck().loginSessionCheck(request)){
             HttpSession session = request.getSession();
             Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
+            pageable = PageRequest.of(page, 100);
 
             Page<ServiceZoneEntity> memberEntities = serviceZoneService.selectALLTable0(s1.get().getAseq(), pageable);
 
-            pageable = PageRequest.of(page, 100,Sort.by("pk").descending());
             Pagination pagination = new Pagination(memberEntities.getTotalPages(), page);
 
             model.addAttribute("thisPage", pagination.getPage()); //현재 몇 페이지에 있는지 확인하기 위함
@@ -415,7 +415,7 @@ public class ServiceZoneController {
                          @RequestParam(required = false, defaultValue = "", value = "pk") Long pk){
         HttpSession session = request.getSession();
         session.setAttribute("pk",pk);
-        return "ServicezoneEdit.html";
+        return "redirect:";
     }
 
     @GetMapping("/editgo1")
@@ -518,6 +518,8 @@ public class ServiceZoneController {
             state = "출시";
         }
 
+        System.out.println(zonetype);
+
         int type = 0;
         if(zonetype.equals("RECTANGLE")){
             type = 0;
@@ -533,16 +535,8 @@ public class ServiceZoneController {
         for (int i=0; i<filedata.length; i++) {
             System.out.println(filedata[i]);
         }
-        String [] dbfiledata = {ser.get().getVideo1(), ser.get().getVideo2(), ser.get().getImg1(), ser.get().getImg2(),
-                ser.get().getImg3(), ser.get().getImg4(), ser.get().getImg5(), ser.get().getImg6()};
 
         String text1[] = marker1.split("3020");
-
-        for (int i=0; i<filedata.length; i++){
-            if(filedata[i].equals(null) || filedata[i].equals("")){
-                filedata[i] = dbfiledata[i];
-            }
-        }
 
         // 폴더명 넘기기
         session.setAttribute("sdf",ser.get().getDate());

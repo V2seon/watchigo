@@ -47,10 +47,8 @@ public class Exhibitcontroller {
         if(new SessionCheck().loginSessionCheck(request)){
             HttpSession session = request.getSession();
             Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
-
+            pageable = PageRequest.of(page, 100);
             Page<ExhibitEntity> memberEntities = exhibitService.selectALLTable0(s1.get().getAseq(), pageable);
-
-            pageable = PageRequest.of(page, 5, Sort.by("pk").descending());
             Pagination pagination = new Pagination(memberEntities.getTotalPages(), page);
 
             model.addAttribute("thisPage", pagination.getPage()); //현재 몇 페이지에 있는지 확인하기 위함
@@ -420,6 +418,7 @@ public class Exhibitcontroller {
         msg.put("seq",String.valueOf(s1.get().getSeq()));
         msg.put("mainicon",s1.get().getMainicon());
         msg.put("armarker",s1.get().getArmarker());
+        msg.put("pk",String.valueOf(s1.get().getSeq()));
 
 
         return msg;
@@ -427,12 +426,75 @@ public class Exhibitcontroller {
 
     @PostMapping("/deleteexhibit")
     public String delete(@RequestParam(required = false, defaultValue = "", value = "pk")Long pk){
-        System.out.println("인덱스값");
-        System.out.println(pk);
-
         exhibitRepository.deleteById(pk);
-
         return "ExhibitMain :: Success";
+    }
+
+    @GetMapping("/exeditgo")
+    public String exeditgo(Model model,HttpServletRequest request,
+                         @RequestParam(required = false, defaultValue = "", value = "pk") Long pk){
+        HttpSession session = request.getSession();
+        session.setAttribute("pk",pk);
+        return "redirect:";
+    }
+
+    @GetMapping("/exeditgo1")
+    public String exeditgo1(Model model, HttpServletRequest request, Pageable pageable,
+                          @RequestParam(required = false, defaultValue = "0", value = "page") int page){
+        String returnValue = "";
+        if(new SessionCheck().loginSessionCheck(request)){
+            HttpSession session = request.getSession();
+            Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
+            pageable = PageRequest.of(page, 5, Sort.by("pk").descending());
+            Page<ServiceZoneEntity> memberEntities1 = serviceZoneService.selectALLTable0(s1.get().getAseq(), pageable);
+            Pagination pagination1 = new Pagination(memberEntities1.getTotalPages(), page);
+
+            model.addAttribute("thisPage", pagination1.getPage()); //현재 몇 페이지에 있는지 확인하기 위함
+            model.addAttribute("isNextSection", pagination1.isNextSection()); //다음버튼 유무 확인하기 위함
+            model.addAttribute("isPrevSection", pagination1.isPrevSection()); //이전버튼 유무 확인하기 위함
+            model.addAttribute("firstBtnIndex", pagination1.getFirstBtnIndex()); //버튼 페이징 - 첫시작 인덱스
+            model.addAttribute("lastBtnIndex", pagination1.getLastBtnIndex()); //섹션 변경 위함
+            model.addAttribute("totalPage", pagination1.getTotalPages()); //끝 버튼 위함
+            //서비스 엔티티 추가후 주석 풀고 사용
+//            Page<GradeType1DataEntity> pageList = Gradetype1DataService.selectALLTable2(selectKey, titleText, pageable);
+
+            model.addAttribute("userlist1", memberEntities1); //페이지 객체 리스트
+            model.addAttribute("nowurl0", "/exhibit");
+
+            List<ServiceZoneEntity> s2 = serviceZoneRepository.findAll1(s1.get().getAseq());
+            model.addAttribute("zonelist", s2); //페이지 객체 리스트
+            Optional<ExhibitEntity> ex = exhibitRepository.findById((Long) session.getAttribute("pk"));
+
+            System.out.println(ex.get().getZonename());
+            model.addAttribute("seq", ex.get().getSeq());
+            model.addAttribute("pk", ex.get().getPk());
+            model.addAttribute("zonename", ex.get().getZonename());
+            model.addAttribute("exname", ex.get().getName());
+            model.addAttribute("ex", ex.get().getEx());
+            model.addAttribute("type", ex.get().getType());
+            model.addAttribute("typename", ex.get().getTypename());
+            model.addAttribute("date",ex.get().getDate());
+            model.addAttribute("vid1",ex.get().getVideo1());
+            model.addAttribute("vid2",ex.get().getVideo2());
+            model.addAttribute("img1",ex.get().getImg1());
+            model.addAttribute("img2",ex.get().getImg2());
+            model.addAttribute("img3",ex.get().getImg3());
+            model.addAttribute("img4",ex.get().getImg4());
+            model.addAttribute("img5",ex.get().getImg5());
+            model.addAttribute("img6",ex.get().getImg6());
+            model.addAttribute("mainicon",ex.get().getMainicon());
+            model.addAttribute("armarker",ex.get().getArmarker());
+            model.addAttribute("printtype",ex.get().getPrinttype());
+
+            String ex1[] =ex.get().getPoint().split(",");
+            model.addAttribute("ypoint",ex1[0]);
+            model.addAttribute("xpoint",ex1[1]);
+
+            return "ExhibitEdit.html";
+        }else{
+            returnValue = "AdminSite/Homepage.html";
+        }
+        return returnValue;
     }
 
     @ResponseBody
@@ -463,8 +525,6 @@ public class Exhibitcontroller {
         Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
         Optional<ServiceZoneEntity> s2 = serviceZoneRepository.findById(zonepk);
 
-        System.out.println(seqnum);
-        System.out.println(s2.get().getZonename());
 
         session.setAttribute("name",exhibitname);
 
@@ -473,14 +533,6 @@ public class Exhibitcontroller {
         String str = ex11.get().getDate();
 
         String [] filedata = {inv1, inv2, ini1, ini2, ini3, ini4, ini5, ini6};
-        String [] dbfiledata = {ex11.get().getVideo1(), ex11.get().getVideo2(), ex11.get().getImg1(), ex11.get().getImg2(),
-                ex11.get().getImg3(), ex11.get().getImg4(), ex11.get().getImg5(), ex11.get().getImg6()};
-
-        for (int i=0; i<filedata.length; i++){
-            if(filedata[i].equals(null) || filedata[i].equals("")){
-                filedata[i] = dbfiledata[i];
-            }
-        }
 
         String text1[] = mainicon.split("3020");
         String text2[] = armarker.split("3020");

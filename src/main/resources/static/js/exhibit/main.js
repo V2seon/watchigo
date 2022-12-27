@@ -4,9 +4,12 @@
 
 var zonepk = 0;
 // 위치보기
-function selectexzone(pk){
 var marker = new kakao.maps.Marker({
 });
+function selectexzone(pk){
+document.getElementById("ypoint").value = "";
+document.getElementById("xpoint").value = "";
+marker.setMap(null);
 zonepk = pk;
 document.getElementById("pknum").innerText = pk;
 var boxlen = document.getElementsByClassName('choicebtn').length;
@@ -14,7 +17,6 @@ for(let a=0; a<boxlen; a++){
     document.getElementsByClassName('choicebtn')[a].checked = false;
 }
 var ttt = pk+'btn';
-console.log(ttt);
 if(document.getElementById(ttt)){
 document.getElementById(ttt).checked = true;
 }
@@ -40,6 +42,155 @@ for(let a=0; a<boxlen1; a++){
  }
 }
 
+let sendData = {
+            "pk" : pk
+        };
+$.ajax({
+    url : "/searchzoneview1",
+    data : sendData,
+    type : "POST",
+    success : function(result){
+            let [s1, s2] =  result.center.split(',');
+            // 좌표 포지션 생성
+            var newPosition = new kakao.maps.LatLng(s1, s2)
+            // 이동
+            map.setLevel(2, {anchor: newPosition});
+            map.setCenter(newPosition);
+            swal({
+            	    title : "서비스존 내의 전시/시설물의 위치를 클릭해주세요.",
+                	icon  : "info",
+                	closeOnClickOutside : false
+            }).then(function(){
+              	kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+                    marker.setMap(map);
+                    // 클릭한 위도, 경도 정보를 가져옵니다
+                    var latlng = mouseEvent.latLng;
+
+                    // 마커 위치를 클릭한 위치로 옮깁니다
+                    marker.setPosition(latlng);
+
+                    document.getElementById("ypoint").value = latlng.getLat();
+                    document.getElementById("xpoint").value = latlng.getLng();
+                });
+            });
+            if (result.type == "0"){
+                rectangle.setMap(null);
+                polygon.setMap(null);
+                circle.setMap(null);
+
+               let [sp1, sp2] =  result.sp.split(',');
+               let [ep1, ep2] =  result.ep.split(',');
+
+               var sw = new kakao.maps.LatLng(sp1, sp2),
+                   ne = new kakao.maps.LatLng(ep1, ep2);
+
+               // 사각형을 구성하는 영역정보를 생성합니다
+               // 사각형을 생성할 때 영역정보는 LatLngBounds 객체로 넘겨줘야 합니다
+               var rectangleBounds = new kakao.maps.LatLngBounds(sw, ne);
+
+               // 지도에 표시할 사각형을 생성합니다
+               rectangle = new kakao.maps.Rectangle({
+                   bounds: rectangleBounds, // 그려질 사각형의 영역정보입니다
+                   strokeWeight: 4, // 선의 두께입니다
+                   strokeColor: '#39DE2A', // 선의 색깔입니다
+                   strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                   strokeStyle: 'longdash', // 선의 스타일입니다
+                   fillColor: '#A2FF99', // 채우기 색깔입니다
+                   fillOpacity: 0.8 // 채우기 불투명도 입니다
+               });
+
+               // 지도에 사각형을 표시합니다
+               rectangle.setMap(map);
+            }
+            else if(result.type == "1"){
+            // 지도에 표시할 원을 생성합니다
+            rectangle.setMap(null);
+            circle.setMap(null);
+            polygon.setMap(null);
+
+            let [ce1, ce2] =  result.ce.split(',');
+
+            circle = new kakao.maps.Circle({
+                center : new kakao.maps.LatLng(ce1, ce2),  // 원의 중심좌표 입니다
+                radius: result.ra, // 미터 단위의 원의 반지름입니다
+                strokeWeight: 5, // 선의 두께입니다
+                strokeColor: '#39DE2A', // 선의 색깔입니다
+                strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                strokeStyle: 'longdash', // 선의 스타일 입니다
+                fillColor: '#A2FF99', // 채우기 색깔입니다
+                fillOpacity: 0.7  // 채우기 불투명도 입니다
+            });
+
+            // 지도에 원을 표시합니다
+            circle.setMap(map);
+            }
+            else if(result.type == "2"){
+                rectangle.setMap(null);
+                circle.setMap(null);
+                polygon.setMap(null);
+
+                let p1 = result.data.split('&');
+                var polygonPath = [];
+                for(var i=0; i<(p1.length)-1; i++){
+                    let [p, s] = p1[i].split(',');
+                    polygonPath[i] = new kakao.maps.LatLng(p,s)
+                }
+
+                // 지도에 표시할 다각형을 생성합니다
+                polygon = new kakao.maps.Polygon({
+                    path:polygonPath, // 그려질 다각형의 좌표 배열입니다
+                    strokeWeight: 3, // 선의 두께입니다
+                    strokeColor: '#39DE2A', // 선의 색깔입니다
+                    strokeOpacity: 0.8, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                    strokeStyle: 'longdash', // 선의 스타일입니다
+                    fillColor: '#A2FF99', // 채우기 색깔입니다
+                    fillOpacity: 0.7 // 채우기 불투명도 입니다
+                });
+
+                // 지도에 다각형을 표시합니다
+                polygon.setMap(map);
+            }
+    },
+    error: function (e) {
+    }
+    });
+}
+
+function selectexzone1(pk){
+document.getElementById("ypoint").value = "";
+document.getElementById("xpoint").value = "";
+marker.setMap(null);
+zonepk = pk;
+document.getElementById("pknum").innerText = pk;
+var boxlen = document.getElementsByClassName('choicebtn').length;
+for(let a=0; a<boxlen; a++){
+    document.getElementsByClassName('choicebtn')[a].checked = false;
+}
+var ttt = pk+'btn';
+if(document.getElementById(ttt)){
+document.getElementById(ttt).checked = true;
+}
+for(let a=0; a<boxlen; a++){
+ if(document.getElementsByClassName('choicebtn')[a].checked == true){
+     document.getElementsByClassName('ckimg')[a].src =  "/img/exinsert/check.png";
+ }else if(document.getElementsByClassName('choicebtn')[a].checked == false){
+    document.getElementsByClassName('ckimg')[a].src =  "/img/exinsert/cknone.png";
+ }
+}
+
+var boxlen1 = document.getElementsByClassName('choicebtn1').length;
+for(let a=0; a<boxlen1; a++){
+    document.getElementsByClassName('choicebtn1')[a].checked = false;
+}
+var ttt1 = pk+'btn1';
+document.getElementById(ttt1).checked = true;
+for(let a=0; a<boxlen1; a++){
+ if(document.getElementsByClassName('choicebtn1')[a].checked == true){
+     document.getElementsByClassName('ckimg1')[a].src =  "/img/exinsert/check.png";
+ }else if(document.getElementsByClassName('choicebtn1')[a].checked == false){
+    document.getElementsByClassName('ckimg1')[a].src =  "/img/exinsert/cknone.png";
+ }
+}
 
 let sendData = {
             "pk" : pk
@@ -64,7 +215,6 @@ $.ajax({
                 	closeOnClickOutside : false
             }).then(function(){
               	kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
-                    marker.setMap(map);
                     // 클릭한 위도, 경도 정보를 가져옵니다
                     var latlng = mouseEvent.latLng;
 
@@ -353,7 +503,6 @@ function enterkey(){
 var tt = 0;
 function test1(){
 const tes =  document.getElementsByName("printtype");
-
 for(var i=0; i<tes.length; i++){
     if(tes[i].checked){
     tt = tes[i].value;
@@ -365,7 +514,10 @@ document.getElementById("ptckbox").style.backgroundColor = "#FFFFFF";
 document.getElementById("ptckbox1").style.backgroundColor = "transparent";
 document.getElementById("ptckbox").style.color = "#1474E5";
 document.getElementById("ptckbox1").style.color = "#FFFFFF";
+document.getElementById("ptckbox2").style.color = "#FFFFFF";
+document.getElementById("ptckbox2").style.backgroundColor = "transparent";
 
+document.getElementById("sebox").style.display='none';
 document.getElementById("gpssebox").style.display='block';
 document.getElementById("vedsebox").style.display='none';
 }else if(tt == 1){
@@ -374,9 +526,25 @@ document.getElementById("ptckbox").style.backgroundColor = "transparent";
 document.getElementById("ptckbox1").style.backgroundColor = "#FFFFFF";
 document.getElementById("ptckbox1").style.color = "#1474E5";
 document.getElementById("ptckbox").style.color = "#FFFFFF";
+document.getElementById("ptckbox2").style.color = "#FFFFFF";
+document.getElementById("ptckbox2").style.backgroundColor = "transparent";
 
+document.getElementById("sebox").style.display='none';
 document.getElementById("gpssebox").style.display='none';
 document.getElementById("vedsebox").style.display='block';
+}else if(tt == 2){
+document.getElementById("ptckbox").style.backgroundColor = "transparent";
+document.getElementById("ptckbox1").style.backgroundColor = "transparent";
+document.getElementById("ptckbox1").style.color = "#FFFFFF";
+document.getElementById("ptckbox").style.color = "#FFFFFF";
+document.getElementById("ptckbox2").style.borderRadius = "8px 8px 0px 0px";
+document.getElementById("ptckbox2").style.color = "#1474E5";
+document.getElementById("ptckbox2").style.backgroundColor = "#FFFFFF";
+
+
+document.getElementById("sebox").style.display='block';
+document.getElementById("gpssebox").style.display='none';
+document.getElementById("vedsebox").style.display='none';
 }
 }
 
@@ -388,14 +556,63 @@ let choice1 = document.getElementById("lock");
 function saveexhibit(){
 mainicon = document.getElementById("mainicon").src;
 armarker = document.getElementById("armarker").src;
-$('#load').show();
-console.log(zonepk);
-console.log(choice1.options[choice1.selectedIndex].value);
+
 const typename = document.getElementById("typename").value;
-console.log(document.getElementById("exhibitname").value);
-console.log(document.getElementById("exhibitex").value);
 var expoint = document.getElementById("ypoint").value +","+ document.getElementById("xpoint").value;
 // 파일여부 확인
+console.log(expoint)
+if(zonepk == 0){
+    swal({
+          text: "전시/시설물을 등록할 서비스존을 선택해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(choice1.options[choice1.selectedIndex].value == "전체"){
+    swal({
+          text: "전시/시설물을 분류를 선택해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(document.getElementById("exhibitname").value == null || document.getElementById("exhibitname").value == ""){
+    swal({
+          text: "전시/시설물을 이름을 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(document.getElementById("exhibitex").value == null || document.getElementById("exhibitex").value == ""){
+    swal({
+          text: "전시/시설물을 설명을 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(realUploadvideo1.files[0] == null && realUploadvideo2.files[0] == null){
+    swal({
+          text: "동영상을 등록해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(realUpload1.files[0] == null && realUpload2.files[0] == null && realUpload3.files[0] == null && realUpload4.files[0] == null && realUpload5.files[0] == null && realUpload6.files[0] == null){
+    swal({
+          text: "이미지를 등록해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(mainicon == null || mainicon == ""){
+    swal({
+          text: "대표 아이콘을 선택해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(armarker == null || armarker == ""){
+    swal({
+          text: "AR 마커를 선택해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(expoint == ","){
+    swal({
+          text: "전시/시설물 위치를 선택해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else{
+swal({
+	    title : "저장하시겠습니까?",
+    	icon  : "info",
+    	closeOnClickOutside : false
+}).then(function(){
+$('#load').show();
 var videotype1 = ""; var videotype2 = ""; var videotype3 = "";
 var imgtype1 = ""; var imgtype2 = ""; var imgtype3 = "";
 var imgtype4 = ""; var imgtype5 = ""; var imgtype6 = "";
@@ -438,7 +655,6 @@ let sendData = {
             "mainicon" : mainicon,
             "armarker" : armarker
         };
-        console.log(sendData);
 $.ajax({
     url : "/saveexhibit",
     data : sendData,
@@ -472,7 +688,6 @@ $.ajax({
         if(realUpload6.files[0] != null){
             formData.append('files', realUpload6.files[0]);
         }
-
         $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
@@ -498,11 +713,12 @@ $.ajax({
     error:function(request,status,error){
     }
 });
+});
+}
 }
 
 // 전시/시설물 위치보기
 function selectexhibit(seq){
-document.getElementById('menu_wrap1').style.display = "none";
 let sendData = {
             "seq" : seq
         };
@@ -518,12 +734,13 @@ $.ajax({
             // 좌표 포지션 생성
             var newPosition = new kakao.maps.LatLng(s1, s2)
             // 이동
-            map.setLevel(2, {anchor: newPosition});
+            map.setLevel(0, {anchor: newPosition});
             map.setCenter(newPosition);
     },
     error: function (e) {
     }
     });
+
 }
 
 // 전시/시설물 내용보기
@@ -546,7 +763,7 @@ $.ajax({
             // 좌표 포지션 생성
             var newPosition = new kakao.maps.LatLng(s1, s2)
             // 이동
-            map.setLevel(2, {anchor: newPosition});
+            map.setLevel(0, {anchor: newPosition});
             map.setCenter(newPosition);
 
 //            document.getElementById('exhibitex').value = result.ex;
@@ -563,6 +780,7 @@ $.ajax({
 //            lock();
             document.getElementById('zonetext').innerText = result.zonename;
             document.getElementById('zonetext1').innerText = result.ex;
+            document.getElementById('pknum').innerText = result.pk;
             document.getElementById('viewvideo').src = "/file1?fileName="+result.date+"/"+result.video1;
             document.getElementById('viewimg').src = "/file1?fileName="+result.date+"/"+result.img1;
             document.getElementById('marker1').src = result.mainicon;
@@ -639,6 +857,71 @@ swal({
 function editexhibit(){
 mainicon = document.getElementById("mainicon").src;
 armarker = document.getElementById("armarker").src;
+
+zonepk = document.getElementById("pknum").innerText;
+const seq = document.getElementById("seqnum").innerText;
+const typename = document.getElementById("typename").value;
+var expoint = document.getElementById("ypoint").value +","+ document.getElementById("xpoint").value;
+
+const inv1 = document.getElementById('inv1');
+const inv2 = document.getElementById('inv2');
+const inv3 = document.getElementById('inv3');
+const img1 = document.getElementById('img1');
+const img2 = document.getElementById('img2');
+const img3 = document.getElementById('img3');
+const img4 = document.getElementById('img4');
+const img5 = document.getElementById('img5');
+const img6 = document.getElementById('img6');
+var srcbox = [inv1.src ,inv2.src,inv3.src, img1.src,img2.src, img3.src, img4.src, img5.src, img6.src];
+for(var i=0; i<srcbox.length; i++){
+var [ee,rr,dd,ff,cc] = srcbox[i].split('/');
+if(cc != null){
+    console.log(cc);
+    if(cc == "srinsert"){
+        srcbox[i] = "";
+    }else{
+        srcbox[i] = cc;
+    }
+}else{
+srcbox[i] = "";
+}}
+console.log(srcbox);
+if(zonepk == 0){
+    swal({
+          text: "전시/시설물을 등록할 서비스존을 선택해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(choice1.options[choice1.selectedIndex].value == "전체"){
+    swal({
+          text: "전시/시설물을 분류를 선택해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(document.getElementById("exhibitname").value == null || document.getElementById("exhibitname").value == ""){
+    swal({
+          text: "전시/시설물을 이름을 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(document.getElementById("exhibitex").value == null || document.getElementById("exhibitex").value == ""){
+    swal({
+          text: "전시/시설물을 설명을 입력해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(mainicon == null || mainicon == ""){
+    swal({
+          text: "대표 아이콘을 선택해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(armarker == null || armarker == ""){
+    swal({
+          text: "AR 마커를 선택해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else if(expoint == ","){
+    swal({
+          text: "전시/시설물 위치를 선택해주세요.",
+          icon: "info" //"info,success,warning,error" 중 택1
+          });
+}else{
 swal({
   title: "전시/시설물 수정",
   text: "해당 전시/시설물을 수정하시겠습니까?",
@@ -646,34 +929,40 @@ swal({
   closeOnClickOutside : false,
   buttons : ["취소", "수정"],
 }).then((result) =>{
+if(result){
 $('#load').show();
-zonepk = document.getElementById("pknum").innerText;
-const seq = document.getElementById("seqnum").innerText;
-const typename = document.getElementById("typename").value;
-var expoint = document.getElementById("ypoint").value +","+ document.getElementById("xpoint").value;
 // 파일여부 확인
 var videotype1 = ""; var videotype2 = ""; var videotype3 = "";
 var imgtype1 = ""; var imgtype2 = ""; var imgtype3 = "";
 var imgtype4 = ""; var imgtype5 = ""; var imgtype6 = "";
 
 if(realUploadvideo1.files[0] != null ){
-videotype1 = realUploadvideo1.files[0].name}
+videotype1 = realUploadvideo1.files[0].name
+}else{videotype1 = srcbox[0]}
 if(realUploadvideo2.files[0] != null ){
-videotype2 = realUploadvideo2.files[0].name}
+videotype2 = realUploadvideo2.files[0].name
+}else{videotype2 = srcbox[1]}
 if(realUploadvideo3.files[0] != null ){
-videotype3 = realUploadvideo3.files[0].name}
+videotype3 = realUploadvideo3.files[0].name
+}else{videotype3 = srcbox[2]}
 if(realUpload1.files[0] != null){
-imgtype1 = realUpload1.files[0].name}
+imgtype1 = realUpload1.files[0].name
+}else{imgtype1 = srcbox[3]}
 if(realUpload2.files[0] != null){
-imgtype2 = realUpload2.files[0].name}
+imgtype2 = realUpload2.files[0].name
+}else{imgtype2 = srcbox[4]}
 if(realUpload3.files[0] != null){
-imgtype3 = realUpload3.files[0].name}
+imgtype3 = realUpload3.files[0].name
+}else{imgtype3 = srcbox[5]}
 if(realUpload4.files[0] != null){
-imgtype4 = realUpload4.files[0].name}
+imgtype4 = realUpload4.files[0].name
+}else{imgtype4 = srcbox[6]}
 if(realUpload5.files[0] != null){
-imgtype5 = realUpload5.files[0].name}
+imgtype5 = realUpload5.files[0].name
+}else{imgtype5 = srcbox[7]}
 if(realUpload6.files[0] != null){
-imgtype6 = realUpload6.files[0].name}
+imgtype6 = realUpload6.files[0].name
+}else{imgtype6 = srcbox[8]}
 let sendData = {
             "inv1" : videotype1,
             "inv2" : videotype2,
@@ -700,7 +989,6 @@ $.ajax({
     data : sendData,
     type : "POST",
     success : function(result){
-        console.log("여긴성공");
         var formData = new FormData();
         if(realUploadvideo1.files[0] != null){
             formData.append('files', realUploadvideo1.files[0]);
@@ -753,13 +1041,13 @@ $.ajax({
                 });
         }
 
-
     },
     error:function(request,status,error){
     }
 });
+}
 });
-
+}
 }
 
 // 전시/시설물이 등록된 서비스존 리스트 보기
@@ -809,4 +1097,26 @@ function search(pk){
     // }).done(function (fragment) {
     //     $("#pagination").replaceWith(fragment);
     // });
+}
+
+//수정페이지 이동
+function editgo(){
+var pk = document.getElementById('pknum').innerText;
+let sendData = {
+            "pk" : pk
+}
+$.ajax({
+            url      : "/exeditgo",
+            data     : sendData,
+            type     : "GET",
+            success : function(result) {
+                location.href= "/exeditgo1";
+            },
+            error:function(request,status,error){
+                swal({
+                    text: "이동중 서버에 문제가 발생했습니다.",
+                    icon: "warning" //"info,success,warning,error" 중 택1
+                });
+            }
+        });
 }
