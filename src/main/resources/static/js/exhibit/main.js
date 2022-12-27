@@ -734,7 +734,7 @@ $.ajax({
             // 좌표 포지션 생성
             var newPosition = new kakao.maps.LatLng(s1, s2)
             // 이동
-            map.setLevel(2, {anchor: newPosition});
+            map.setLevel(0, {anchor: newPosition});
             map.setCenter(newPosition);
     },
     error: function (e) {
@@ -763,7 +763,7 @@ $.ajax({
             // 좌표 포지션 생성
             var newPosition = new kakao.maps.LatLng(s1, s2)
             // 이동
-            map.setLevel(2, {anchor: newPosition});
+            map.setLevel(0, {anchor: newPosition});
             map.setCenter(newPosition);
 
 //            document.getElementById('exhibitex').value = result.ex;

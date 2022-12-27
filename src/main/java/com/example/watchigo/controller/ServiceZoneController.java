@@ -57,10 +57,10 @@ public class ServiceZoneController {
         if(new SessionCheck().loginSessionCheck(request)){
             HttpSession session = request.getSession();
             Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
+            pageable = PageRequest.of(page, 100);
 
             Page<ServiceZoneEntity> memberEntities = serviceZoneService.selectALLTable0(s1.get().getAseq(), pageable);
 
-            pageable = PageRequest.of(page, 100,Sort.by("pk").descending());
             Pagination pagination = new Pagination(memberEntities.getTotalPages(), page);
 
             model.addAttribute("thisPage", pagination.getPage()); //현재 몇 페이지에 있는지 확인하기 위함

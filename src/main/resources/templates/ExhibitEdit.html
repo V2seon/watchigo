@@ -20,6 +20,7 @@
         <div class="option" style="height:120px;">
             <div>
                 <input class="srad" type="text" placeholder="아파트, 지역 및 학교명으로 검색 " value="" id="keyword" size="15" onkeyup="if(window.event.keyCode==13){sss()}">
+                <img class="searchclear" src="/img/servicezone/serch.png" onclick="sss()">
             </div>
             <img class="backbtn99" onclick="backbtn1()" src="/img/srinsert/Arrow.png">
             <span class="t2">EXHIBIT / FACILITY SETTING ──────</span>
@@ -524,7 +525,7 @@
         <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 25pt; color: #85BEFF;">SERVICE ZONE LIST</span></b></span></p>
         <div style="height:552px;">
             <div class="option">
-                <div style="margin-bottom:20px;">
+                <div style="position: relative; margin-bottom:20px;">
                     <select class="selserzone1"
                             name="selectKey" id="selectKey">
                         <option selected="selected">전체</option>
@@ -533,6 +534,7 @@
                         <option value="주소">주소</option>
                     </select>
                     <input class="selserzonetxt1" id="titleText" type="text" placeholder="검색어를 입력해주세요 " value="" onkeyup="enterkey()">
+                    <img class="searchclear1" src="/img/servicezone/serch.png" onclick="searching()">
                 </div>
             </div>
 
