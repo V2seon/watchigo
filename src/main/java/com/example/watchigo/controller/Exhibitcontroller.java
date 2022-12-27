@@ -428,11 +428,7 @@ public class Exhibitcontroller {
 
     @PostMapping("/deleteexhibit")
     public String delete(@RequestParam(required = false, defaultValue = "", value = "pk")Long pk){
-        System.out.println("인덱스값");
-        System.out.println(pk);
-
         exhibitRepository.deleteById(pk);
-
         return "ExhibitMain :: Success";
     }
 
@@ -531,8 +527,6 @@ public class Exhibitcontroller {
         Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
         Optional<ServiceZoneEntity> s2 = serviceZoneRepository.findById(zonepk);
 
-        System.out.println(seqnum);
-        System.out.println(s2.get().getZonename());
 
         session.setAttribute("name",exhibitname);
 
@@ -541,14 +535,6 @@ public class Exhibitcontroller {
         String str = ex11.get().getDate();
 
         String [] filedata = {inv1, inv2, ini1, ini2, ini3, ini4, ini5, ini6};
-        String [] dbfiledata = {ex11.get().getVideo1(), ex11.get().getVideo2(), ex11.get().getImg1(), ex11.get().getImg2(),
-                ex11.get().getImg3(), ex11.get().getImg4(), ex11.get().getImg5(), ex11.get().getImg6()};
-
-        for (int i=0; i<filedata.length; i++){
-            if(filedata[i].equals(null) || filedata[i].equals("")){
-                filedata[i] = dbfiledata[i];
-            }
-        }
 
         String text1[] = mainicon.split("3020");
         String text2[] = armarker.split("3020");

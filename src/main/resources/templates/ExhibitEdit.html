@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/main/main.css">
-    <link rel="stylesheet" href="css/exhibit/insert.css">
+    <link rel="stylesheet" href="css/exhibit/insert.css?Version=1">
     <link rel="stylesheet" href="css/exhibit/test.css">
 </head>
 <body>
@@ -43,7 +43,7 @@
                             <div class="sebox">
                                 <label class="test_obj">
                                     <input type="checkbox" class="choicebtn" style="background-color:red;" th:id="${Co.pk}+'btn'"
-                                           th:onclick="|javascript:selectexzone(${Co.pk})|" th:value = ${Co.pk} th:onchange="">
+                                           th:onclick="|javascript:selectexzone1(${Co.pk})|" th:value = ${Co.pk} th:onchange="">
                                     <img class="ckimg" th:id="${Co.pk}+'img'" th:src="${pk eq Co.pk ? '/img/exinsert/check.png' : '/img/exinsert/cknone.png'}">
                                 </label>
                             </div>
@@ -213,6 +213,10 @@
                     <span style="width:100%; font-size:18px; font-style: normal; font-weight: 700;">정보 표시 방식 선택</span>
                     <div style="width:96%; margin-top:10px; margin-bottom:40px; border: 1px solid #E0E0E0; border-radius: 8px;">
                         <div class="ptbox" id="exprinttype" onchange="test1()">
+                            <div class="ptckbox2" id="ptckbox2">
+                                <input id="asd" type="radio" class="printtype" name="printtype" value="2" th:checked="${printtype == 2}" style="display:none;">
+                                <label class="asd" for="asd">공간좌표 방식</label>
+                            </div>
                             <div class="ptckbox" id="ptckbox">
                                 <input id="gps" type="radio" class="printtype" name="printtype" value="0" th:checked="${printtype == 0}" style="display:none;">
                                 <label class="gps" for="gps">GPS방식</label>
@@ -222,7 +226,38 @@
                                 <label class="ved" for="ved">영상인식 방식</label>
                             </div>
                         </div>
-                        <div id="gpssebox" style="width:100%; height:100%;">
+                        <div id="sebox" style="width:100%; height:100%;">
+                            <div class="pttext">
+                                <img src="/img/exinsert/gps.png"> &nbsp;&nbsp;공간지도 안에서 등록하는 전시/시설물의 좌표를 입력해주세요
+                            </div>
+                            <div class="gpsbox">
+                                <div class="gpsbox2">
+                                    <div class="gpstext">
+                                        X
+                                    </div>
+                                    <div>
+                                        <input class="pointbox1" id="X" type="text" readonly>
+                                    </div>
+                                </div>
+                                <div class="gpsbox2">
+                                    <div class="gpstext">
+                                        Y
+                                    </div>
+                                    <div>
+                                        <input class="pointbox1" id="Y" type="text" readonly>
+                                    </div>
+                                </div>
+                                <div class="gpsbox2">
+                                    <div class="gpstext">
+                                        Z
+                                    </div>
+                                    <div>
+                                        <input class="pointbox1" id="Z" type="text" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="gpssebox" style="width:100%; height:100%; display:none;">
                             <div class="pttext">
                                 <img src="/img/exinsert/gps.png"> &nbsp;&nbsp;서비스존 안에서 등록하는 전시/시설물의 위치를 지정해주세요
                             </div>
@@ -232,7 +267,7 @@
                                         위도
                                     </div>
                                     <div>
-                                        <input th:value="${ypoint}" class="pointbox" id="ypoint" type="text" readonly>
+                                        <input class="pointbox" th:value="${ypoint}" id="ypoint" type="text" readonly>
                                     </div>
                                 </div>
                                 <div class="gpsbox1">
@@ -240,7 +275,7 @@
                                         경도
                                     </div>
                                     <div>
-                                        <input th:value="${xpoint}" class="pointbox" id="xpoint" type="text" readonly>
+                                        <input class="pointbox" th:value="${xpoint}" id="xpoint" type="text" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -300,7 +335,7 @@
                         <div style="float:left;" onclick="editexhibit()">
                             <img class="exbtn" src="/img/exinsert/save.png">
                         </div>
-                        <div style="float:right;">
+                        <div style="float:right;" onclick="deleteexhibit()">
                             <img class="exbtn" src="/img/exinsert/delete.png">
                         </div>
                     </div>
@@ -517,7 +552,7 @@
                         <div class="sebox">
                             <label class="test_obj">
                                 <input type="checkbox" class="choicebtn1" style="background-color:red;" th:id="${Co.pk}+'btn1'"
-                                       th:onclick="|javascript:selectexzone(${Co.pk})|" th:value = ${Co.pk} th:onchange="">
+                                       th:onclick="|javascript:selectexzone1(${Co.pk})|" th:value = ${Co.pk} th:onchange="">
                                 <img class="ckimg1" th:id="${Co.pk}+'img1'" th:src="${pk eq Co.pk ? '/img/exinsert/check.png' : '/img/exinsert/cknone.png'}">
                             </label>
                         </div>
@@ -572,12 +607,20 @@
 <!--모달-->
 <script type="text/javascript">
 window.onload=function(){
+swal({
+      text: "지도 클릭시 마커의 위치가 이동합니다.",
+      icon: "info" //"info,success,warning,error" 중 택1
+     });
 test1();
 
 let seq = document.getElementById("seqnum").innerText;
+let pk = document.getElementById("pknum").innerText;
 
 let sendData = {
             "seq" : seq
+        };
+let sendData1 = {
+            "pk" : pk
         };
 $.ajax({
     url : "/searchexhibit",
@@ -606,6 +649,120 @@ $.ajax({
                 image: markerImage
             });
             marker.setMap(map);
+            $.ajax({
+                url : "/searchzoneview",
+                data : sendData1,
+                type : "POST",
+                success : function(result){
+                        let [s1, s2] =  result.center.split(',');
+                        // 좌표 포지션 생성
+                        var newPosition = new kakao.maps.LatLng(s1, s2)
+                        // 이동
+                        map.setLevel(2, {anchor: newPosition});
+                        map.setCenter(newPosition);
+                        for ( var i = 0; i < marker.length; i++ ) {
+                                marker[i].setMap(null);
+                            };
+                        kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+                            marker.setMap(map);
+                            // 클릭한 위도, 경도 정보를 가져옵니다
+                            var latlng = mouseEvent.latLng;
+
+                            // 마커 위치를 클릭한 위치로 옮깁니다
+                            marker.setPosition(latlng);
+
+                            document.getElementById("ypoint").value = latlng.getLat();
+                            document.getElementById("xpoint").value = latlng.getLng();
+                        });
+                        if (result.type == "0"){
+                            serviceszone = result.sp +"&"+ result.ep ;
+                            console.log(serviceszone);
+                            rectangle.setMap(null);
+                            polygon.setMap(null);
+                            circle.setMap(null);
+
+                           let [sp1, sp2] =  result.sp.split(',');
+                           let [ep1, ep2] =  result.ep.split(',');
+
+                           var sw = new kakao.maps.LatLng(sp1, sp2),
+                               ne = new kakao.maps.LatLng(ep1, ep2);
+
+                           // 사각형을 구성하는 영역정보를 생성합니다
+                           // 사각형을 생성할 때 영역정보는 LatLngBounds 객체로 넘겨줘야 합니다
+                           var rectangleBounds = new kakao.maps.LatLngBounds(sw, ne);
+
+                           // 지도에 표시할 사각형을 생성합니다
+                           rectangle = new kakao.maps.Rectangle({
+                               bounds: rectangleBounds, // 그려질 사각형의 영역정보입니다
+                               strokeWeight: 4, // 선의 두께입니다
+                               strokeColor: '#FF3DE5', // 선의 색깔입니다
+                               strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                               strokeStyle: 'shortdashdot', // 선의 스타일입니다
+                               fillColor: '#FF8AEF', // 채우기 색깔입니다
+                               fillOpacity: 0.8 // 채우기 불투명도 입니다
+                           });
+
+                           // 지도에 사각형을 표시합니다
+                           rectangle.setMap(map);
+                        }
+                        else if(result.type == "1"){
+                        serviceszone = result.ce +"&"+ result.ra ;
+                        console.log(serviceszone);
+
+                        // 지도에 표시할 원을 생성합니다
+                        rectangle.setMap(null);
+                        circle.setMap(null);
+                        polygon.setMap(null);
+
+                        let [ce1, ce2] =  result.ce.split(',');
+
+                        circle = new kakao.maps.Circle({
+                            center : new kakao.maps.LatLng(ce1, ce2),  // 원의 중심좌표 입니다
+                            radius: result.ra, // 미터 단위의 원의 반지름입니다
+                            strokeWeight: 5, // 선의 두께입니다
+                            strokeColor: '#75B8FA', // 선의 색깔입니다
+                            strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                            strokeStyle: 'dashed', // 선의 스타일 입니다
+                            fillColor: '#CFE7FF', // 채우기 색깔입니다
+                            fillOpacity: 0.7  // 채우기 불투명도 입니다
+                        });
+
+                        // 지도에 원을 표시합니다
+                        circle.setMap(map);
+                        }
+                        else if(result.type == "2"){
+                            serviceszone = result.data;
+                            console.log(serviceszone);
+
+                            rectangle.setMap(null);
+                            circle.setMap(null);
+                            polygon.setMap(null);
+
+                            let p1 = result.data.split('&');
+                            var polygonPath = [];
+                            for(var i=0; i<(p1.length)-1; i++){
+                                let [p, s] = p1[i].split(',');
+                                polygonPath[i] = new kakao.maps.LatLng(p,s)
+                            }
+
+                            // 지도에 표시할 다각형을 생성합니다
+                            polygon = new kakao.maps.Polygon({
+                                path:polygonPath, // 그려질 다각형의 좌표 배열입니다
+                                strokeWeight: 3, // 선의 두께입니다
+                                strokeColor: '#39DE2A', // 선의 색깔입니다
+                                strokeOpacity: 0.8, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                                strokeStyle: 'longdash', // 선의 스타일입니다
+                                fillColor: '#A2FF99', // 채우기 색깔입니다
+                                fillOpacity: 0.7 // 채우기 불투명도 입니다
+                            });
+
+                            // 지도에 다각형을 표시합니다
+                            polygon.setMap(map);
+                        }
+                },
+                error: function (e) {
+                }
+                });
     },
     error: function (e) {
     }
