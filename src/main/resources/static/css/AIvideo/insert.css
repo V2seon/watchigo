@@ -1,0 +1,39 @@
+.category{
+    height:100px;
+}
+
+.categorybox {
+    border : 1px solid #0000000;
+    border-radius : 5px;
+    width : 400px;
+    height : 35px;
+    margin-left : 25px;
+    margin-top : 5px;
+    margin-bottom : 5px;
+    font-size : 15px;
+    font-color : blue;
+}
+
+.videouploadbox {
+    margin-left : 25px;
+    width : 95%;
+    height : auto;
+    border : 1px dashed #000000;
+    border-radius : 5px;
+}
+
+.videoinsertbtn {
+    float : right;
+    margin : 10px 40px 0px 0px;
+    color : #ffffff;
+    background-color : #00acfe;
+    font-size : 15px;
+    padding : 10px 50px 10px 50px;
+    border-radius : 5px;
+    border : none;
+}
+
+#modal-separate{
+    border : 1px solid blue;
+    border-radius : 5px;
+}
