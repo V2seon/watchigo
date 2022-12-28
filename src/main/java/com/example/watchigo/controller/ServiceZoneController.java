@@ -443,6 +443,7 @@ public class ServiceZoneController {
             model.addAttribute("img6",s1.get().getImg6());
             model.addAttribute("state",s1.get().getState());
             model.addAttribute("center",s1.get().getZonecenter());
+            System.out.println("d역;");
             model.addAttribute("pk",pk);
 
             if (s1.get().getType() == 0){
