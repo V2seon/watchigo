@@ -23,24 +23,26 @@ public class AIvideoController {
 
     @GetMapping("/list")
     public String main(HttpServletRequest request, Model model){
-//        String returnValue = "";
-//        if(new SessionCheck().loginSessionCheck(request)){
+        String returnValue = "";
+        if(new SessionCheck().loginSessionCheck(request)){
             model.addAttribute("nowurl0", "/aivideo");
-//            return  "AIvideo.html";
-//        }else{
-//            returnValue = "/AdminSite/HomePage.html";
-//        }
-//        return returnValue;
-
-        return  "AIvideo.html";
+            return  "AIvideo.html";
+        }else{
+            returnValue = "/AdminSite/HomePage.html";
+        }
+        return returnValue;
 
     }
 
     @GetMapping("/write")
     public String ailistenter(Model model, HttpServletRequest request) {
-        SessionCheck sessionCheck = new SessionCheck();
-        model.addAttribute("nowurl0", "/aivideo");
-        return "AIvideoInsert.html";
-
+        String returnValue = "";
+        if(new SessionCheck().loginSessionCheck(request)){
+            model.addAttribute("nowurl0", "/aivideo");
+            return  "AIvideoInsert.html";
+        }else{
+            returnValue = "/AdminSite/HomePage.html";
+        }
+        return returnValue;
     }
 }

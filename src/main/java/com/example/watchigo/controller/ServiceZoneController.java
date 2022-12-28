@@ -94,7 +94,7 @@ public class ServiceZoneController {
         HttpSession session = request.getSession();
         Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
 
-        Pageable pageable = PageRequest.of(page, 5,Sort.by("pk").descending());
+        Pageable pageable = PageRequest.of(page, 100);
         int totalPages = serviceZoneService.selectALLTable(selectKey, titleText,s1.get().getAseq(), pageable).getTotalPages();
         Pagination pagination = new Pagination(totalPages, page);
 
