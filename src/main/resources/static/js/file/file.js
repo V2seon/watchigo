@@ -36,6 +36,25 @@ function video2(){
 }
 
 
+const aiUploadvideo = document.getElementById('aiUploadvideo');
+const aiinv = document.getElementById('aiinv');
+
+function aivideo(){
+    if(aiUploadvideo.files[0] == null){
+        aiUploadvideo.click();
+        aiUploadvideo.addEventListener("change", function(){
+            const aifile = aiUploadvideo.files[0];
+            const aivideourl = URL.createObjectURL(aifile);
+            document.getElementById('aiVdelete').style.display='block';
+            document.getElementById('aiVdelbtn').style.display='block';
+            aiinv.setAttribute("src", aivideourl);
+            aiinv.style.display='flex';
+            document.getElementById('aiVview').style.display='none';
+        })
+    }
+}
+
+
 // 이미지 업로드
 const realUpload1 = document.getElementById('upimg1');
 const upload1 = document.getElementById('uploadimg1');
@@ -156,6 +175,15 @@ inv2.src = "";
 document.getElementById('delbtn2').style.display='none';
 document.getElementById('delete2').style.display='none';
 document.getElementById('uploadview2').style.display='block';
+}
+
+function aiVdelete(){
+document.getElementById('aiUploadvideo').value ="";
+aiinv.src = "";
+aiinv.style.display='none';
+document.getElementById('aiVdelbtn').style.display='none';
+document.getElementById('aiVdelete').style.display='none';
+document.getElementById('aiVview').style.display='block';
 }
 
 // 이미지 삭제

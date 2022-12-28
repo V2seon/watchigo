@@ -35,7 +35,8 @@ function ainext(){
 
 
                             const get_arr = result.split("/");
-                            var getdata, aiimgname, aimainnum1, aimainnum, aimainnum3, aimainnum4, aimainnum5;
+                            var getdata, aiimgname, aimainnum1, aimainnum2, aimainnum3, aimainnum4, aimainnum5;
+                            var aimainnum6; // ********************************** 지울예정************************************
 
 //                            console.log(get_arr.length+"");
                             // 받아온 데이터 분리 및 input에 넣기
@@ -54,7 +55,8 @@ function ainext(){
                                     aimainnum3 = getdata[2];
                                     aimainnum4 = getdata[3];
                                     aimainnum5 = getdata[4];
-                                    aimainnum6 = getdata[5];
+                                    aimainnum6 = getdata[5]; // ********************************** 지울예정************************************
+
                                 }else if(getdata[0]=="width"){
                                     document.getElementById("width").value = getdata[1];
                                 }else if(getdata[0]=="height"){
@@ -68,7 +70,7 @@ function ainext(){
                             document.getElementById('aiimg3').src=ai_src+aimainnum3+'.jpg';
                             document.getElementById('aiimg4').src=ai_src+aimainnum4+'.jpg';
                             document.getElementById('aiimg5').src=ai_src+aimainnum5+'.jpg';
-                            document.getElementById('aiimg6').src=ai_src+aimainnum6+'.jpg';
+                            document.getElementById('aiimg6').src=ai_src+aimainnum6+'.jpg'; // ********************************** 지울예정************************************
 
                             document.getElementById('aiInVPage').style.display='none';
                             document.getElementById('aiinvstart').style.display='none';
@@ -162,7 +164,7 @@ function ai_cvs5(){
     canvas.addEventListener("mouseup",function(me){mUp(me)},false);
     canvas.addEventListener("mouseout",function(me){mOut(me)},false);
 }
-function ai_cvs6(){
+function ai_cvs6(){ // *********************************************************************** 지울예정************************************
     canvas = document.getElementById("aicvs6");
 
     context = canvas.getContext ("2d");
@@ -219,7 +221,7 @@ function canvasDraw(currentX,currentY){
     xy3 = Math.ceil(xy3*100/widths)/100;
     xy4 = Math.ceil(xy4*100/widths)/100;
 
-    box_text = "[" + xy1 + "," + xy2 + "," + xy3 + "," + xy4 + "]"
+    box_text = "[" + Math.abs(xy1) + "," + Math.abs(xy2) + "," + Math.abs(xy3) + "," + Math.abs(xy4) + "]"
 
     if(canvas == document. getElementById("aicvs1")){
         document.getElementById("box1XY").value = box_text;
@@ -231,8 +233,8 @@ function canvasDraw(currentX,currentY){
         document.getElementById("box4XY").value = box_text;
     }else if(canvas == document. getElementById("aicvs5")){
         document.getElementById("box5XY").value = box_text;
-    }else if(canvas == document. getElementById("aicvs6")){
-        document.getElementById("box6XY").value = box_text;
+    }else if(canvas == document. getElementById("aicvs6")){ // ********************************** 지울예정************************************
+        document.getElementById("box6XY").value = box_text; // ********************************** 지울예정************************************
     }
 }
 
@@ -244,13 +246,13 @@ function labeling_start(){
     var xy3 = document.getElementById("box3XY").value;
     var xy4 = document.getElementById("box4XY").value;
     var xy5 = document.getElementById("box5XY").value;
-    var xy6 = document.getElementById("box6XY").value;
+    var xy6 = document.getElementById("box6XY").value; // ********************************** 지울예정************************************
     console.log(xy1);
     console.log(xy2);
     console.log(xy3);
     console.log(xy4);
     console.log(xy5);
-    console.log(xy6);
+    console.log(xy6); // ********************************** 지울예정************************************
 
     if(document.getElementById("label_name").value == null){
         swal({
@@ -267,8 +269,10 @@ function labeling_start(){
 //            text: "시설물 이름을 지정해주세요.",
 //            icon: "info"
 //        })
-    }else if(xy1 == null || xy2 == null || xy3 == null || xy4 == null || xy5 == null || xy6 == null){ // 동영상 유무 확인
-//    if(xy1 == null || xy2 == null || xy3 == null || xy4 == null || xy5 == null || xy6 == null){ // 동영상 유무 확인
+    }else if(xy1 == null || xy2 == null || xy3 == null || xy4 == null || xy5 == null || xy6 == null){ // 동영상 유무 확인 // ********************************** 지울예정**********************
+//    }else if(xy1 == null || xy2 == null || xy3 == null || xy4 == null || xy5 == null){ // 동영상 유무 확인
+
+//    if(xy1 == null || xy2 == null || xy3 == null || xy4 == null || xy5 == null){ // 동영상 유무 확인
         swal({
             text: "모든 영역을 지정해주세요.",
             icon: "info"
@@ -278,7 +282,8 @@ function labeling_start(){
             title : "라벨링이 완료되면 자동으로 AI학습이 진행됩니다. 진행하시겠습니까?",
             icon : "info"
         }).then(function(){
-            var main_label = xy1+"/"+xy2+"/"+xy3+"/"+xy4+"/"+xy5+"/"+xy6;
+            var main_label = xy1+"/"+xy2+"/"+xy3+"/"+xy4+"/"+xy5+"/"+xy6; // ********************************** 지울예정************************************
+//            var main_label = xy1+"/"+xy2+"/"+xy3+"/"+xy4+"/"+xy5;
             let sendData = {
                 "img_name" : document.getElementById("img_name").value,
                 "label_name" : document.getElementById("label_name").value,
