@@ -29,82 +29,108 @@
         <div class="exzone">라벨링할 동영상 파일</div>
     </div>
     <div class="videouploadbox">
-<!--        <div style="text-align: center;">-->
-<!--            <span style="margin-right: 20px;">-->
-<!--                <div style="display: inline-flex; flex-direction: column;">-->
-<!--                    <img src="/img/AIvideo/play.png" width="280" height="280">-->
-<!--                    <button style="border-radius: 5px; border: none; font-size: 15px; font-weight: bold; padding-top: 10px; padding-bottom: 10px;">영역지정하기</button>-->
-<!--                </div>-->
-<!--            </span>-->
-<!--            <span style="margin-right: 20px;">-->
-<!--                <div style="display: inline-flex; flex-direction: column;">-->
-<!--                    <img src="/img/AIvideo/play.png" width="280" height="280">-->
-<!--                    <button style="border-radius: 5px; border: none; font-size: 15px; font-weight: bold; padding-top: 10px; padding-bottom: 10px;">영역지정하기</button>-->
-<!--                </div>-->
-<!--            </span>-->
-<!--            <span style="margin-right: 20px;">-->
-<!--                <div style="display: inline-flex; flex-direction: column;">-->
-<!--                    <img src="/img/AIvideo/play.png" width="280" height="280">-->
-<!--                    <button style="border-radius: 5px; border: none; font-size: 15px; font-weight: bold; padding-top: 10px; padding-bottom: 10px;">영역지정하기</button>-->
-<!--                </div>-->
-<!--            </span>-->
-<!--            <span style="margin-right: 20px;">-->
-<!--                <div style="display: inline-flex; flex-direction: column;">-->
-<!--                    <img src="/img/AIvideo/play.png" width="280" height="280">-->
-<!--                    <button style="border-radius: 5px; border: none; font-size: 15px; font-weight: bold; padding-top: 10px; padding-bottom: 10px;">영역지정하기</button>-->
-<!--                </div>-->
-<!--            </span>-->
-<!--            <span>-->
-<!--                <div style="display: inline-flex; flex-direction: column;">-->
-<!--                    <img src="/img/AIvideo/play.png" width="280" height="280">-->
-<!--                    <button style="border-radius: 5px; border: none; font-size: 15px; font-weight: bold; padding-top: 10px; padding-bottom: 10px;">영역지정하기</button>-->
-<!--                </div>-->
-<!--            </span>-->
-<!--            <span>-->
-<!--                <div style="display: inline-flex; flex-direction: column;">-->
-<!--                    <img src="/img/AIvideo/play.png" width="280" height="280">-->
-<!--                    <button style="border-radius: 5px; border: none; font-size: 15px; font-weight: bold; padding-top: 10px; padding-bottom: 10px;">영역지정하기</button>-->
-<!--                </div>-->
-<!--            </span>-->
-<!--            </div>-->
-<!--            <div class="category" style="margin-top: 10px; margin-bottom: 10px;">-->
-<!--                <div class="exzone">파일명</div>-->
-<!--                <input type="text" id="filename" class="categorybox" placeholder="이미지의 이름을 입력해주세요." />-->
-<!--        </div>-->
-<!--        <div class="category" style="height: 40px;">-->
-<!--            <button style="margin-right: 20px; float: right; padding: 10px 25px 10px 25px; background-color: blue; border:1px solid blue;-->
-<!--            border-radius: 5px; color: white; font-size: 15px;">라벨링 시작</button>-->
-<!--        </div>-->
-<!--        <div class="category" style="margin-top: 10px;">-->
-<!--            <div>-->
-<!--                <span style="margin-left: 25px; font-size: 20px; font-weight: bold;">라벨링 진행도</span>-->
-<!--                <span style="float: right; margin-right: 20px; font-size: 15px; font-weight: bold;">25%</span>-->
-<!--            </div>-->
-<!--            <progress id="label_progress" max="100" value="0" style="width: 98%; height: 40px; margin-top: 5px; margin-left: 25px;"></progress>-->
-<!--        </div>-->
-<!--        <div class="category" style="margin-top: 10px;">-->
-<!--            <div>-->
-<!--                <span style="margin-left: 25px; font-size: 20px; font-weight: bold;">AI 학습 진행도</span>-->
-<!--                <span style="float: right; margin-right: 20px; font-size: 15px; font-weight: bold;">25%</span>-->
-<!--            </div>-->
-<!--            <progress id="ailearning_progress" max="100" value="0" style="width: 98%; height: 40px; margin-top: 5px; margin-left: 25px;"></progress>-->
-<!--        </div>-->
+        <div id="aiLPage" style="display:none;text-align: center;">
+            <span style="margin-right: 20px;">
+                <div style="display: inline-flex; flex-direction: column;">
+                    <img id="aiimg1" src="/img/AIvideo/play.png" width="280" height="280">
+                    <canvas id="aicvs1" width="280" height="280" style="position:absolute;"></canvas>
+                    <button onclick="ai_cvs1()" style="border-radius: 5px; border: none; font-size: 15px; font-weight: bold; padding-top: 10px; padding-bottom: 10px;">영역지정하기</button>
+                </div>
+            </span>
+            <span style="margin-right: 20px;">
+                <div style="display: inline-flex; flex-direction: column;">
+                    <img id="aiimg2" src="/img/AIvideo/play.png" width="280" height="280">
+                    <canvas id="aicvs2" width="280" height="280" style="position:absolute;"></canvas>
+                    <button onclick="ai_cvs2()" style="border-radius: 5px; border: none; font-size: 15px; font-weight: bold; padding-top: 10px; padding-bottom: 10px;">영역지정하기</button>
+                </div>
+            </span>
+            <span style="margin-right: 20px;">
+                <div style="display: inline-flex; flex-direction: column;">
+                    <img id="aiimg3" src="/img/AIvideo/play.png" width="280" height="280">
+                    <canvas id="aicvs3" width="280" height="280" style="position:absolute;"></canvas>
+                    <button onclick="ai_cvs3()" style="border-radius: 5px; border: none; font-size: 15px; font-weight: bold; padding-top: 10px; padding-bottom: 10px;">영역지정하기</button>
+                </div>
+            </span>
+            <span style="margin-right: 20px;">
+                <div style="display: inline-flex; flex-direction: column;">
+                    <img id="aiimg4" src="/img/AIvideo/play.png" width="280" height="280">
+                    <canvas id="aicvs4" width="280" height="280" style="position:absolute;"></canvas>
+                    <button onclick="ai_cvs4()" style="border-radius: 5px; border: none; font-size: 15px; font-weight: bold; padding-top: 10px; padding-bottom: 10px;">영역지정하기</button>
+                </div>
+            </span>
+            <span>
+                <div style="display: inline-flex; flex-direction: column;">
+                    <img id="aiimg5" src="/img/AIvideo/play.png" width="280" height="280">
+                    <canvas id="aicvs5" width="280" height="280" style="position:absolute;"></canvas>
+                    <button onclick="ai_cvs5()" style="border-radius: 5px; border: none; font-size: 15px; font-weight: bold; padding-top: 10px; padding-bottom: 10px;">영역지정하기</button>
+                </div>
+            </span>
+            <span>
+                <div style="display: inline-flex; flex-direction: column;">
+                    <img id="aiimg6" src="/img/AIvideo/play.png" width="280" height="280">
+                    <canvas id="aicvs6" width="280" height="280" style="position:absolute;"></canvas>
+                    <button onclick="ai_cvs6()" style="border-radius: 5px; border: none; font-size: 15px; font-weight: bold; padding-top: 10px; padding-bottom: 10px;">영역지정하기</button>
+                </div>
+            </span>
+            <div class="category" style="margin-top: 10px; margin-bottom: 10px;">
+                <div class="exzone">라벨명</div>
+                <input type="text" id="label_name" class="categorybox" placeholder="이미지의 이름을 입력해주세요." />
+            </div>
+        </div>
+        <div id="aiLStart" class="category" style="display:none;height: 40px;">
+            <button onclick="labeling_start()" style="margin-right: 20px; float: right; padding: 10px 25px 10px 25px; background-color: blue; border:1px solid blue;
+            border-radius: 5px; color: white; font-size: 15px;">라벨링 시작</button>
+        </div>
+        <div id="aiLProgress" class="category" style="display:none;margin-top: 10px;">
+            <div>
+                <span style="margin-left: 25px; font-size: 20px; font-weight: bold;">라벨링 진행도</span>
+                <span style="float: right; margin-right: 20px; font-size: 15px; font-weight: bold;">25%</span>
+            </div>
+            <progress id="label_progress" max="100" value="0" style="width: 98%; height: 40px; margin-top: 5px; margin-left: 25px;"></progress>
+        </div>
+        <div id="aiProgress" class="category" style="display:none;margin-top: 10px;">
+            <div>
+                <span style="margin-left: 25px; font-size: 20px; font-weight: bold;">AI 학습 진행도</span>
+                <span style="float: right; margin-right: 20px; font-size: 15px; font-weight: bold;">25%</span>
+            </div>
+            <progress id="ailearning_progress" max="100" value="0" style="width: 98%; height: 40px; margin-top: 5px; margin-left: 25px;"></progress>
+        </div>
         <!-- 아이콘콘 -->
-        <div style="display:flex; justify-content: center; flex-direction: column;">
+        <div id="aiInVPage" style="display:flex; justify-content: center; flex-direction: column;">
             <div style="height: 100px; display: flex; justify-content: center;">
-                <label for="file_custom" id="uploadBtn" style="border: 1px solid grey; border-radius: 5px; padding: 30px 60px 40px 60px;">
+                <div id="aiVview" onclick="aivideo()" style="border: 1px solid grey; border-radius: 5px; padding: 30px 60px 40px 60px;">
                     <img src="/img/AIvideo/upload.png" width="30" height="30">
-                </label>
+                </div>
+                <video id="aiinv" style="display:none;position:absolute;width:200px;height:200px;" class="inv1" src=""></video>
+                <div style="display:none;" class="delete" id="aiVdelete">
+                    <img id="aiVdelbtn" onclick="aiVdelete()" class="delbtn" src="/img/srinsert/delete.png">
+                </div>
             </div>
             <div style="height: 30px; display: flex; justify-content: center;">
                 <img src="/img/AIvideo/play.png" width="25" height="25"/>
                 <span style="margin:0px; font-color : grey;">동영상은 1개만 등록 가능합니다.</span>
             </div>
-            <input type="file" id="file_custom" style="display: none;">
+            <input type="file" id="aiUploadvideo" class="vedioupload" accept="video/*" required multiple style="display: none;">
+        </div>
+        <!-- 데이터 -->
+        <div style="display:none">
+            <input id="img_name" type="text" value="null">
+            <input id="img_count" type="text" value="null">
+            <input id="main_count" type="text" value="null">
+            <input id="width" type="text" value="null">
+            <input id="height" type="text" value="null">
+
+            <input id="box1XY" type="text">
+            <input id="box2XY" type="text">
+            <input id="box3XY" type="text">
+            <input id="box4XY" type="text">
+            <input id="box5XY" type="text">
+            <input id="box6XY" type="text">
         </div>
     </div>
-    <div class="category">
-        <button type="button" class="videoinsertbtn" id="modal" data-toggle="modal" data-target="#modal-separate">확인</button>
+    <div id="aiinvstart" class="category">
+<!--        <button type="button" class="videoinsertbtn" id="modal" data-toggle="modal" data-target="#modal-separate">확인</button>-->
+        <button type="button" class="videoinsertbtn" id="aiNext" onclick="ainext()">확인</button>
         <button type="button" class="videoinsertbtn">저장</button>
     </div>
 </div>
@@ -119,11 +145,17 @@
     </div>
     <!-- /.modal-content -->
 </div>
+<div id="load"> <img src="/img/spinner.gif" alt="loading"></div>
+
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="/js/file/file.js"></script>
+<script src="/js/ai/videoLabeling.js"></script>
 <script>
 $("#modal").click(function() {
     $("#modal-separate").fadeIn();
 });
 </script>
+<!-- swal창 띄우기 -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 </html>
