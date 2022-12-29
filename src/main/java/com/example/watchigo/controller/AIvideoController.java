@@ -1,29 +1,29 @@
 package com.example.watchigo.controller;
 
-import com.example.watchigo.common.Pagination;
 import com.example.watchigo.common.SessionCheck;
-import com.example.watchigo.repository.UserRepository;
-import com.example.watchigo.service.ServiceZoneService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.http.HttpHeaders;
+
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.Optional;
+import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static java.sql.DriverManager.println;
 
@@ -64,7 +64,7 @@ public class AIvideoController {
     public String AIvideoSplit (HttpServletRequest request, Model model){
         String video_name = request.getParameter("aiinv"); // 받아온 videoname
 
-        String url = "http://127.0.0.1:3000/watchigo/" + video_name; // flask get방식 통신 url
+        String url = "http://192.168.219.102:3000/watchigo/" + video_name; // flask get방식 통신 url
         String get_ai_data = ""; // 가져온 데이터 {"키1":"값1","키2":"값2"} 넣어놓을 공간
 
         try {
@@ -103,6 +103,35 @@ public class AIvideoController {
         return get_ai_data;
     }
 
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.POST, value = "/video_download")
+    public String AIvideoDownload (MultipartHttpServletRequest request){
+        MultipartFile video = request.getFile("aiinvideo");
+        String video_name = request.getParameter("aivideoname"); // 받아온 videoname
+        String path = "D:/LeeYJ/images/videos/"+video_name;
+
+        log.info("video_name =====> {}", video_name);
+        log.info("video_path =====> {}", path);
+
+        try {
+            Path filePath = Paths.get(path);
+            Resource resource = new InputStreamResource(Files.newInputStream(filePath));
+
+            File file = new File(path);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentDisposition(ContentDisposition.builder("attachment").filename(file.getName()).build());
+
+            File checkFile = new File("/file/videos/"+video_name);
+            if(!checkFile.exists()){
+                return "fail...";
+            }
+            return "sussess!!!";
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "error...";
+    }
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/ai_labeling")
@@ -116,7 +145,7 @@ public class AIvideoController {
                               @RequestParam(required = false, defaultValue = "", value = "height")String height){
         String data = "?img_name="+img_name+"&label_name="+label_name+"&img_count="+img_count
                 +"&main_count="+main_count+"&main_label="+main_label+"&width="+width+"&height="+height;
-        String url = "http://127.0.0.1:3000/ai_labeling"+data; // flask get방식 통신 url
+        String url = "http://192.168.219.102:3000/ai_labeling"+data; // flask get방식 통신 url
 
         log.info("get ok!!!!!");
         log.info("data : "+data);

@@ -11,7 +11,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     // "/img_file/" 사용시 윈도우 images 폴더 지정
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry){
-        registry.addResourceHandler("/img_file/**") // 사용할 경로명
-                .addResourceLocations("file:///D:/LeeYJ/images/img/"); // 이동할 경로
+        registry.addResourceHandler("/file/**") // 사용할 경로명
+                .addResourceLocations("file:///D:/LeeYJ/images/"); // 이동할 경로
     }
+
 }
