@@ -107,30 +107,53 @@ public class AIvideoController {
     @RequestMapping(method = RequestMethod.POST, value = "/video_download")
     public String AIvideoDownload (MultipartHttpServletRequest request){
         MultipartFile video = request.getFile("aiinvideo");
-        String video_name = request.getParameter("aivideoname"); // 받아온 videoname
+        String video_name = video.getOriginalFilename();
         String path = "D:/LeeYJ/images/videos/"+video_name;
 
         log.info("video_name =====> {}", video_name);
         log.info("video_path =====> {}", path);
 
+        String fullPath = "/file/videos/"+video_name;
         try {
-            Path filePath = Paths.get(path);
-            Resource resource = new InputStreamResource(Files.newInputStream(filePath));
-
-            File file = new File(path);
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentDisposition(ContentDisposition.builder("attachment").filename(file.getName()).build());
-
-            File checkFile = new File("/file/videos/"+video_name);
-            if(!checkFile.exists()){
-                return "fail...";
-            }
-            return "sussess!!!";
+            video.transferTo(new File(path));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "error...";
+        if (!fullPath.isEmpty()){
+            return video_name;
+        }else {
+            return "null";
+        }
+
+//        if(!video.isEmpty()){
+//            String fullPath = "/file/videos/"+video.getOriginalFilename();
+//            try {
+//                video.transferTo(new File(fullPath));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return "sucsess!!!";
+//        }
+
+//        try {
+//            Path filePath = Paths.get(path);
+//            Resource resource = new InputStreamResource(Files.newInputStream(filePath));
+//
+//            File file = new File(path);
+//
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentDisposition(ContentDisposition.builder("attachment").filename(file.getName()).build());
+//
+//            File checkFile = new File("/file/videos/"+video_name);
+//            if(!checkFile.exists()){
+//                return "fail...";
+//            }
+//            return "sucsess!!!";
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+//        return "error...";
     }
 
     @ResponseBody

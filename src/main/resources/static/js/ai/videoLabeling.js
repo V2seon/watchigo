@@ -10,30 +10,31 @@ function ainext(){
             icon : "info"
         }).then(function(){
             $('#load').show();
-            var aivideoname = document.getElementById('aiUploadvideo').files[0].name;
+//            var aivideoname = document.getElementById('aiUploadvideo').files[0].name;
 
 
             // 동영상 저장
             var aiinvideo = document.getElementById('aiUploadvideo').files[0];
             var formData = new FormData();
             formData.append("aiinvideo",aiinvideo);
-            formData.append("aivideoname",aivideoname);
+//            formData.append("aivideoname",aivideoname);
 
-//            $.ajax({
-//                url : "/aivideo/video_download",
-//                processData:false,
-//                contentType:false,
-//                data : formData,
-//                type : "POST",
-//                success : function(result){
-//                    console.log(result)
+            $.ajax({
+                url : "/aivideo/video_download",
+                processData:false,
+                contentType:false,
+                data : formData,
+                type : "POST",
+                success : function(result){
+                    console.log(result)
 
 
 
                     // 동영상명 전송 - flask
                     $.ajax({
                         url : "/aivideo/video_split",
-                        data : {"aiinv" : aivideoname},
+//                        data : {"aiinv" : aivideoname},
+                        data : {"aiinv" : result},
                         type : "GET",
                         success : function(result){
                             const get_arr = result.split("/");
@@ -102,14 +103,14 @@ function ainext(){
                                 });
 
 
-//
-//                }, error:function(request, status, error){
-//                    swal({
-//                    text: "동영상 저장 실패",
-//                    icon: "warning"
-//                    });
-//                }
-//            });
+
+                }, error:function(request, status, error){
+                    swal({
+                    text: "동영상 저장 실패",
+                    icon: "warning"
+                    });
+                }
+            });
 
 
         });
@@ -122,13 +123,15 @@ function ainext(){
 var canvas;
 var context;
 var drag = false;
+var cvs_color = "#ff0000";
+
 // 영역지정
 function ai_cvs1(){
     canvas = document.getElementById("aicvs1");
 
     context = canvas.getContext ("2d");
     context.lineWidth = 1;
-    context.strokeStyle = "#1919ff";
+    context.strokeStyle = cvs_color;
     canvas.addEventListener("mousedown",function(me){mDown(me)},false);
     canvas.addEventListener("mousemove",function(me){mMove(me)},false);
     canvas.addEventListener("mouseup",function(me){mUp(me)},false);
@@ -139,7 +142,7 @@ function ai_cvs2(){
 
     context = canvas.getContext ("2d");
     context.lineWidth = 1;
-    context.strokeStyle = "#1919ff";
+    context.strokeStyle = cvs_color;
     canvas.addEventListener("mousedown",function(me){mDown(me)},false);
     canvas.addEventListener("mousemove",function(me){mMove(me)},false);
     canvas.addEventListener("mouseup",function(me){mUp(me)},false);
@@ -150,7 +153,7 @@ function ai_cvs3(){
 
     context = canvas.getContext ("2d");
     context.lineWidth = 1;
-    context.strokeStyle = "#1919ff";
+    context.strokeStyle = cvs_color;
     canvas.addEventListener("mousedown",function(me){mDown(me)},false);
     canvas.addEventListener("mousemove",function(me){mMove(me)},false);
     canvas.addEventListener("mouseup",function(me){mUp(me)},false);
@@ -161,7 +164,7 @@ function ai_cvs4(){
 
     context = canvas.getContext ("2d");
     context.lineWidth = 1;
-    context.strokeStyle = "#1919ff";
+    context.strokeStyle = cvs_color;
     canvas.addEventListener("mousedown",function(me){mDown(me)},false);
     canvas.addEventListener("mousemove",function(me){mMove(me)},false);
     canvas.addEventListener("mouseup",function(me){mUp(me)},false);
@@ -172,7 +175,7 @@ function ai_cvs5(){
 
     context = canvas.getContext ("2d");
     context.lineWidth = 1;
-    context.strokeStyle = "#1919ff";
+    context.strokeStyle = cvs_color;
     canvas.addEventListener("mousedown",function(me){mDown(me)},false);
     canvas.addEventListener("mousemove",function(me){mMove(me)},false);
     canvas.addEventListener("mouseup",function(me){mUp(me)},false);
