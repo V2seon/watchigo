@@ -114,7 +114,7 @@ public class Exhibitcontroller {
 
         model.addAttribute("userlist1", pageList); //페이지 객체 리스트
 
-        return "ExhibitInsert :: #see";
+        return "ExhibitInsert :: #intable1";
     }
 
     @RequestMapping(value = "/exhibit_search1", method = RequestMethod.POST)
@@ -141,7 +141,7 @@ public class Exhibitcontroller {
 
         model.addAttribute("userlist", pageList); //페이지 객체 리스트
 
-        return "ExhibitMain :: #viewzonebox1";
+        return "ExhibitMain :: #intable";
     }
 
     @RequestMapping(value = "/exhibit_search2", method = RequestMethod.POST)
