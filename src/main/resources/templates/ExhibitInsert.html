@@ -14,11 +14,9 @@
 <div th:insert="common/navbar.html">
 </div>
     <div class="map_wrap">
-        <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;">
-        </div>
         <div id="menu_wrap" class="bg_white">
             <div class="option" style="height:120px;">
-                <div>
+                <div style="position: relative;">
                     <input class="srad" type="text" placeholder="아파트, 지역 및 학교명으로 검색 " value="" id="keyword" size="15" onkeyup="if(window.event.keyCode==13){sss()}">
                     <img class="searchclear" src="/img/servicezone/serch.png" onclick="sss()">
                 </div>
@@ -337,6 +335,8 @@
                 </div>
             </div>
         </div>
+        <div id="map" style="width:77.7%;height:100%;position:relative;overflow:hidden;">
+        </div>
         <div id="zoombtn1" class="custom_zoomcontrol radius_border">
             <span onclick="zoomIn()"><img src="/img/servicezone/zoomin.png" alt="확대"></span>
         </div>
@@ -507,7 +507,7 @@
     <div class="modal-content1">
         <span class="pop_bt" style="font-size: 13pt;" onClick="close_pop3();">X</span>
         <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 25pt; color: #85BEFF;">SERVICE ZONE LIST</span></b></span></p>
-        <div style="height:552px;">
+        <div id="intable1" style="height:552px;">
             <div class="option">
                 <div style="position: relative; margin-bottom:20px;">
                     <select class="selserzone1"

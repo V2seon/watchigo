@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+import java.util.logging.Logger;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +49,7 @@ public class ServiceZoneController {
     private CircleRepository circleRepository;
     private UserRepository userRepository;
     private ExhibitRepository exhibitRepository;
-
+    private final static Logger LOG = Logger.getGlobal();
 
     @GetMapping("/servicezone")
     public String main(Model model, HttpServletRequest request, Pageable pageable,
@@ -104,7 +105,6 @@ public class ServiceZoneController {
         model.addAttribute("firstBtnIndex", pagination.getFirstBtnIndex()); //버튼 페이징 - 첫시작 인덱스
         model.addAttribute("lastBtnIndex", pagination.getLastBtnIndex()); //섹션 변경 위함
         model.addAttribute("totalPage", pagination.getTotalPages()); //끝 버튼 위함
-
 
         //서비스 엔티티 추가후 주석 풀고 사용
         Page<ServiceZoneEntity> pageList = serviceZoneService.selectALLTable(selectKey, titleText,s1.get().getAseq(), pageable);
@@ -443,7 +443,6 @@ public class ServiceZoneController {
             model.addAttribute("img6",s1.get().getImg6());
             model.addAttribute("state",s1.get().getState());
             model.addAttribute("center",s1.get().getZonecenter());
-            System.out.println("d역;");
             model.addAttribute("pk",pk);
 
             if (s1.get().getType() == 0){

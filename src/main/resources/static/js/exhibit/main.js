@@ -440,7 +440,7 @@ function searching2(){
         data: querydata,
         type:"POST",
     }).done(function (fragment) {
-        $("#viewzonebox1").replaceWith(fragment);
+        $("#intable").replaceWith(fragment);
         console.log(fragment);
     });
 
@@ -487,7 +487,7 @@ function searching(){
         data: querydata,
         type:"POST",
     }).done(function (fragment) {
-        $("#see").replaceWith(fragment);
+        $("#intable1").replaceWith(fragment);
         console.log(fragment);
     });
 
