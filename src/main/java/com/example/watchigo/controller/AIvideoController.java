@@ -24,6 +24,7 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 import static java.sql.DriverManager.println;
 
@@ -64,7 +65,7 @@ public class AIvideoController {
     public String AIvideoSplit (HttpServletRequest request, Model model){
         String video_name = request.getParameter("aiinv"); // 받아온 videoname
 
-        String url = "http://192.168.219.102:3000/watchigo/" + video_name; // flask get방식 통신 url
+        String url = "http://192.168.219.102:3000/watchigo/" + video_name; // flask get방식 통신 url *****************
         String get_ai_data = ""; // 가져온 데이터 {"키1":"값1","키2":"값2"} 넣어놓을 공간
 
         try {
@@ -80,7 +81,9 @@ public class AIvideoController {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                     String line;
 
-                    while(true){
+                    // DB저장(alv) 기능 작성하기 *****************
+
+                   while(true){
                         line = reader.readLine();
                         if(line==null){
                             break;
@@ -91,6 +94,9 @@ public class AIvideoController {
                     }
                     log.info("get_ai_data => " + get_ai_data);
                     reader.close();
+                } else{
+                    conn.disconnect();
+                    return "null";
                 }
                 conn.disconnect();
             }
@@ -108,52 +114,25 @@ public class AIvideoController {
     public String AIvideoDownload (MultipartHttpServletRequest request){
         MultipartFile video = request.getFile("aiinvideo");
         String video_name = video.getOriginalFilename();
-        String path = "D:/LeeYJ/images/videos/"+video_name;
 
-        log.info("video_name =====> {}", video_name);
-        log.info("video_path =====> {}", path);
+        UUID uuid = UUID.randomUUID();
+        String[] nameArr = video_name.split("[.]");
+        String download_name = uuid.toString() + "." + nameArr[(nameArr.length-1)];
+        String path = "D:/LeeYJ/images/videos/"+download_name; // 저장경로 ********************
 
-        String fullPath = "/file/videos/"+video_name;
+//        log.info("video_name =====> {}", video_name);
+//        log.info("download_name =====> {}", download_name);
+//        log.info("video_path =====> {}", path);
+
+        File fullPath = new File("/file/videos/"+download_name); // 불러올경로(확인용) ********************
+
         try {
             video.transferTo(new File(path));
+            return download_name; // 저장명 반환
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        if (!fullPath.isEmpty()){
-            return video_name;
-        }else {
             return "null";
         }
-
-//        if(!video.isEmpty()){
-//            String fullPath = "/file/videos/"+video.getOriginalFilename();
-//            try {
-//                video.transferTo(new File(fullPath));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return "sucsess!!!";
-//        }
-
-//        try {
-//            Path filePath = Paths.get(path);
-//            Resource resource = new InputStreamResource(Files.newInputStream(filePath));
-//
-//            File file = new File(path);
-//
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentDisposition(ContentDisposition.builder("attachment").filename(file.getName()).build());
-//
-//            File checkFile = new File("/file/videos/"+video_name);
-//            if(!checkFile.exists()){
-//                return "fail...";
-//            }
-//            return "sucsess!!!";
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-//        return "error...";
     }
 
     @ResponseBody
@@ -168,10 +147,9 @@ public class AIvideoController {
                               @RequestParam(required = false, defaultValue = "", value = "height")String height){
         String data = "?img_name="+img_name+"&label_name="+label_name+"&img_count="+img_count
                 +"&main_count="+main_count+"&main_label="+main_label+"&width="+width+"&height="+height;
-        String url = "http://192.168.219.102:3000/ai_labeling"+data; // flask get방식 통신 url
+        String url = "http://192.168.219.102:3000/ai_labeling"+data; // flask get방식 통신 url *****************
 
-        log.info("get ok!!!!!");
-        log.info("data : "+data);
+//        log.info("data : "+data);
 
         try {
             HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
@@ -182,10 +160,14 @@ public class AIvideoController {
                 int resCode = conn.getResponseCode();
                 if(resCode==201){
                     log.info("flask OK");
+
+                    // DB 변환/추가(alv/ald) 기능 작성하기 *****************
+
                 }else {
                     log.info("flask No");
+                    conn.disconnect();
+                    return "null";
                 }
-
                 conn.disconnect();
             }
         } catch (MalformedURLException e) {

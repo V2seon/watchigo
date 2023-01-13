@@ -1,7 +1,21 @@
 function ainext(){
-    if(aiUploadvideo.files[0] == null){ // 동영상 유무 확인
+    var aiinvideo = document.getElementById('aiUploadvideo');
+    var aiclass = document.getElementById('classification').value;
+    var ainame = document.getElementById('facilityname').value;
+
+    if(aiinvideo.files[0] == null){ // 동영상 유무 확인
         swal({
             text: "동영상을 등록해주세요.",
+            icon: "info"
+        })
+    }else if(aiclass == null || aiclass == ""){
+        swal({
+            text: "분류를 입력해주세요.",
+            icon: "info"
+        })
+    }else if(ainame == null || ainame == ""){
+        swal({
+            text: "시설물의 이름을 입력해주세요.",
             icon: "info"
         })
     }else{
@@ -10,14 +24,10 @@ function ainext(){
             icon : "info"
         }).then(function(){
             $('#load').show();
-//            var aivideoname = document.getElementById('aiUploadvideo').files[0].name;
-
 
             // 동영상 저장
-            var aiinvideo = document.getElementById('aiUploadvideo').files[0];
             var formData = new FormData();
-            formData.append("aiinvideo",aiinvideo);
-//            formData.append("aivideoname",aivideoname);
+            formData.append("aiinvideo",aiinvideo.files[0]);
 
             $.ajax({
                 url : "/aivideo/video_download",
@@ -26,22 +36,34 @@ function ainext(){
                 data : formData,
                 type : "POST",
                 success : function(result){
-                    console.log(result)
-
-
+                    // 실패시 list페이지로 이동
+                    if(result=="null"){
+                        swal({
+                            text: "동영상 저장 실패",
+                            icon: "warning"
+                        });
+                        return "/aivideo/write";
+                    }
 
                     // 동영상명 전송 - flask
                     $.ajax({
                         url : "/aivideo/video_split",
-//                        data : {"aiinv" : aivideoname},
                         data : {"aiinv" : result},
                         type : "GET",
                         success : function(result){
+                            if(result=="null"){
+                                swal({
+                                    text: "통신오류",
+                                    icon: "warning"
+                                });
+                                return "/aivideo/write";
+                            }
+
+                            // DB저장(ald) 기능 작성하기 *****************
+
                             const get_arr = result.split("/");
                             var getdata, aiimgname, aimainnum1, aimainnum2, aimainnum3, aimainnum4, aimainnum5;
-                            // var aimainnum6;
 
-                            console.log(get_arr.length+"");
                             // 받아온 데이터 분리 및 input에 넣기
                             for(i in get_arr){
                                 getdata = get_arr[i].split(":");
@@ -58,52 +80,37 @@ function ainext(){
                                     aimainnum3 = getdata[2];
                                     aimainnum4 = getdata[3];
                                     aimainnum5 = getdata[4];
-                                    // aimainnum6 = getdata[5];
 
                                 }else if(getdata[0]=="width"){
                                     document.getElementById("width").value = getdata[1];
-                                                    }else if(getdata[0]=="height"){
-                                                        document.getElementById("height").value = getdata[1];
-                                                    }
-                                                }
-                                                // 이미지 불러오기
-                                                var ai_src = "/file/img/"+aiimgname+"/"+aiimgname;
-                                                document.getElementById('aiimg1').src=ai_src+aimainnum1+'.jpg';
-                                                document.getElementById('aiimg2').src=ai_src+aimainnum2+'.jpg';
-                                                document.getElementById('aiimg3').src=ai_src+aimainnum3+'.jpg';
-                                                document.getElementById('aiimg4').src=ai_src+aimainnum4+'.jpg';
-                                                document.getElementById('aiimg5').src=ai_src+aimainnum5+'.jpg';
-                    //                            document.getElementById('aiimg6').src=ai_src+aimainnum6+'.jpg';
+                                }else if(getdata[0]=="height"){
+                                    document.getElementById("height").value = getdata[1];
+                                }
+                            }
+                            // 이미지 불러오기
+                            var ai_src = "/file/img/"+aiimgname+"/"+aiimgname;
+                            document.getElementById('aiimg1').src=ai_src+aimainnum1+'.jpg';
+                            document.getElementById('aiimg2').src=ai_src+aimainnum2+'.jpg';
+                            document.getElementById('aiimg3').src=ai_src+aimainnum3+'.jpg';
+                            document.getElementById('aiimg4').src=ai_src+aimainnum4+'.jpg';
+                            document.getElementById('aiimg5').src=ai_src+aimainnum5+'.jpg';
 
-                                                document.getElementById('aiInVPage').style.display='none';
-                                                document.getElementById('aiinvstart').style.display='none';
-                                                document.getElementById('aiLPage').style.display='block';
-                                                document.getElementById('aiLStart').style.display='block';
-                                                document.getElementById('aiLProgress').style.display='flex';
-                                                document.getElementById('aiProgress').style.display='flex';
+                            document.getElementById('aiInVPage').style.display='none';
+                            document.getElementById('aiinvstart').style.display='none';
+                            document.getElementById('aiLPage').style.display='block';
+                            document.getElementById('aiLStart').style.display='block';
+                            document.getElementById('aiLProgress').style.display='flex';
+                            document.getElementById('aiProgress').style.display='flex';
 
-                                                $('#load').hide();
+                            $('#load').hide();
 
-
-                    //                        },error: function(e){
-                    //                            swal({
-                    //                                text: "동영상 저장 실패",
-                    //                                icon: "warning"
-                    //                            });
-                    //                        }
-                    //                    });
-
-
-                                    }, error:function(request, status, error){
-                                        swal({
-                                            text: "동영상 업로드 실패",
-                                            icon: "warning"
-                                        });
-                                    }
-                                });
-
-
-
+                        }, error:function(request, status, error){
+                            swal({
+                                text: "동영상 업로드 실패",
+                                icon: "warning"
+                            });
+                        }
+                    });
                 }, error:function(request, status, error){
                     swal({
                     text: "동영상 저장 실패",
@@ -111,8 +118,6 @@ function ainext(){
                     });
                 }
             });
-
-
         });
     }
 }
@@ -181,16 +186,11 @@ function ai_cvs5(){
     canvas.addEventListener("mouseup",function(me){mUp(me)},false);
     canvas.addEventListener("mouseout",function(me){mOut(me)},false);
 }
-//function ai_cvs6(){
-//    canvas = document.getElementById("aicvs6");
-//
-//    context = canvas.getContext ("2d");
-//    context.lineWidth = 1;
-//    context.strokeStyle = "#1919ff";
-//    canvas.addEventListener("mousedown",function(me){mDown(me)},false);
-//    canvas.addEventListener("mousemove",function(me){mMove(me)},false);
-//    canvas.addEventListener("mouseup",function(me){mUp(me)},false);
-//    canvas.addEventListener("mouseout",function(me){mOut(me)},false);
+//// 영역 색상 지정
+//var ccolor = document.getElementById("inputccchange");
+//ccolor.addEventListener("change", changeColor, false);
+//function changeColor(event){
+//    cvs_color = event.target.value;
 //}
 // 마우스 드래그 기능
 function mMove(me){
@@ -250,8 +250,6 @@ function canvasDraw(currentX,currentY){
         document.getElementById("box4XY").value = box_text;
     }else if(canvas == document. getElementById("aicvs5")){
         document.getElementById("box5XY").value = box_text;
-//    }else if(canvas == document. getElementById("aicvs6")){
-//        document.getElementById("box6XY").value = box_text;
     }
 }
 
@@ -263,33 +261,14 @@ function labeling_start(){
     var xy3 = document.getElementById("box3XY").value;
     var xy4 = document.getElementById("box4XY").value;
     var xy5 = document.getElementById("box5XY").value;
-//    var xy6 = document.getElementById("box6XY").value;
-    console.log(xy1);
-    console.log(xy2);
-    console.log(xy3);
-    console.log(xy4);
-    console.log(xy5);
-//    console.log(xy6);
 
-    if(document.getElementById("label_name").value == null){
+    if(document.getElementById("label_name").value == null || document.getElementById("label_name").value == ""){
         swal({
             text: "라벨명을 지정해주세요.",
             icon: "info"
         })
-//    if(document.getElementById("aiclass").value == null){
-//        swal({
-//            text: "분류명을 지정해주세요.",
-//            icon: "info"
-//        })
-//    }else if(document.getElementById("ainame").value == null){
-//        swal({
-//            text: "시설물 이름을 지정해주세요.",
-//            icon: "info"
-//        })
-    }else if(xy1 == null || xy2 == null || xy3 == null || xy4 == null || xy5 == null){ // 동영상 유무 확인
-
-//    if(xy1 == null || xy2 == null || xy3 == null || xy4 == null || xy5 == null){ // 동영상 유무 확인
-        swal({
+    }else if(xy1 == null || xy2 == null || xy3 == null || xy4 == null || xy5 == null || xy1 == "" || xy2 == "" || xy3 == "" || xy4 == "" || xy5 == ""){ // 동영상 유무 확인
+    swal({
             text: "모든 영역을 지정해주세요.",
             icon: "info"
         })
@@ -308,17 +287,32 @@ function labeling_start(){
                 "width" : document.getElementById("width").value,
                 "height" : document.getElementById("height").value
             };
+            location.href = "/aivideo/list";
             $.ajax({ // 라벨링 데이터 전송 - flask
                 url : "/aivideo/ai_labeling",
                 data : sendData,
                 type : "POST",
                 success : function(result){
-                    location.href = "/aivideo/list";
+                    if(result=="null"){
+                        swal({
+                            text: "통신오류",
+                            icon: "warning"
+                        });
+//                    location.href = "/aivideo/list";
+                    }
+
+                    // DB 변환/추가(alv/ald) 기능 작성하기 *****************
+
+                    swal({
+                        text: "라벨링이 완료되었습니다.",
+                        icon: "info"
+                    })
                 }, error:function(request, status, error){
                     swal({
                         text: "라벨링 전송 실패",
                         icon: "warning"
                     });
+//                    location.href = "/aivideo/list";
                 }
             });
         });
