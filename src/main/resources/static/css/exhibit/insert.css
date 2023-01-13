@@ -162,6 +162,22 @@ border: 1px solid #E0E0E0;
 border-radius: 8px;
 padding-left: 10px;
 padding-top: 10px;
+overflow-y: auto;
+}
+
+.inte1::-webkit-scrollbar {
+width: 10px;
+}
+
+.inte1::-webkit-scrollbar-thumb {
+background-color: #F2F2F2;
+border-radius: 10px;
+}
+
+.inte1::-webkit-scrollbar-track {
+background-color: #FFFFFF;
+border-radius: 10px;
+box-shadow: inset 0px 0px 5px white;
 }
 
 .vbox{

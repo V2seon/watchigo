@@ -1405,12 +1405,12 @@ $.ajax({
     url : "/findexpoint",
     type : "POST",
     success : function(result){
-            $(".id1").remove();
         for(var i=0; i<result.point.length; i++){
             var [s1, s2]  = result.point[i].split(',');
             if(insideploygon([s1,s2],ckexhibit) == true){
+                $(".id2").remove();
                 $("#exbox")
-               .append("<span class='id1'>" + result.name[i] + "<br></span>");
+                .append("<span class='id1' onclick='selectexhibitview("+result.seq[i]+")'>" + result.name[i] + "<br></span>");
             }
         }
     },
@@ -1427,7 +1427,6 @@ $.ajax({
     url : "/findexpoint",
     type : "POST",
     success : function(result){
-            $(".id1").remove();
         for(var i=0; i<result.point.length; i++){
             var [s1, s2]  = result.point[i].split(',');
             var path = [
@@ -1437,8 +1436,9 @@ $.ajax({
             line.setPath(path);
             var dist = line.getLength();
             if( dist <= radius){
+                $(".id2").remove();
                 $("#exbox")
-               .append("<span class='id1'>" + result.name[i] + "<br></span>");
+                .append("<span class='id1' onclick='selectexhibitview("+result.seq[i]+")'>" + result.name[i] + "<br></span>");
             }
         }
     },
@@ -1453,7 +1453,6 @@ $.ajax({
     url : "/findexpoint",
     type : "POST",
     success : function(result){
-            $(".id1").remove();
 
         var sw = new kakao.maps.LatLng(ckexhibit.y, ckexhibit.x),
             ne = new kakao.maps.LatLng(ckexhibit1.y, ckexhibit1.x),
@@ -1464,8 +1463,9 @@ $.ajax({
             var l1 = new kakao.maps.LatLng(s1, s2);
 
             if(lb.contain(l1) == true){
+                $(".id2").remove();
                 $("#exbox")
-               .append("<span class='id1'>" + result.name[i] + "<br></span>");
+                .append("<span class='id1' onclick='selectexhibitview("+result.seq[i]+")'>" + result.name[i] + "<br></span>");
             };
         }
     },
@@ -1487,7 +1487,6 @@ $.ajax({
     url : "/findexpoint",
     type : "POST",
     success : function(result){
-            $(".id1").remove();
         var sw = new kakao.maps.LatLng(sspp1, sspp2),
             ne = new kakao.maps.LatLng(eepp1, eepp2),
             lb = new kakao.maps.LatLngBounds(sw, ne);
@@ -1497,8 +1496,9 @@ $.ajax({
             var l1 = new kakao.maps.LatLng(s1, s2);
 
             if(lb.contain(l1) == true){
+                $(".id2").remove();
                 $("#exbox")
-               .append("<span class='id1'>" + result.name[i] + "<br></span>");
+               .append("<span class='id1' onclick='selectexhibitview("+result.seq[i]+")'>" + result.name[i] + "<br></span>");
             };
         }
     },
@@ -1515,7 +1515,6 @@ $.ajax({
     url : "/findexpoint",
     type : "POST",
     success : function(result){
-            $(".id1").remove();
         for(var i=0; i<result.point.length; i++){
             var [s1, s2]  = result.point[i].split(',');
             var path = [
@@ -1525,8 +1524,9 @@ $.ajax({
             line.setPath(path);
             var dist = line.getLength();
             if( dist <= radius){
+                $(".id2").remove();
                 $("#exbox")
-               .append("<span class='id1'>" + result.name[i] + "<br></span>");
+                .append("<span class='id1' onclick='selectexhibitview("+result.seq[i]+")'>" + result.name[i] + "<br></span>");
             }
         }
     },
@@ -1563,12 +1563,13 @@ $.ajax({
     url : "/findexpoint",
     type : "POST",
     success : function(result){
-            $(".id1").remove();
         for(var i=0; i<result.point.length; i++){
             var [s1, s2]  = result.point[i].split(',');
             if(insideploygon1([s1,s2],pol11) == true){
+                $(".id2").remove();
                 $("#exbox")
-               .append("<span class='id1'>" + result.name[i] + "<br></span>");
+                .append("<span class='id1' onclick='selectexhibitview("+result.seq[i]+")'>" + result.name[i] + "<br></span>");
+
             }
         }
     },
@@ -1578,3 +1579,106 @@ $.ajax({
 
 }
 
+var ppp = 0;
+var markers12 = [];
+
+// 전시/시설물 내용보기
+function selectexhibitview(seq){
+document.getElementById('menu_wrap1').style.display = "block";
+document.getElementById('menu_wrap2').style.display = "none";
+
+let sendData = {
+            "seq" : seq
+        };
+$.ajax({
+    url : "/searchexhibitview",
+    data : sendData,
+    type : "POST",
+    success : function(result){
+            let [s1, s2] =  result.center.split(',');
+            // 좌표 포지션 생성
+            var newPosition = new kakao.maps.LatLng(s1, s2)
+            // 이동
+            map.setLevel(0, {anchor: newPosition});
+            map.setCenter(newPosition);
+
+            if(ppp == 1){
+                markers12[0].setMap(null);
+                markers12.shift();
+                console.log(markers12);
+            }
+
+            var imageSrc = result.mainicon, // 마커이미지의 주소입니다
+                imageSize = new kakao.maps.Size(64, 100), // 마커이미지의 크기입니다
+                imageOption = {offset: new kakao.maps.Point(27, 100)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
+            var marker12 = new kakao.maps.Marker({
+                position: newPosition,
+                image: markerImage
+            });
+
+            // 마커가 지도 위에 표시되도록 설정합니다
+            marker12.setMap(map);
+            markers12.push(marker12);
+            ppp = 1;
+
+
+//            document.getElementById('exhibitex').value = result.ex;
+//            document.getElementById('exhibitname').value = result.name;
+//            document.getElementById('ypoint').value = s1;
+//            document.getElementById('xpoint').value = s2;
+//            let se = document.getElementById('lock');
+//
+//            for(let i=0; i<se.options.length; i++){
+//                if(se.options[i].value == result.type){
+//                    se.options[i].selected = true;
+//                }
+//            }
+//            lock();
+            document.getElementById('zonetext').innerText = result.zonename;
+            document.getElementById('zonetext1').innerText = result.ex;
+            document.getElementById('pknum1').innerText = result.pk;
+            document.getElementById('viewvideo').src = "/file1?fileName="+result.date+"/"+result.video1;
+            document.getElementById('viewimg').src = "/file1?fileName="+result.date+"/"+result.img1;
+            document.getElementById('marker3').src = result.mainicon;
+            document.getElementById('marker4').src = result.armarker;
+//            document.getElementById('pknum').innerText = result.pk;
+//            console.log(document.getElementById('pknum').innerText);
+//            document.getElementById('marker1').src = result.marker;
+            document.getElementById('zoombtn1').style.display = "none";
+            document.getElementById('zoombtn2').style.display = "none";
+//            document.getElementById('zoombtn3').style.display = "block";
+//            document.getElementById('zoombtn4').style.display = "block";
+
+//            if(result.printtype == "0"){
+//                document.getElementById('gps').checked = true;
+//            }else if(result.printtype == "1"){
+//                document.getElementById('ved').checked = true;
+//            }
+//
+//            test1();
+//
+//            var boxlen = document.getElementsByClassName('choicebtn').length;
+//            for(let a=0; a<boxlen; a++){
+//                document.getElementsByClassName('choicebtn')[a].checked = false;
+//            }
+
+//            document.getElementById(result.zonepk).checked = true;
+
+//            document.getElementById('mainicon').src = result.mainicon;
+//            document.getElementById('armarker').src = result.armarker;
+//
+//            document.getElementById('pknum').innerText = result.zonepk;
+//            document.getElementById('seqnum').innerText = result.seq;
+    },
+    error: function (e) {
+    }
+    });
+}
+
+function btnnone(){
+    markers12[0].setMap(null);
+    document.getElementById("menu_wrap1").style.display = "none";
+    document.getElementById("menu_wrap2").style.display = "none";
+}
