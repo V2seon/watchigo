@@ -637,19 +637,22 @@ public class ServiceZoneController {
         System.out.println(ex1);
         ArrayList<String> plist = new ArrayList<>();
         ArrayList<String> nlist = new ArrayList<>();
+        ArrayList<Long> seqlist = new ArrayList<>();
+
 
         for(int i=0; i<ex1.size(); i++){
             plist.add(ex1.get(i).getPoint());
             nlist.add(ex1.get(i).getName());
+            seqlist.add(ex1.get(i).getSeq());
         }
 
         HashMap<String, List> msg = new HashMap<String, List>();
 
         msg.put("point", plist);
         msg.put("name", nlist);
+        msg.put("seq", seqlist);
 
         return msg;
     }
-
 
 }
