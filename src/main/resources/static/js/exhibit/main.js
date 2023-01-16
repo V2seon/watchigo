@@ -364,7 +364,7 @@ function paging(pageValue){
         data: querydata,
         type:"POST",
     }).done(function (fragment) {
-        $("#see").replaceWith(fragment);
+        $("#intable1").replaceWith(fragment);
         console.log(fragment);
         $("#load").hide();
 
