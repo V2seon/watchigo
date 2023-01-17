@@ -24,153 +24,67 @@
         </a>
     </div>
     <div class="videobox">
-        <div class="bigvideo">
+
+        <div class="bigvideo" th:each="Co : ${userlist}">
             <div class="videoview">
-                <img class="imgview" src="/img/AIvideo/img.png">
+                <img class="imgview" th:src="'/file/img/showImgs/'+${#strings.substring(Co.alvvideo,0,36)}+'1.jpg'">
             </div>
             <div class="textview">
                 <div class="mt">
-                    샹들리에
+                    <p th:text="${Co.alvclass}">분류</p>
                 </div>
                 <div class="st">
-                    샹들리에
+                    <h3 th:text="${Co.alvname}">시설물 이름</h3>
+                    <span th:if="${Co.alvstate==0}">라벨링 준비</span>
+                    <span th:if="${Co.alvstate==1}">라벨링 진행</span>
+                    <span th:if="${Co.alvstate==2}">ai학습 진행</span>
+                    <span th:if="${Co.alvstate==3}">ai학습 종료</span>
+                    <span th:if="${Co.alvstate==4}">중간오류-라벨링 준비</span>
+                    <span th:text="${Co.alvdatetime}">작성날짜</span>
                 </div>
                 <div class="bt">
                     <div class="btn">
-                        <img src="/img/AIvideo/12.png">
+                        <img src="/img/AIvideo/12.png" th:onclick="aivideo_detail([[${Co.alvseq}]],[[${Co.alvstate}]])">
                     </div>
                     <div class="btn">
-                        <img src="/img/AIvideo/13.png">
+                        <img src="/img/AIvideo/13.png" th:onclick="aivideo_change([[${Co.alvseq}]],[[${Co.alvstate}]])">
                     </div>
                     <div class="btn">
-                        <img src="/img/AIvideo/del.png">
+                        <img src="/img/AIvideo/del.png" th:onclick="aivideo_delete([[${Co.alvseq}]],[[${Co.alvstate}]])">
                     </div>
                 </div>
             </div>
         </div>
-        <div class="bigvideo">
-            <div class="videoview">
-                <img class="imgview" src="/img/AIvideo/img.png">
-            </div>
-            <div class="textview">
-                <div class="mt">
-                    샹들리에
-                </div>
-                <div class="st">
-                    샹들리에
-                </div>
-                <div class="bt">
-                    <div class="btn">
-                        <img src="/img/AIvideo/12.png">
-                    </div>
-                    <div class="btn">
-                        <img src="/img/AIvideo/13.png">
-                    </div>
-                    <div class="btn">
-                        <img src="/img/AIvideo/del.png">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="bigvideo">
-            <div class="videoview">
-                <img class="imgview" src="/img/AIvideo/img.png">
-            </div>
-            <div class="textview">
-                <div class="mt">
-                    샹들리에
-                </div>
-                <div class="st">
-                    샹들리에
-                </div>
-                <div class="bt">
-                    <div class="btn">
-                        <img src="/img/AIvideo/12.png">
-                    </div>
-                    <div class="btn">
-                        <img src="/img/AIvideo/13.png">
-                    </div>
-                    <div class="btn">
-                        <img src="/img/AIvideo/del.png">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="bigvideo">
-            <div class="videoview">
-                <img class="imgview" src="/img/AIvideo/img.png">
-            </div>
-            <div class="textview">
-                <div class="mt">
-                    샹들리에
-                </div>
-                <div class="st">
-                    샹들리에
-                </div>
-                <div class="bt">
-                    <div class="btn">
-                        <img src="/img/AIvideo/12.png">
-                    </div>
-                    <div class="btn">
-                        <img src="/img/AIvideo/13.png">
-                    </div>
-                    <div class="btn">
-                        <img src="/img/AIvideo/del.png">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="bigvideo">
-            <div class="videoview">
-                <img class="imgview" src="/img/AIvideo/img.png">
-            </div>
-            <div class="textview">
-                <div class="mt">
-                    샹들리에
-                </div>
-                <div class="st">
-                    샹들리에
-                </div>
-                <div class="bt">
-                    <div class="btn">
-                        <img src="/img/AIvideo/12.png">
-                    </div>
-                    <div class="btn">
-                        <img src="/img/AIvideo/13.png">
-                    </div>
-                    <div class="btn">
-                        <img src="/img/AIvideo/del.png">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="bigvideo">
-            <div class="videoview">
-                <img class="imgview" src="/img/AIvideo/img.png">
-            </div>
-            <div class="textview">
-                <div class="mt">
-                    샹들리에
-                </div>
-                <div class="st">
-                    샹들리에
-                </div>
-                <div class="bt">
-                    <div class="btn">
-                        <img src="/img/AIvideo/12.png">
-                    </div>
-                    <div class="btn">
-                        <img src="/img/AIvideo/13.png">
-                    </div>
-                    <div class="btn">
-                        <img src="/img/AIvideo/del.png">
-                    </div>
-                </div>
-            </div>
-        </div>
+
+<!--        <div class="bigvideo">-->
+<!--            <div class="videoview">-->
+<!--                <img class="imgview" src="/img/AIvideo/img.png">-->
+<!--            </div>-->
+<!--            <div class="textview">-->
+<!--                <div class="mt">-->
+<!--                    샹들리에-->
+<!--                </div>-->
+<!--                <div class="st">-->
+<!--                    샹들리에-->
+<!--                </div>-->
+<!--                <div class="bt">-->
+<!--                    <div class="btn">-->
+<!--                        <img src="/img/AIvideo/12.png">-->
+<!--                    </div>-->
+<!--                    <div class="btn">-->
+<!--                        <img src="/img/AIvideo/13.png">-->
+<!--                    </div>-->
+<!--                    <div class="btn">-->
+<!--                        <img src="/img/AIvideo/del.png">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
     </div>
 </div>
 
+<script src="/js/ai/videoLabeling.js"></script>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <!-- swal창 띄우기 -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

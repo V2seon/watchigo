@@ -104,7 +104,7 @@ function ainext(){
                                 "height" : height,
                                 "alvseq" : alvseq
                             };
-                            // DB저장(ald) 기능 작성하기 *****************
+                            // DB저장(ald)
                             $.ajax({
                                 url : "/aivideo/save_ald",
                                 data : sendData,
@@ -119,7 +119,7 @@ function ainext(){
                             });
 
                             // 이미지 불러오기
-                            var ai_src = "/file/img/"+aiimgname+"/"+aiimgname;
+                            var ai_src = "/file/img/"+aiimgname+"/"+aiimgname; // *********************
                             document.getElementById('aiimg1').src=ai_src+aimainnum1+'.jpg';
                             document.getElementById('aiimg2').src=ai_src+aimainnum2+'.jpg';
                             document.getElementById('aiimg3').src=ai_src+aimainnum3+'.jpg';
@@ -299,7 +299,7 @@ function labeling_start(){
             icon: "info"
         })
     }else if(xy1 == null || xy2 == null || xy3 == null || xy4 == null || xy5 == null || xy1 == "" || xy2 == "" || xy3 == "" || xy4 == "" || xy5 == ""){ // 동영상 유무 확인
-    swal({
+        swal({
             text: "모든 영역을 지정해주세요.",
             icon: "info"
         })
@@ -344,6 +344,79 @@ function labeling_start(){
 //                    location.href = "/aivideo/list";
                 }
             });
+        });
+    }
+}
+
+// list페이지
+// 상세
+function aivideo_detail(alvseq,state){
+    swal({
+        text: "상세 이동",
+        icon: "info"
+    });
+//    if(state==0||state==4){
+//    }else if(state==1||state==2){
+//    }else if(state==3){
+//    }
+}
+// 수정
+function aivideo_change(alvseq,state){
+    if(state==0||state==4){
+        swal({
+            text: "수정 이동 0,4",
+            icon: "warning"
+        });
+    }else if(state==1||state==2){
+        swal({
+            text: "라벨링 진행중 또는 ai학습중에는 수정/삭제가 불가능합니다.",
+            icon: "warning"
+        });
+    }else if(state==3){
+        swal({
+            text: "수정 이동 3",
+            icon: "warning"
+        });
+    }
+}
+// 삭제
+function aivideo_delete(alvseq,state){
+    if(state==0||state==3||state==4){
+        swal({
+            text: "삭제 이동 0,4",
+            icon: "info"
+//        }).then(function(){
+//            // DB저장(ald)
+//            let sendData = {
+//                "alvseq" : alvseq,
+//                "state" : state
+//            };
+//            $.ajax({
+//                url : "/aivideo/aivideo_deletes",
+//                data : sendData,
+//                type : "GET",
+//                success : function(result){
+//                    swal({
+//                        text: "성공적으로 삭제되었습니다.",
+//                        icon: "info"
+//                    });
+//                }, error:function(request, status, error){
+//                    swal({
+//                        text: "삭제 실패",
+//                        icon: "warning"
+//                    });
+//                }
+//            });
+        });
+    }else if(state==1||state==2){
+        swal({
+            text: "라벨링 진행중 또는 ai학습중에는 수정/삭제가 불가능합니다.",
+            icon: "warning"
+        });
+    }else if(state==3){
+        swal({
+            text: "삭제 이동 3",
+            icon: "info"
         });
     }
 }

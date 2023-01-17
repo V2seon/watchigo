@@ -7,6 +7,8 @@ import com.example.watchigo.entity.AivideoALDEntity;
 import com.example.watchigo.repository.AivideoALVRepository;
 import com.example.watchigo.repository.AivideoALDRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,4 +31,9 @@ public class AivideoService {
         aivideoALDRepository.save(aivideoALDEntity);
         return aivideoALDDto.getALD_PK();
     }
+    @Transactional
+    public Page<AivideoALVEntity> selectALVList(Long useq, Pageable pageable){
+        return aivideoALVRepository.findALVList(useq,pageable);
+    }
+
 }
