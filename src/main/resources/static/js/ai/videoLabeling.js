@@ -45,10 +45,15 @@ function ainext(){
                         return "/aivideo/write";
                     }
 
+                    let sendData = {
+                        "aiinv" : result,
+                        "aiclass" : aiclass,
+                        "ainame" : ainame
+                    };
                     // 동영상명 전송 - flask
                     $.ajax({
                         url : "/aivideo/video_split",
-                        data : {"aiinv" : result},
+                        data : sendData,
                         type : "GET",
                         success : function(result){
                             if(result=="null"){
@@ -59,10 +64,8 @@ function ainext(){
                                 return "/aivideo/write";
                             }
 
-                            // DB저장(ald) 기능 작성하기 *****************
-
                             const get_arr = result.split("/");
-                            var getdata, aiimgname, aimainnum1, aimainnum2, aimainnum3, aimainnum4, aimainnum5;
+                            var getdata, aiimgname, aiimgcount, maincount, width, height, alvseq, aimainnum1, aimainnum2, aimainnum3, aimainnum4, aimainnum5;
 
                             // 받아온 데이터 분리 및 input에 넣기
                             for(i in get_arr){
@@ -71,8 +74,10 @@ function ainext(){
                                     aiimgname = getdata[1];
                                     document.getElementById("img_name").value = getdata[1];
                                 }else if(getdata[0]=="img_count"){
+                                    aiimgcount = getdata[1];
                                     document.getElementById("img_count").value = getdata[1];
                                 }else if(getdata[0]=="main_count"){
+                                    maincount = getdata[1];
                                     document.getElementById("main_count").value = "["+getdata[1]+"]";
                                     getdata = getdata[1].split(",");
                                     aimainnum1 = getdata[0];
@@ -80,13 +85,39 @@ function ainext(){
                                     aimainnum3 = getdata[2];
                                     aimainnum4 = getdata[3];
                                     aimainnum5 = getdata[4];
-
                                 }else if(getdata[0]=="width"){
+                                    width = getdata[1];
                                     document.getElementById("width").value = getdata[1];
                                 }else if(getdata[0]=="height"){
+                                    height = getdata[1];
                                     document.getElementById("height").value = getdata[1];
+                                }else if(getdata[0]=="alvseq"){
+                                    alvseq = getdata[1];
                                 }
                             }
+
+                            let sendData = {
+                                "imgname" : aiimgname,
+                                "imgcount" : aiimgcount,
+                                "maincount" : maincount,
+                                "width" : width,
+                                "height" : height,
+                                "alvseq" : alvseq
+                            };
+                            // DB저장(ald) 기능 작성하기 *****************
+                            $.ajax({
+                                url : "/aivideo/save_ald",
+                                data : sendData,
+                                type : "GET",
+                                success : function(result){
+                                }, error:function(request, status, error){
+                                    swal({
+                                        text: "Aidata DB저장 실패",
+                                        icon: "warning"
+                                    });
+                                }
+                            });
+
                             // 이미지 불러오기
                             var ai_src = "/file/img/"+aiimgname+"/"+aiimgname;
                             document.getElementById('aiimg1').src=ai_src+aimainnum1+'.jpg';
@@ -300,8 +331,6 @@ function labeling_start(){
                         });
 //                    location.href = "/aivideo/list";
                     }
-
-                    // DB 변환/추가(alv/ald) 기능 작성하기 *****************
 
                     swal({
                         text: "라벨링이 완료되었습니다.",
