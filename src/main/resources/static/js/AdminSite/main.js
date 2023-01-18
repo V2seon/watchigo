@@ -101,6 +101,12 @@ $.ajax({
 }
 }
 
+function enterkey(){
+if(window.event.keyCode == 13){
+        login();
+    }
+}
+
 function email(){
 var emailid = document.getElementById('email');
 document.getElementById('email2').value = emailid.options[emailid.selectedIndex].text;
