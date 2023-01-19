@@ -12,15 +12,31 @@ import javax.transaction.Transactional;
 
 public interface AivideoALVRepository extends JpaRepository<AivideoALVEntity, Long>, QuerydslPredicateExecutor<AivideoALVEntity> {
 
+    @Query(value = "SELECT * FROM AI_LABELING_VIDEO WHERE ALV_U_SEQ =:useq", nativeQuery = true)
+    Page<AivideoALVEntity> findALVList(Long useq, Pageable pageble);
+
+    @Query(value = "SELECT * FROM AI_LABELING_VIDEO WHERE ALV_SEQ =:alvseq", nativeQuery = true)
+    AivideoALVEntity findALVdata(Long alvseq);
+
     @Query(value = "SELECT ALV_SEQ FROM AI_LABELING_VIDEO WHERE ALV_VIDEO LIKE :videoname", nativeQuery = true)
-    Long findByAlvseq(String videoname); // videoname+%
+    Long findALVseq(String videoname); // videoname+%
+
+    @Query(value = "SELECT ALV_VIDEO FROM AI_LABELING_VIDEO WHERE ALV_SEQ =:alvseq", nativeQuery = true)
+    String findALVvideo(Long alvseq);
 
     @Modifying
     @Transactional
     @Query(value = "UPDATE AI_LABELING_VIDEO SET ALV_STATE =:state WHERE ALV_SEQ =:alvseq", nativeQuery = true)
     void updateState(Long alvseq, int state);
 
-    @Query(value = "SELECT * FROM AI_LABELING_VIDEO WHERE ALV_U_SEQ =:useq", nativeQuery = true)
-    Page<AivideoALVEntity> findALVList(Long useq, Pageable pageble);
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE AI_LABELING_VIDEO SET ALV_CLASS =:alvclass, SET ALV_NAME =:alvname WHERE ALV_SEQ =:alvseq", nativeQuery = true)
+    void updateDatas(Long alvseq, String alvclass, String alvname);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM AI_LABELING_VIDEO WHERE ALV_SEQ =:alvseq", nativeQuery = true)
+    void deleteALVData(Long alvseq);
 
 }

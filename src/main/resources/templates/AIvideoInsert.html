@@ -19,11 +19,11 @@
 <div class="mainbox padding_right30">
     <div class="category">
         <div class="exzone">분류</div>
-        <input type="text" id="classification" class="categorybox" placeholder="분류를 입력해주세요." />
+        <input type="text" id="classification" class="categorybox" maxlength='250' placeholder="분류를 입력해주세요." />
     </div>
     <div class="category">
         <div class="exzone">시설물 이름</div>
-        <input type="text" id="facilityname" class="categorybox" placeholder="시설물의 이름을 입력해주세요." />
+        <input type="text" id="facilityname" class="categorybox" maxlength='250' placeholder="시설물의 이름을 입력해주세요." />
     </div>
     <div class="category height40">
         <div class="exzone">라벨링할 동영상 파일</div>
@@ -67,7 +67,7 @@
             </span>
             <div class="category margin_top10 margin_bottom10">
                 <div class="exzone">라벨명</div>
-                <input type="text" id="label_name" class="categorybox" placeholder="이미지의 이름을 입력해주세요." />
+                <input type="text" id="label_name" class="categorybox" maxlength="50" onkeydown="onlyAlphabet(this)" placeholder="이미지의 이름을 입력해주세요." />
             </div>
         </div>
         <div id="aiLStart" class="category display_none height40">
@@ -106,6 +106,8 @@
         </div>
         <!-- 데이터 -->
         <div class="display_none">
+            <input id="alvseqnum" type="text" value="null">
+
             <input id="img_name" type="text" value="null">
             <input id="img_count" type="text" value="null">
             <input id="main_count" type="text" value="null">
@@ -120,9 +122,7 @@
         </div>
     </div>
     <div id="aiinvstart" class="category">
-<!--        <button type="button" class="videoinsertbtn" id="modal" data-toggle="modal" data-target="#modal-separate">확인</button>-->
         <button type="button" class="videoinsertbtn" id="aiNext" onclick="ainext()">확인</button>
-        <button type="button" class="videoinsertbtn">저장</button>
     </div>
 </div>
 <div id="load"> <img src="/img/spinner.gif" alt="loading"></div>

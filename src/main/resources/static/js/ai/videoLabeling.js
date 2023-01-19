@@ -1,159 +1,198 @@
 function ainext(){
-    var aiinvideo = document.getElementById('aiUploadvideo');
-    var aiclass = document.getElementById('classification').value;
-    var ainame = document.getElementById('facilityname').value;
+    var alvseq = document.getElementById('alvseqnum').value;
+    var ainextCheck = false;
+    var VSsendData;
 
-    if(aiinvideo.files[0] == null){ // 동영상 유무 확인
-        swal({
-            text: "동영상을 등록해주세요.",
-            icon: "info"
-        })
-    }else if(aiclass == null || aiclass == ""){
-        swal({
-            text: "분류를 입력해주세요.",
-            icon: "info"
-        })
-    }else if(ainame == null || ainame == ""){
-        swal({
-            text: "시설물의 이름을 입력해주세요.",
-            icon: "info"
-        })
+    if(alvseq==null||alvseq==""||alvseq=="null"){
+        var aiinvideo = document.getElementById('aiUploadvideo');
+        var aiclass = document.getElementById('classification').value;
+        var ainame = document.getElementById('facilityname').value;
+
+        if(aiinvideo.files[0] == null){ // 동영상 유무 확인
+            swal({
+                text: "동영상을 등록해주세요.",
+                icon: "info"
+            })
+        }else if(aiclass == null || aiclass == ""){
+            swal({
+                text: "분류를 입력해주세요.",
+                icon: "info"
+            })
+        }else if(ainame == null || ainame == ""){
+            swal({
+                text: "시설물의 이름을 입력해주세요.",
+                icon: "info"
+            })
+        }else{
+            swal({ // 영상분리 팝업창
+                title : "영상 분리까지 최대 10분정도 소요됩니다. 완료되면 자동으로 넘어갑니다. 진행하시겠습니까?",
+                icon : "info"
+            }).then(function(){
+                $('#load').show();
+                // 동영상 저장
+                var formData = new FormData();
+                formData.append("aiinvideo",aiinvideo.files[0]);
+                $.ajax({
+                    url : "/aivideo/video_download",
+                    processData:false,
+                    contentType:false,
+                    data : formData,
+                    type : "POST",
+                    success : function(result){
+                        // 실패시 등록페이지로 이동
+                        if(result=="null"){
+                            swal({
+                                text: "동영상 저장 실패",
+                                icon: "warning"
+                            });
+                            return "/aivideo/write";
+                        }
+                        VSsendData = {
+                            "alvseq" : "",
+                            "aiinv" : result,
+                            "aiclass" : aiclass,
+                            "ainame" : ainame
+                        };
+                        videoSplit(VSsendData);
+                    }, error:function(request, status, error){
+                        swal({
+                            text: "동영상 저장 실패",
+                            icon: "warning"
+                        });
+                        $('#load').hide();
+                    }
+                });
+            });
+        }
     }else{
         swal({ // 영상분리 팝업창
             title : "영상 분리까지 최대 10분정도 소요됩니다. 완료되면 자동으로 넘어갑니다. 진행하시겠습니까?",
             icon : "info"
         }).then(function(){
             $('#load').show();
-
-            // 동영상 저장
-            var formData = new FormData();
-            formData.append("aiinvideo",aiinvideo.files[0]);
-
-            $.ajax({
-                url : "/aivideo/video_download",
-                processData:false,
-                contentType:false,
-                data : formData,
-                type : "POST",
-                success : function(result){
-                    // 실패시 list페이지로 이동
-                    if(result=="null"){
-                        swal({
-                            text: "동영상 저장 실패",
-                            icon: "warning"
-                        });
-                        return "/aivideo/write";
-                    }
-
-                    let sendData = {
-                        "aiinv" : result,
-                        "aiclass" : aiclass,
-                        "ainame" : ainame
-                    };
-                    // 동영상명 전송 - flask
-                    $.ajax({
-                        url : "/aivideo/video_split",
-                        data : sendData,
-                        type : "GET",
-                        success : function(result){
-                            if(result=="null"){
-                                swal({
-                                    text: "통신오류",
-                                    icon: "warning"
-                                });
-                                return "/aivideo/write";
-                            }
-
-                            const get_arr = result.split("/");
-                            var getdata, aiimgname, aiimgcount, maincount, width, height, alvseq, aimainnum1, aimainnum2, aimainnum3, aimainnum4, aimainnum5;
-
-                            // 받아온 데이터 분리 및 input에 넣기
-                            for(i in get_arr){
-                                getdata = get_arr[i].split(":");
-                                if(getdata[0]=="img_name"){
-                                    aiimgname = getdata[1];
-                                    document.getElementById("img_name").value = getdata[1];
-                                }else if(getdata[0]=="img_count"){
-                                    aiimgcount = getdata[1];
-                                    document.getElementById("img_count").value = getdata[1];
-                                }else if(getdata[0]=="main_count"){
-                                    maincount = getdata[1];
-                                    document.getElementById("main_count").value = "["+getdata[1]+"]";
-                                    getdata = getdata[1].split(",");
-                                    aimainnum1 = getdata[0];
-                                    aimainnum2 = getdata[1];
-                                    aimainnum3 = getdata[2];
-                                    aimainnum4 = getdata[3];
-                                    aimainnum5 = getdata[4];
-                                }else if(getdata[0]=="width"){
-                                    width = getdata[1];
-                                    document.getElementById("width").value = getdata[1];
-                                }else if(getdata[0]=="height"){
-                                    height = getdata[1];
-                                    document.getElementById("height").value = getdata[1];
-                                }else if(getdata[0]=="alvseq"){
-                                    alvseq = getdata[1];
-                                }
-                            }
-
-                            let sendData = {
-                                "imgname" : aiimgname,
-                                "imgcount" : aiimgcount,
-                                "maincount" : maincount,
-                                "width" : width,
-                                "height" : height,
-                                "alvseq" : alvseq
-                            };
-                            // DB저장(ald)
-                            $.ajax({
-                                url : "/aivideo/save_ald",
-                                data : sendData,
-                                type : "GET",
-                                success : function(result){
-                                }, error:function(request, status, error){
-                                    swal({
-                                        text: "Aidata DB저장 실패",
-                                        icon: "warning"
-                                    });
-                                }
-                            });
-
-                            // 이미지 불러오기
-                            var ai_src = "/file/img/"+aiimgname+"/"+aiimgname; // *********************
-                            document.getElementById('aiimg1').src=ai_src+aimainnum1+'.jpg';
-                            document.getElementById('aiimg2').src=ai_src+aimainnum2+'.jpg';
-                            document.getElementById('aiimg3').src=ai_src+aimainnum3+'.jpg';
-                            document.getElementById('aiimg4').src=ai_src+aimainnum4+'.jpg';
-                            document.getElementById('aiimg5').src=ai_src+aimainnum5+'.jpg';
-
-                            document.getElementById('aiInVPage').style.display='none';
-                            document.getElementById('aiinvstart').style.display='none';
-                            document.getElementById('aiLPage').style.display='block';
-                            document.getElementById('aiLStart').style.display='block';
-                            document.getElementById('aiLProgress').style.display='flex';
-                            document.getElementById('aiProgress').style.display='flex';
-
-                            $('#load').hide();
-
-                        }, error:function(request, status, error){
-                            swal({
-                                text: "동영상 업로드 실패",
-                                icon: "warning"
-                            });
-                        }
-                    });
-                }, error:function(request, status, error){
-                    swal({
-                    text: "동영상 저장 실패",
-                    icon: "warning"
-                    });
-                }
-            });
+            VSsendData = {
+                "alvseq" : alvseq,
+                "aiinv" : "",
+                "aiclass" : "",
+                "ainame" : ""
+            };
+            videoSplit(VSsendData);
         });
     }
 }
+function videoSplit(VSsendData){
+    // 동영상명 전송 - flask
+    $.ajax({
+        url : "/aivideo/video_split",
+        data : VSsendData,
+        type : "GET",
+        success : function(result){
+            if(result=="null"){
+                swal({
+                    text: "통신오류",
+                    icon: "warning"
+                });
+                return "/aivideo/write";
+            }
+            const get_arr = result.split("/");
+            var getdata, aiimgname, aiimgcount, maincount, width, height, alvseq, aimainnum1, aimainnum2, aimainnum3, aimainnum4, aimainnum5;
 
+            // 받아온 데이터 분리 및 input에 넣기
+            for(i in get_arr){
+                getdata = get_arr[i].split(":");
+                if(getdata[0]=="img_name"){
+                    aiimgname = getdata[1];
+                    document.getElementById("img_name").value = getdata[1];
+                }else if(getdata[0]=="img_count"){
+                    aiimgcount = getdata[1];
+                    document.getElementById("img_count").value = getdata[1];
+                }else if(getdata[0]=="main_count"){
+                    maincount = getdata[1];
+                    document.getElementById("main_count").value = "["+getdata[1]+"]";
+                    getdata = getdata[1].split(",");
+                    aimainnum1 = getdata[0];
+                    aimainnum2 = getdata[1];
+                    aimainnum3 = getdata[2];
+                    aimainnum4 = getdata[3];
+                    aimainnum5 = getdata[4];
+                }else if(getdata[0]=="width"){
+                    width = getdata[1];
+                    document.getElementById("width").value = getdata[1];
+                }else if(getdata[0]=="height"){
+                    height = getdata[1];
+                    document.getElementById("height").value = getdata[1];
+                }else if(getdata[0]=="alvseq"){
+                    alvseq = getdata[1];
+                }
+            }
+            let sendData = {
+                "imgname" : aiimgname,
+                "imgcount" : aiimgcount,
+                "maincount" : maincount,
+                "width" : width,
+                "height" : height,
+                "alvseq" : alvseq
+            };
+            // DB저장(ald)
+            $.ajax({
+                url : "/aivideo/save_ald",
+                data : sendData,
+                type : "GET",
+                success : function(result){
+                }, error:function(request, status, error){
+                    swal({
+                        text: "Aidata DB저장 실패",
+                        icon: "warning"
+                    });
+                }
+            });
+            // 이미지 불러오기
+            var ai_src = "/file_dir/img/"+aiimgname+"/"+aiimgname; // *********************
+            document.getElementById('aiimg1').src=ai_src+aimainnum1+'.jpg';
+            document.getElementById('aiimg2').src=ai_src+aimainnum2+'.jpg';
+            document.getElementById('aiimg3').src=ai_src+aimainnum3+'.jpg';
+            document.getElementById('aiimg4').src=ai_src+aimainnum4+'.jpg';
+            document.getElementById('aiimg5').src=ai_src+aimainnum5+'.jpg';
 
+            document.getElementById('aiInVPage').style.display='none';
+            document.getElementById('aiinvstart').style.display='none';
+            document.getElementById('aiLPage').style.display='block';
+            document.getElementById('aiLStart').style.display='block';
+            document.getElementById('aiLProgress').style.display='flex';
+            document.getElementById('aiProgress').style.display='flex';
+
+            document.getElementById("classification").readOnly = true;
+            document.getElementById("facilityname").readOnly = true;
+
+            $('#load').hide();
+        }, error:function(request, status, error){
+            var testtext = request+"\n"+status+"\n"+error+"\n"+VSsendData;
+//            // 오류-DB수정 및 삭제
+//            $.ajax({
+//                url : "/aivideo/data_errors",
+//                data : sendData,
+//                type : "GET",
+//                success : function(result){
+//                }, error:function(request, status, error){
+//                    swal({
+//                        text: "Aidata DB저장 실패",
+//                        icon: "warning"
+//                    });
+//                }
+//            });
+            swal({
+//                text: "비디오 분할실패",
+                text: testtext,
+                icon: "warning"
+            });
+        }
+    });
+}
+
+// 라벨명 영어한정
+function onlyAlphabet(ele){
+    ele.value = ele.value.replace(/[^\\!-z]/gi,"");
+}
 
 // 컨버스 라벨링
 var canvas;
@@ -309,6 +348,7 @@ function labeling_start(){
             icon : "info"
         }).then(function(){
             var main_label = xy1+"/"+xy2+"/"+xy3+"/"+xy4+"/"+xy5;
+            console.log(main_label)
             let sendData = {
                 "img_name" : document.getElementById("img_name").value,
                 "label_name" : document.getElementById("label_name").value,
@@ -329,94 +369,144 @@ function labeling_start(){
                             text: "통신오류",
                             icon: "warning"
                         });
-//                    location.href = "/aivideo/list";
+                    }else{
+                        swal({
+                            text: "라벨링이 완료되었습니다.",
+                            icon: "info"
+                        })
                     }
-
-                    swal({
-                        text: "라벨링이 완료되었습니다.",
-                        icon: "info"
-                    })
                 }, error:function(request, status, error){
                     swal({
                         text: "라벨링 전송 실패",
                         icon: "warning"
                     });
-//                    location.href = "/aivideo/list";
                 }
             });
         });
     }
 }
 
+
 // list페이지
 // 상세
 function aivideo_detail(alvseq,state){
-    swal({
-        text: "상세 이동",
-        icon: "info"
-    });
-//    if(state==0||state==4){
-//    }else if(state==1||state==2){
-//    }else if(state==3){
-//    }
-}
-// 수정
-function aivideo_change(alvseq,state){
-    if(state==0||state==4){
+    if(state==5){
         swal({
-            text: "수정 이동 0,4",
-            icon: "warning"
+            text: "라벨링 준비완료 후 가능합니다.",
+            icon: "info"
         });
-    }else if(state==1||state==2){
-        swal({
-            text: "라벨링 진행중 또는 ai학습중에는 수정/삭제가 불가능합니다.",
-            icon: "warning"
-        });
-    }else if(state==3){
-        swal({
-            text: "수정 이동 3",
-            icon: "warning"
-        });
+    }else{
+        location.href ="/aivideo/detail_page?alvseq="+alvseq+"&state="+state+"&changeCheck=false";
     }
 }
 // 삭제
 function aivideo_delete(alvseq,state){
     if(state==0||state==3||state==4){
         swal({
-            text: "삭제 이동 0,4",
-            icon: "info"
-//        }).then(function(){
-//            // DB저장(ald)
-//            let sendData = {
-//                "alvseq" : alvseq,
-//                "state" : state
-//            };
-//            $.ajax({
-//                url : "/aivideo/aivideo_deletes",
-//                data : sendData,
-//                type : "GET",
-//                success : function(result){
-//                    swal({
-//                        text: "성공적으로 삭제되었습니다.",
-//                        icon: "info"
-//                    });
-//                }, error:function(request, status, error){
-//                    swal({
-//                        text: "삭제 실패",
-//                        icon: "warning"
-//                    });
-//                }
-//            });
+            text: "삭제하시겠습니까?",
+            icon: "info",
+            buttons: {
+                confirm: {
+                    text: "YES",
+                    value: true
+                },
+                cancle: {
+                    text: "NO",
+                    value: false
+                }
+            }
+        }).then(function(result){
+            if(result){
+                // DB저장(ald)
+                let sendData = {
+                    "alvseq" : alvseq,
+                    "state" : state
+                };
+                $.ajax({
+                    url : "/aivideo/aideletes",
+                    data : sendData,
+                    type : "GET",
+                    success : function(result){
+                        swal({
+                            text: "성공적으로 삭제되었습니다.",
+                            icon: "info"
+                        });
+                    }, error:function(request, status, error){
+                        swal({
+                            text: "삭제 실패",
+                            icon: "warning"
+                        });
+                    }
+                });
+            }
         });
-    }else if(state==1||state==2){
+    }else if(state==1||state==2||state==5){
+        swal({
+            text: "라벨링 진행/준비중 또는 ai학습중에는 수정/삭제가 불가능합니다.",
+            icon: "warning"
+        });
+    }
+}
+// 수정
+function aivideo_change(alvseq,state){
+
+var ainame = document.getElementById('facilityname').value;
+        swal({
+            text: "수정진행 선택문 제시", // ***************
+            icon: "info"
+        }).then(function(){
+    if(state==0||state==3||state==4){
+
+            let sendData = {
+                "alvseq" : alvseq,
+                "state" : state,
+                "changeCheck" : true
+            };
+
+        location.href ="/aivideo/detail_page?alvseq="+alvseq+"&state="+state+"&changeCheck=true";
+        }else if(state==1||state==2){
         swal({
             text: "라벨링 진행중 또는 ai학습중에는 수정/삭제가 불가능합니다.",
             icon: "warning"
         });
-    }else if(state==3){
-        swal({
-            text: "삭제 이동 3",
-            icon: "info"
-        });
     }
+            });
+
+}
+// 수정저장
+function aisavechange(alvseq,state){
+var aiclass = document.getElementById('classification2').value;// 분류명
+var ainame = document.getElementById('facilityname2').value;// 시설물명
+var aivideo;// 비디오명
+
+// 분류명, 시설물명 수정
+if(state==4){
+//동영상 수정및 이전동영상 삭제
+}else{
+
+// 수정 넘기기
+let sendData = {
+                    "alvseq" : alvseq,
+                    "aiclass" : aiclass,
+                    "ainame" : ainame
+                };
+                $.ajax({
+                    url : "/aivideo/update_alv",
+                    data : sendData,
+                    type : "GET",
+                    success : function(result){
+                        swal({
+                            text: "성공적으로 수정되었습니다.",
+                            icon: "info"
+                        });
+                    }, error:function(request, status, error){
+                        swal({
+                            text: "수정 실패",
+                            icon: "warning"
+                        });
+                    }
+                });
+
+
+}
 }

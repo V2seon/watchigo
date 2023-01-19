@@ -10,6 +10,9 @@ import javax.transaction.Transactional;
 
 public interface AivideoALDRepository extends JpaRepository<AivideoALDEntity, Long>, QuerydslPredicateExecutor<AivideoALDEntity> {
 
+    @Query(value = "SELECT * FROM AI_LABELING_DATA WHERE ALD_ALV_SEQ =:alvseq", nativeQuery = true)
+    AivideoALDEntity findALDdata(Long alvseq);
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE AI_LABELING_DATA SET ALD_LABELNAME =:labelname, ALD_MAINBOX =:mainbox WHERE ALD_ALV_SEQ =:alvseq", nativeQuery = true)
