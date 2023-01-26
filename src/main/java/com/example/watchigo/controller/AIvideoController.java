@@ -130,7 +130,7 @@ public class AIvideoController {
             ainame = alvdatas.getAlvname();
         }
 
-        String url = "http://192.168.219.102:3000/watchigo/" + video_name; // flask get방식 통신 url *****************
+        String url = "http://192.168.219.100:3000/watchigo/" + video_name; // flask get방식 통신 url *****************
         String get_ai_data = ""; // 가져온 데이터 {"키1":"값1","키2":"값2"} 넣어놓을 공간
 
         // DB저장(alv)
@@ -189,8 +189,38 @@ public class AIvideoController {
                 conn.disconnect();
             }
         } catch (MalformedURLException e) {
+            // 실패 state = 4
+            aivideoALVRepository.updateState(alvseq, 4);
+            String imgname = video_name.split(".")[0];
+            File D_imgs_url = new File("D:/LeeYJ/images/img/" + imgname); // *****************
+            File D_show_url = new File("D:/LeeYJ/images/img/showImgs/" + imgname + ".jpg"); // *****************
+            try {
+                if(D_imgs_url.exists()){
+                    FileUtils.deleteDirectory(D_imgs_url);
+                }
+                if(D_show_url.exists()){
+                    FileUtils.deleteDirectory(D_show_url);
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
         } catch (IOException e) {
+            // 실패 state = 4
+            aivideoALVRepository.updateState(alvseq, 4);
+            String imgname = video_name.split(".")[0];
+            File D_imgs_url = new File("D:/LeeYJ/images/img/" + imgname); // *****************
+            File D_show_url = new File("D:/LeeYJ/images/img/showImgs/" + imgname + ".jpg"); // *****************
+            try {
+                if(D_imgs_url.exists()){
+                    FileUtils.deleteDirectory(D_imgs_url);
+                }
+                if(D_show_url.exists()){
+                    FileUtils.deleteDirectory(D_show_url);
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -228,14 +258,25 @@ public class AIvideoController {
     @RequestMapping(method = RequestMethod.GET, value = "/update_alv")
     public String UpdateALV(HttpServletRequest request, Model model) {
         Long alvseq = Long.valueOf(request.getParameter("alvseq")); // 받아온 alvseq
+        int state = Integer.parseInt(request.getParameter("state")); // 받아온 state
         String alvclass = request.getParameter("aiclass"); // 받아온 aiclass
         String alvname = request.getParameter("ainame"); // 받아온 ainame
+        String boxXY = request.getParameter("boxXY"); // 받아온 boxXY
+        String ailagelname = request.getParameter("ailagelname"); // 받아온 ailagelname
+        String aivideo_name = request.getParameter("aivideo_name"); // 받아온 aivideo_name
 
-        log.info("getDatas ==> " + alvseq + "/" + alvclass + "/" + alvname);
-
-        // DB수정(alv)
-        aivideoALVRepository.updateDatas(alvseq,alvclass,alvname);
-
+        if(state==4){
+            // DB수정(alv)
+            aivideoALVRepository.updateDatas(alvseq,alvclass,alvname);
+            if(aivideo_name!=""&&aivideo_name!=null){
+                aivideoALVRepository.updatevideo(alvseq,aivideo_name);
+            }
+        }else if(state==0){
+            // DB수정(alv)
+            aivideoALVRepository.updateDatas(alvseq,alvclass,alvname);
+            // DB수정(ald)
+            aivideoALDRepository.updateDatas(alvseq,boxXY,ailagelname);
+        }
         return "null";
     }
 
@@ -251,7 +292,7 @@ public class AIvideoController {
                              @RequestParam(required = false, defaultValue = "", value = "height") String height) {
         String data = "?img_name=" + img_name + "&label_name=" + label_name + "&img_count=" + img_count
                 + "&main_count=" + main_count + "&main_label=" + main_label + "&width=" + width + "&height=" + height;
-        String url = "http://192.168.219.102:3000/ai_labeling" + data; // flask get방식 통신 url *****************
+        String url = "http://192.168.219.100:3000/ai_labeling" + data; // flask get방식 통신 url *****************
         log.info("labeling Data ==> " + data);
 
         // DB 변환/추가(alv/ald)
@@ -440,27 +481,30 @@ public class AIvideoController {
                 model.addAttribute("mainbox5","");
             } else {
                 String[] datas2 = alddata.getAldmainbox().split("/");
-                model.addAttribute("mainbox1",datas2[0]);
-                model.addAttribute("mainbox2",datas2[1]);
-                model.addAttribute("mainbox3",datas2[2]);
-                model.addAttribute("mainbox4",datas2[3]);
-                model.addAttribute("mainbox5",datas2[4]);
-                log.info(datas2[0]+"/"+datas2[1]+"/"+datas2[2]+"/"+datas2[3]+"/"+datas2[4]);
+                model.addAttribute("mainbox1",datas2[0].substring(1,datas2[0].length()-1));
+                model.addAttribute("mainbox2",datas2[1].substring(1,datas2[1].length()-1));
+                model.addAttribute("mainbox3",datas2[2].substring(1,datas2[2].length()-1));
+                model.addAttribute("mainbox4",datas2[3].substring(1,datas2[3].length()-1));
+                model.addAttribute("mainbox5",datas2[4].substring(1,datas2[4].length()-1));
+                log.info("test!!!!! ==>"+datas2[0].substring(1,datas2[0].length()-1)+"/"+datas2[1]);
             }
             model.addAttribute("changeCheck",changeCheck);
         }
         return "AIvideoDetail.html";
     }
-//
-//    // 수정페이지
-//    @ResponseBody
-//    @RequestMapping(method = RequestMethod.GET, value = "/aiChange")
-//    public String aichange(HttpServletRequest request, Model model) {
-//        Long alvseq = Long.valueOf(request.getParameter("alvseq")); // 받아온 alvseq
-//        int state = Integer.parseInt(request.getParameter("state")); // 받아온 state
-//        boolean changeCheck = true;
-//
-//        return "";
-//    }
+
+    // 동영상만 삭제
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/Vdeletes")
+    public String AiVdelete(HttpServletRequest request, Model model) {
+        Long alvseq = Long.valueOf(request.getParameter("alvseq")); // 받아온 alvseq
+        int state = Integer.parseInt(request.getParameter("state")); // 받아온 state
+        String videoname = aivideoALVRepository.findALVvideo(alvseq);
+        File D_video_url = new File("D:/LeeYJ/images/videos/" + videoname); // *****************
+        if(D_video_url.exists()){
+            D_video_url.delete();
+        }
+        return "Vdeletes";
+    }
 }
 

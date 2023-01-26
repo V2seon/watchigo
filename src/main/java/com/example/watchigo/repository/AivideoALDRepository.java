@@ -15,6 +15,11 @@ public interface AivideoALDRepository extends JpaRepository<AivideoALDEntity, Lo
 
     @Modifying
     @Transactional
+    @Query(value = "UPDATE AI_LABELING_DATA SET ALD_MAINBOX =:aldmainbox, SET ALD_LABELNAME =:aldlabelname WHERE ALD_ALV_SEQ =:alvseq", nativeQuery = true)
+    void updateDatas(Long alvseq, String aldmainbox, String aldlabelname);
+
+    @Modifying
+    @Transactional
     @Query(value = "UPDATE AI_LABELING_DATA SET ALD_LABELNAME =:labelname, ALD_MAINBOX =:mainbox WHERE ALD_ALV_SEQ =:alvseq", nativeQuery = true)
     void updateALDData(Long alvseq, String labelname, String mainbox);
 

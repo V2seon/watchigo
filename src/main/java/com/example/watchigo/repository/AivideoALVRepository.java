@@ -36,6 +36,11 @@ public interface AivideoALVRepository extends JpaRepository<AivideoALVEntity, Lo
 
     @Modifying
     @Transactional
+    @Query(value = "UPDATE AI_LABELING_VIDEO SET ALV_VIDEO =:alvvideo WHERE ALV_SEQ =:alvseq", nativeQuery = true)
+    void updatevideo(Long alvseq, String alvvideo);
+
+    @Modifying
+    @Transactional
     @Query(value = "DELETE FROM AI_LABELING_VIDEO WHERE ALV_SEQ =:alvseq", nativeQuery = true)
     void deleteALVData(Long alvseq);
 

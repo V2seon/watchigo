@@ -19,7 +19,7 @@
 <div class="mainbox padding_right30">
     <div class="category">
         <div class="exzone">분류</div>
-        <input type="text" id="classification" class="categorybox" maxlength='250' th:style="${changeCheck}=='false' ? 'display:block':'display:none'" readonly placeholder="분류를 입력해주세요." />
+        <input type="text" id="classification" class="categorybox" maxlength='250' th:style="${changeCheck}=='false' ? 'display:block':'display:none'" readonly th:value="${alvclass}" placeholder="분류를 입력해주세요." />
         <input type="text" id="classification2" class="categorybox" maxlength='250' th:style="${changeCheck}=='false' ? 'display:none':'display:block'" th:value="${alvclass}" placeholder="분류를 입력해주세요." />
     </div>
     <div class="category">
@@ -70,8 +70,8 @@
             </span>
             <div class="category margin_top10 margin_bottom10">
                 <div class="exzone">라벨명</div>
-                <input type="text" id="label_name" th:style="${changeCheck}=='false' ? 'display:flex':'display:none'" class="categorybox" readonly th:value="${labelname}" maxlength="50" onkeydown="onlyAlphabet(this)" placeholder="이미지의 이름을 입력해주세요." />
-                <input type="text" id="label_name2" th:style="${changeCheck}=='false' ? 'display:none':'display:flex'" class="categorybox" th:value="${labelname}" maxlength="50" placeholder="이미지의 이름을 입력해주세요." />
+                <input type="text" id="label_name" th:style="${changeCheck}=='false' ? 'display:flex':'display:none'" class="categorybox" readonly th:value="${labelname}" maxlength="50" placeholder="이미지의 이름을 입력해주세요." />
+                <input type="text" id="label_name2" th:style="${changeCheck}=='false' ? 'display:none':'display:flex'" class="categorybox" th:value="${labelname}" maxlength="50" onkeydown="onlyAlphabet(this)" placeholder="이미지의 이름을 입력해주세요." />
             </div>
         </div>
         <div id="aiLStart" th:style="${alvstate}!='4' ? 'display:block':'display:none'" class="category display_none height40">
@@ -96,9 +96,10 @@
             <div class="content_center display_flex margin_top10">
                 <div id="aiVview" onclick="aivideo()" class="uploadBtn display_none">
                     <img src="/img/AIvideo/upload.png" width="30" height="30">
+                    <input class="display_none" id="Vdelcheck" type="text" value="null">
                 </div>
                 <video id="aiinv" class="inv1" style="display:flex" width="500" height="500" th:src="'/file_dir/videos/'+${alvvideo}"></video>
-                <div class="delete display_none" id="aiVdelete">
+                <div class="delete"  th:style="${changeCheck}=='false' ? 'display:none':'display:block'" id="aiVdelete">
                     <img id="aiVdelbtn" onclick="aiVdelete()" class="delbtn" src="/img/srinsert/delete.png">
                 </div>
             </div>
@@ -126,11 +127,74 @@
         </div>
     </div>
     <div id="aiinvstart" class="category">
-        <button type="button" class="videoinsertbtn" th:style="${changeCheck}=='false' ? 'display:none':'display:block'" id="aiNext" th:onclick="aisavechange([[${alvseq}]])">저장</button>
+        <button type="button" class="videoinsertbtn" th:style="${changeCheck}=='false' ? 'display:none':'display:block'" id="aiNext" th:onclick="aisavechange([[${alvseq}]],[[${alvstate}]])">저장</button>
         <button type="button" class="videoinsertbtn" th:style="${changeCheck}=='false' ? 'display:block':'display:none'" id="aicorrect" th:onclick="aivideo_change([[${alvseq}]],[[${alvstate}]])">수정</button>
     </div>
 </div>
 <div id="load"> <img src="/img/spinner.gif" alt="loading"></div>
+
+<script type="text/javascript">
+// 상세페이지 자동함수
+window.onload=function(){
+    var box1 = document.getElementById('box1XY').value;
+    var box2 = document.getElementById('box2XY').value;
+    var box3 = document.getElementById('box3XY').value;
+    var box4 = document.getElementById('box4XY').value;
+    var box5 = document.getElementById('box5XY').value;
+    var widths = document.getElementById('aicvs1').width;
+    var heights = document.getElementById('aicvs1').height;
+    if(box1!=""&&box1!=null){
+        var box1xy1 = box1.split(",")[0]*heights;
+        var box1xy2 = box1.split(",")[1]*widths;
+        var box1xy3 = box1.split(",")[2]*heights;
+        var box1xy4 = box1.split(",")[3]*widths;
+        var d_cvs1 = document.getElementById('aicvs1');
+        var context1 = d_cvs1.getContext("2d");
+        context1.strokeStyle = "red";
+        context1.strokeRect(box1xy2,box1xy1,box1xy4-box1xy2,box1xy3-box1xy1);
+    }
+    if(box2!=""&&box2!=null){
+        var box2xy1 = box2.split(",")[0]*heights;
+        var box2xy2 = box2.split(",")[1]*widths;
+        var box2xy3 = box2.split(",")[2]*heights;
+        var box2xy4 = box2.split(",")[3]*widths;
+        var d_cvs2 = document.getElementById('aicvs2');
+        var context2 = d_cvs2.getContext("2d");
+        context2.strokeStyle = "red";
+        context2.strokeRect(box2xy2,box2xy1,box2xy4-box2xy2,box2xy3-box2xy1);
+    }
+    if(box3!=""&&box3!=null){
+        var box3xy1 = box3.split(",")[0]*heights;
+        var box3xy2 = box3.split(",")[1]*widths;
+        var box3xy3 = box3.split(",")[2]*heights;
+        var box3xy4 = box3.split(",")[3]*widths;
+        var d_cvs3 = document.getElementById('aicvs3');
+        var context3 = d_cvs3.getContext("2d");
+        context3.strokeStyle = "red";
+        context3.strokeRect(box3xy2,box3xy1,box3xy4-box3xy2,box3xy3-box3xy1);
+    }
+    if(box4!=""&&box4!=null){
+        var box4xy1 = box4.split(",")[0]*heights;
+        var box4xy2 = box4.split(",")[1]*widths;
+        var box4xy3 = box4.split(",")[2]*heights;
+        var box4xy4 = box4.split(",")[3]*widths;
+        var d_cvs4 = document.getElementById('aicvs4');
+        var context4 = d_cvs4.getContext("2d");
+        context4.strokeStyle = "red";
+        context4.strokeRect(box4xy2,box4xy1,box4xy4-box4xy2,box4xy3-box4xy1);
+    }
+    if(box5!=""&&box5!=null){
+        var box5xy1 = box5.split(",")[0]*heights;
+        var box5xy2 = box5.split(",")[1]*widths;
+        var box5xy3 = box5.split(",")[2]*heights;
+        var box5xy4 = box5.split(",")[3]*widths;
+        var d_cvs5 = document.getElementById('aicvs5');
+        var context5 = d_cvs5.getContext("2d");
+        context5.strokeStyle = "red";
+        context5.strokeRect(box5xy2,box5xy1,box5xy4-box5xy2,box5xy3-box5xy1);
+    }
+}
+</script>
 
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="/js/file/file.js"></script>

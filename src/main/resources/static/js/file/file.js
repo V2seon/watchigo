@@ -184,6 +184,7 @@ aiinv.style.display='none';
 document.getElementById('aiVdelbtn').style.display='none';
 document.getElementById('aiVdelete').style.display='none';
 document.getElementById('aiVview').style.display='block';
+document.getElementById('Vdelcheck').value ="check";
 }
 
 // 이미지 삭제
