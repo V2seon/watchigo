@@ -44,8 +44,9 @@ function ainext(){
                             swal({
                                 text: "동영상 저장 실패",
                                 icon: "warning"
+                            }).then(function(){
+                                location.href = "/aivideo/write";
                             });
-                            return "/aivideo/write";
                         }
                         VSsendData = {
                             "alvseq" : "",
@@ -58,25 +59,61 @@ function ainext(){
                         swal({
                             text: "동영상 저장 실패",
                             icon: "warning"
+                        }).then(function(){
+                            $('#load').hide();
                         });
-                        $('#load').hide();
                     }
                 });
             });
         }
-    }else{
-        swal({ // 영상분리 팝업창
-            title : "영상 분리까지 최대 10분정도 소요됩니다. 완료되면 자동으로 넘어갑니다. 진행하시겠습니까?",
-            icon : "info"
-        }).then(function(){
-            $('#load').show();
-            VSsendData = {
-                "alvseq" : alvseq,
-                "aiinv" : "",
-                "aiclass" : "",
-                "ainame" : ""
-            };
-            videoSplit(VSsendData);
+    }else{ // state4에서 진행
+        var aiclass = document.getElementById('classification').value; // 분류명
+        var ainame = document.getElementById('facilityname').value; // 시설물명
+
+        $.ajax({
+            url : "/aivideo/getVname", // 비디오데이터 가져오기
+            data : {"alvseq" : alvseq},
+            type : "GET",
+            success : function(result){
+                // 비디오저장명 가져오기
+                if(result==null||result==""||result=="null"){ // 동영상 유무 확인
+                    swal({
+                        text: "동영상을 등록해주세요.",
+                        icon: "info"
+                    })
+                }else if(aiclass == null || aiclass == ""){
+                    swal({
+                        text: "분류를 입력해주세요.",
+                        icon: "info"
+                    })
+                }else if(ainame == null || ainame == ""){
+                    swal({
+                        text: "시설물의 이름을 입력해주세요.",
+                        icon: "info"
+                    })
+                }else{
+                    swal({ // 영상분리 팝업창
+                        title : "영상 분리까지 최대 10분정도 소요됩니다. 완료되면 자동으로 넘어갑니다. 진행하시겠습니까?",
+                        icon : "info"
+                    }).then(function(){
+                        $('#load').show();
+                        VSsendData = {
+                            "alvseq" : alvseq,
+                            "aiinv" : result,
+                            "aiclass" : aiclass,
+                            "ainame" : ainame
+                        };
+                        videoSplit(VSsendData);
+                    });
+                }
+            }, error:function(request, status, error){
+                swal({
+                    text: "동영상 저장 실패",
+                    icon: "warning"
+                }).then(function(){
+                    $('#load').hide();
+                });
+            }
         });
     }
 }
@@ -91,8 +128,9 @@ function videoSplit(VSsendData){
                 swal({
                     text: "통신오류",
                     icon: "warning"
+                }).then(function(){
+                    location.href = "/aivideo/write";
                 });
-                return "/aivideo/write";
             }
             const get_arr = result.split("/");
             var getdata, aiimgname, aiimgcount, maincount, width, height, alvseq, aimainnum1, aimainnum2, aimainnum3, aimainnum4, aimainnum5;
@@ -125,27 +163,6 @@ function videoSplit(VSsendData){
                     alvseq = getdata[1];
                 }
             }
-            let sendData = {
-                "imgname" : aiimgname,
-                "imgcount" : aiimgcount,
-                "maincount" : maincount,
-                "width" : width,
-                "height" : height,
-                "alvseq" : alvseq
-            };
-            // DB저장(ald)
-            $.ajax({
-                url : "/aivideo/save_ald",
-                data : sendData,
-                type : "GET",
-                success : function(result){
-                }, error:function(request, status, error){
-                    swal({
-                        text: "Aidata DB저장 실패",
-                        icon: "warning"
-                    });
-                }
-            });
             // 이미지 불러오기
             var ai_src = "/file_dir/img/"+aiimgname+"/"+aiimgname; // *********************
             document.getElementById('aiimg1').src=ai_src+aimainnum1+'.jpg';
@@ -166,24 +183,11 @@ function videoSplit(VSsendData){
 
             $('#load').hide();
         }, error:function(request, status, error){
-            var testtext = request+"\n"+status+"\n"+error+"\n"+VSsendData;
-//            // 오류-DB수정 및 삭제
-//            $.ajax({
-//                url : "/aivideo/data_errors",
-//                data : sendData,
-//                type : "GET",
-//                success : function(result){
-//                }, error:function(request, status, error){
-//                    swal({
-//                        text: "Aidata DB저장 실패",
-//                        icon: "warning"
-//                    });
-//                }
-//            });
             swal({
-//                text: "비디오 분할실패",
-                text: testtext,
+                text: "비디오 분할실패",
                 icon: "warning"
+            }).then(function(){
+                location.href = "/aivideo/list";
             });
         }
     });
@@ -338,7 +342,7 @@ function labeling_start(){
             text: "라벨명을 지정해주세요.",
             icon: "info"
         })
-    }else if(xy1 == null || xy2 == null || xy3 == null || xy4 == null || xy5 == null || xy1 == "" || xy2 == "" || xy3 == "" || xy4 == "" || xy5 == ""){ // 동영상 유무 확인
+    }else if(xy1 == null || xy2 == null || xy3 == null || xy4 == null || xy5 == null || xy1 == "" || xy2 == "" || xy3 == "" || xy4 == "" || xy5 == ""||xy1 == "null" || xy2 == "null" || xy3 == "null" || xy4 == "null" || xy5 == "null"){ // 동영상 유무 확인
         swal({
             text: "모든 영역을 지정해주세요.",
             icon: "info"
@@ -391,63 +395,93 @@ function labeling_start(){
 // list페이지
 // 상세
 function aivideo_detail(alvseq,state){
-    if(state==5){
-        swal({
-            text: "라벨링 준비완료 후 가능합니다.",
-            icon: "info"
-        });
-    }else{
-        location.href ="/aivideo/detail_page?alvseq="+alvseq+"&state="+state+"&changeCheck=false";
-    }
+    $.ajax({
+        url : "/aivideo/stateCheck",
+        data : {"alvseq" : alvseq},
+        type : "GET",
+        success : function(result){
+            if(result!=state){
+                state = result;
+            }
+            if(state==5){
+                swal({
+                    text: "라벨링 준비완료 후 가능합니다.",
+                    icon: "info"
+                }).then(function(){
+                    location.href = "/aivideo/list";
+                });
+            }else{
+                location.href ="/aivideo/detail_page?alvseq="+alvseq+"&state="+state+"&changeCheck=false";
+            }
+        }, error:function(request, status, error){
+        }
+    });
 }
 // 삭제
 function aivideo_delete(alvseq,state){
-    if(state==0||state==3||state==4){
-        swal({
-            text: "삭제하시겠습니까?",
-            icon: "info",
-            buttons: {
-                confirm: {
-                    text: "YES",
-                    value: true
-                },
-                cancle: {
-                    text: "NO",
-                    value: false
-                }
+    $.ajax({
+        url : "/aivideo/stateCheck",
+        data : {"alvseq" : alvseq},
+        type : "GET",
+        success : function(result){
+            if(result!=state){
+                state = result;
             }
-        }).then(function(result){
-            if(result){
-                // DB삭제(ald)
-                // DB삭제(alv)
-                let sendData = {
-                    "alvseq" : alvseq,
-                    "state" : state
-                };
-                $.ajax({
-                    url : "/aivideo/aideletes",
-                    data : sendData,
-                    type : "GET",
-                    success : function(result){
-                        swal({
-                            text: "성공적으로 삭제되었습니다.",
-                            icon: "info"
-                        });
-                    }, error:function(request, status, error){
-                        swal({
-                            text: "삭제 실패",
-                            icon: "warning"
+            if(state==0||state==3||state==4){
+                swal({
+                    text: "삭제하시겠습니까?",
+                    icon: "info",
+                    buttons: {
+                        confirm: {
+                            text: "YES",
+                            value: true
+                        },
+                        cancle: {
+                            text: "NO",
+                            value: false
+                        }
+                    }
+                }).then(function(result){
+                    if(result){
+                        // DB삭제(ald)
+                        // DB삭제(alv)
+                        let sendData = {
+                            "alvseq" : alvseq,
+                            "state" : state
+                        };
+                        $.ajax({
+                            url : "/aivideo/aideletes",
+                            data : sendData,
+                            type : "GET",
+                            success : function(result){
+                                swal({
+                                    text: "성공적으로 삭제되었습니다.",
+                                    icon: "info"
+                                }).then(function(){
+                                    location.href = "/aivideo/list";
+                                });
+                            }, error:function(request, status, error){
+                                swal({
+                                    text: "삭제 실패",
+                                    icon: "warning"
+                                }).then(function(){
+                                    location.href = "/aivideo/list";
+                                });
+                            }
                         });
                     }
                 });
+            }else if(state==1||state==2||state==5){
+                swal({
+                    text: "라벨링 진행중/준비중 또는 ai학습중에는 수정/삭제가 불가능합니다.",
+                    icon: "warning"
+                }).then(function(){
+                    location.href = "/aivideo/list";
+                });
             }
-        });
-    }else if(state==1||state==2||state==5){
-        swal({
-            text: "라벨링 진행중/준비중 또는 ai학습중에는 수정/삭제가 불가능합니다.",
-            icon: "warning"
-        });
-    }
+        }, error:function(request, status, error){
+        }
+    });
 }
 // 수정
 function aivideo_change(alvseq,state){
@@ -475,13 +509,11 @@ var ainame = document.getElementById('facilityname').value;
                 "state" : state,
                 "changeCheck" : true
             };
-
-        location.href ="/aivideo/detail_page?alvseq="+alvseq+"&state="+state+"&changeCheck=true";
+            location.href ="/aivideo/detail_page?alvseq="+alvseq+"&state="+state+"&changeCheck=true";
         });
 
         }else if(state==1||state==2||state==3){
         swal({
-//            text: "라벨링 준비중/진행중/ai학습중 및 ai학습이 모두 완료된 경우에는 수정이 불가능합니다.",
             text: "라벨링 진행 전에만 수정이 가능합니다.",
             icon: "warning"
         });
@@ -501,7 +533,7 @@ function aisavechange(alvseq,state){
 
     // 분류명, 시설물명 수정
     if(state==4){
-        var Vdelcheck = document.getElementById('Vdelcheck').value;// 동영상 체크
+        var Vdelcheck = document.getElementById('Vdelcheck').value;// 동영상 변경 체크
         var aiinvideo = document.getElementById('aiUploadvideo');
         // 수정 넘기기
         if(Vdelcheck=="null"){
@@ -522,6 +554,8 @@ function aisavechange(alvseq,state){
                     swal({
                         text: "성공적으로 수정되었습니다.",
                         icon: "info"
+                    }).then(function(){
+                        location.href ="/aivideo/detail_page?alvseq="+alvseq+"&state="+state+"&changeCheck=false";
                     });
                 }, error:function(request, status, error){
                     swal({
@@ -531,7 +565,7 @@ function aisavechange(alvseq,state){
                 }
             });
         }else{
-            // 동영상 삭제
+            // 수정전 동영상 삭제
             let sendData = {
                 "alvseq" : alvseq,
                 "state" : state
@@ -569,6 +603,8 @@ function aisavechange(alvseq,state){
                                     swal({
                                         text: "성공적으로 수정되었습니다.",
                                         icon: "info"
+                                    }).then(function(){
+                                        location.href ="/aivideo/detail_page?alvseq="+alvseq+"&state="+state+"&changeCheck=false";
                                     });
                                 }, error:function(request, status, error){
                                     swal({
@@ -581,8 +617,9 @@ function aisavechange(alvseq,state){
                             swal({
                                 text: "동영상 저장 실패",
                                 icon: "warning"
+                            }).then(function(){
+                                $('#load').hide();
                             });
-                            $('#load').hide();
                         }
                     });
                 }, error:function(request, state, error){
@@ -595,11 +632,27 @@ function aisavechange(alvseq,state){
         }
     //동영상 수정및 이전동영상 삭제
     }else if(state==0){
-        var box1xy = "["+document.getElementById('box1XY').value+"]"; // 메인박스
-        var box2xy = "["+document.getElementById('box2XY').value+"]";
-        var box3xy = "["+document.getElementById('box3XY').value+"]";
-        var box4xy = "["+document.getElementById('box4XY').value+"]";
-        var box5xy = "["+document.getElementById('box5XY').value+"]";
+        var box1xy = document.getElementById('box1XY').value; // 메인박스
+        var box2xy = document.getElementById('box2XY').value;
+        var box3xy = document.getElementById('box3XY').value;
+        var box4xy = document.getElementById('box4XY').value;
+        var box5xy = document.getElementById('box5XY').value;
+        console.log(box1xy);
+        if(box1xy==null||box1xy==""||box1xy=="null"){
+            box1xy="null";
+        }
+        if(box2xy==null||box2xy==""||box2xy=="null"){
+            box2xy="null";
+        }
+        if(box3xy==null||box3xy==""||box3xy=="null"){
+            box3xy="null";
+        }
+        if(box4xy==null||box4xy==""||box4xy=="null"){
+            box4xy="null";
+        }
+        if(box5xy==null||box5xy==""||box5xy=="null"){
+            box5xy="null";
+        }
         var boxXY = box1xy+"/"+box2xy+"/"+box3xy+"/"+box4xy+"/"+box5xy;
         var ailagelname = document.getElementById('label_name2').value; // 수정라벨명
         // 수정 넘기기
@@ -620,6 +673,8 @@ function aisavechange(alvseq,state){
                 swal({
                     text: "성공적으로 수정되었습니다.",
                     icon: "info"
+                }).then(function(){
+                    location.href ="/aivideo/detail_page?alvseq="+alvseq+"&state="+state+"&changeCheck=false";
                 });
             }, error:function(request, status, error){
                 swal({

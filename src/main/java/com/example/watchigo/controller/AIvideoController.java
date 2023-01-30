@@ -58,7 +58,7 @@ public class AIvideoController {
         if (new SessionCheck().loginSessionCheck(request)) {
             HttpSession session = request.getSession();
             Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
-            pageable = PageRequest.of(page, 100);
+            pageable = PageRequest.of(page, 6);
             Page<AivideoALVEntity> aivideoALVEntities = aivideoService.selectALVList(s1.get().getAseq(), pageable);
             Pagination pagination = new Pagination(aivideoALVEntities.getTotalPages(), page);
 
@@ -77,7 +77,6 @@ public class AIvideoController {
             returnValue = "/AdminSite/HomePage.html";
         }
         return returnValue;
-
     }
 
     @GetMapping("/write")
@@ -115,35 +114,39 @@ public class AIvideoController {
     @RequestMapping(method = RequestMethod.GET, value = "/video_split")
     public String AIvideoSplit(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession();
-        String alv_seq = request.getParameter("alvseq"); // 받아온 alvseq
-        String video_name, aiclass, ainame;
-        log.info(alv_seq);
-        if(alv_seq==null||alv_seq==""||alv_seq=="null"){
-            video_name = request.getParameter("aiinv"); // 받아온 videoname
-            aiclass = request.getParameter("aiclass"); // 받아온 aiclass
-            ainame = request.getParameter("ainame"); // 받아온 ainame
-            log.info("!!!!!!!!!!"+video_name+"/"+aiclass+"/"+ainame);
+        Long alv_seq;
+        if(request.getParameter("alvseq").equals("")){ // 받아온 alvseq
+            alv_seq = null;
         }else {
-            AivideoALVEntity alvdatas = aivideoALVRepository.findALVdata(Long.valueOf(alv_seq));
-            video_name = alvdatas.getAlvvideo();
-            aiclass = alvdatas.getAlvclass();
-            ainame = alvdatas.getAlvname();
+            alv_seq = Long.valueOf(request.getParameter("alvseq"));
         }
+        String video_name, aiclass, ainame;
+        video_name = request.getParameter("aiinv"); // 받아온 videoname
+        aiclass = request.getParameter("aiclass"); // 받아온 aiclass
+        ainame = request.getParameter("ainame"); // 받아온 ainame
+        log.info(String.valueOf(alv_seq));
 
-        String url = "http://192.168.219.100:3000/watchigo/" + video_name; // flask get방식 통신 url *****************
+        String url = "http://192.168.10.44:3000/watchigo/" + video_name; // flask get방식 통신 url *****************
         String get_ai_data = ""; // 가져온 데이터 {"키1":"값1","키2":"값2"} 넣어놓을 공간
 
-        // DB저장(alv)
-        // 날짜-시간
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss");
-        Date date = new Date();
-        String str = sdf.format(date);
-        Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid")); // 사용자 일련번호
+        if(alv_seq==null){
+            // DB저장(alv)
+            // 날짜-시간
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss");
+            Date date = new Date();
+            String str = sdf.format(date);
+            Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid")); // 사용자 일련번호
 
-        AivideoALVDto aivideoALVDto = new AivideoALVDto(null, s1.get().getAseq(), aiclass, ainame, video_name, 5, str);
-        aivideoService.alvSave(aivideoALVDto);
-
+            AivideoALVDto aivideoALVDto = new AivideoALVDto(null, s1.get().getAseq(), aiclass, ainame, video_name, 5, str);
+            aivideoService.alvSave(aivideoALVDto);
+            log.info("test1");
+        }else if(alv_seq!=null){
+            aivideoALVRepository.updateState(alv_seq,5);
+            log.info("test2");
+        }
         Long alvseq = aivideoALVRepository.findALVseq(video_name); // 저장 alvseq번호
+        log.info("test3 // "+alvseq);
+
         try {
             HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
             if (conn != null) {
@@ -224,19 +227,26 @@ public class AIvideoController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return get_ai_data;
-    }
-
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.GET, value = "/save_ald")
-    public String SaveALD(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession();
-        String imgname = request.getParameter("imgname"); // 받아온 imgname
-        int imgcount = Integer.parseInt(request.getParameter("imgcount")); // 받아온 imgcount
-        String maincount = request.getParameter("maincount"); // 받아온 maincount
-        int width = Integer.parseInt(request.getParameter("width")); // 받아온 width
-        int height = Integer.parseInt(request.getParameter("height")); // 받아온 height
-
+        // 데이터 분할 및 저장
+        String[] datas = get_ai_data.split("/");
+        String imgname="";
+        int imgcount=0;
+        String maincount="";
+        int width=0;
+        int height=0;
+        for(int i=0;i<datas.length;i++){
+            if(datas[i].split(":")[0].equals("img_name")){
+                imgname = datas[i].split(":")[1]; // 받아온 imgname
+            }else if(datas[i].split(":")[0].equals("img_count")){
+                imgcount = Integer.parseInt(datas[i].split(":")[1]); // 받아온 imgcount
+            }else if(datas[i].split(":")[0].equals("main_count")){
+                maincount = datas[i].split(":")[1]; // 받아온 maincount
+            }else if(datas[i].split(":")[0].equals("width")){
+                width = Integer.parseInt(datas[i].split(":")[1]); // 받아온 width
+            }else if(datas[i].split(":")[0].equals("height")){
+                height = Integer.parseInt(datas[i].split(":")[1]); // 받아온 height
+            }
+        }
         log.info("getDatas ==> " + imgname + "/" + imgcount + "/" + maincount + "/" + width + "/" + height);
 
         // DB저장(ald)
@@ -244,15 +254,15 @@ public class AIvideoController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss");
         Date date = new Date();
         String str = sdf.format(date);
-        // video seq 가져오기
-        String videoname = imgname + '%';
-        Long alvseq = aivideoALVRepository.findALVseq(videoname);
+        // seq 가져오기
+        Long getAlvseq = aivideoALVRepository.findALVseq(video_name);
 
-        AivideoALDDto aivideoALDDto = new AivideoALDDto(null, alvseq, imgname, imgcount, maincount, width, height, null, null, str);
+        AivideoALDDto aivideoALDDto = new AivideoALDDto(null, getAlvseq, imgname, imgcount, maincount, width, height, null, null, str);
         aivideoService.aldSave(aivideoALDDto);
 
-        return "null";
+        return get_ai_data;
     }
+
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/update_alv")
@@ -292,7 +302,7 @@ public class AIvideoController {
                              @RequestParam(required = false, defaultValue = "", value = "height") String height) {
         String data = "?img_name=" + img_name + "&label_name=" + label_name + "&img_count=" + img_count
                 + "&main_count=" + main_count + "&main_label=" + main_label + "&width=" + width + "&height=" + height;
-        String url = "http://192.168.219.100:3000/ai_labeling" + data; // flask get방식 통신 url *****************
+        String url = "http://192.168.10.44:3000/ai_labeling" + data; // flask get방식 통신 url *****************
         log.info("labeling Data ==> " + data);
 
         // DB 변환/추가(alv/ald)
@@ -382,36 +392,37 @@ public class AIvideoController {
         Long alvseq = Long.valueOf(request.getParameter("alvseq")); // 받아온 alvseq
         int state = Integer.parseInt(request.getParameter("state")); // 받아온 state
         String videoname = aivideoALVRepository.findALVvideo(alvseq);
+        log.info("alvseq => "+alvseq+" / state => "+state+" / videoname => "+videoname);
 
         // DB삭제(alv, ald)
-        try {
-            if(state == 4){
-                aivideoALVRepository.deleteALVData(alvseq);
-                File D_video_url = new File("D:/LeeYJ/images/videos/" + videoname); // *****************
-                FileUtils.deleteDirectory(D_video_url);
-            }else if(state == 0||state==3){
-                aivideoALVRepository.deleteALVData(alvseq);
-                aivideoALDRepository.deleteALDData(alvseq);
-                String imgname = videoname.split("\\.")[0];
-                File D_video_url = new File("D:/LeeYJ/images/videos/" + videoname); // *****************
-                File D_imgs_url = new File("D:/LeeYJ/images/img/" + imgname); // *****************
-                File D_show_url = new File("D:/LeeYJ/images/img/showImgs/" + imgname + "1.jpg"); // *****************
-                if(D_video_url.exists()){
-                    D_video_url.delete();
-                }
-                if(D_imgs_url.exists()){
-                    File[] D_imgs_url_list = D_imgs_url.listFiles();
-                    for (int i = 0; i<D_imgs_url_list.length;i++){
-                        D_imgs_url_list[i].delete();
-                    }
-                    D_imgs_url.delete();
-                }
-                if(D_show_url.exists()){
-                    D_show_url.delete();
-                }
+        if(state == 4){
+            aivideoALVRepository.deleteALVData(alvseq);
+            File D_video_url = new File("D:/LeeYJ/images/videos/" + videoname); // *****************
+            if(D_video_url.delete()){
+                log.info("sucess");
+            }else {
+                log.info("fail");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        }else if(state == 0||state==3){
+            aivideoALVRepository.deleteALVData(alvseq);
+            aivideoALDRepository.deleteALDData(alvseq);
+            String imgname = videoname.split("\\.")[0];
+            File D_video_url = new File("D:/LeeYJ/images/videos/" + videoname); // *****************
+            File D_imgs_url = new File("D:/LeeYJ/images/img/" + imgname); // *****************
+            File D_show_url = new File("D:/LeeYJ/images/img/showImgs/" + imgname + "1.jpg"); // *****************
+            if(D_video_url.exists()){
+                D_video_url.delete();
+            }
+            if(D_imgs_url.exists()){
+                File[] D_imgs_url_list = D_imgs_url.listFiles();
+                for (int i = 0; i<D_imgs_url_list.length;i++){
+                    D_imgs_url_list[i].delete();
+                }
+                D_imgs_url.delete();
+            }
+            if(D_show_url.exists()){
+                D_show_url.delete();
+            }
         }
         return "::redirect";
     }
@@ -481,12 +492,12 @@ public class AIvideoController {
                 model.addAttribute("mainbox5","");
             } else {
                 String[] datas2 = alddata.getAldmainbox().split("/");
-                model.addAttribute("mainbox1",datas2[0].substring(1,datas2[0].length()-1));
-                model.addAttribute("mainbox2",datas2[1].substring(1,datas2[1].length()-1));
-                model.addAttribute("mainbox3",datas2[2].substring(1,datas2[2].length()-1));
-                model.addAttribute("mainbox4",datas2[3].substring(1,datas2[3].length()-1));
-                model.addAttribute("mainbox5",datas2[4].substring(1,datas2[4].length()-1));
-                log.info("test!!!!! ==>"+datas2[0].substring(1,datas2[0].length()-1)+"/"+datas2[1]);
+                log.info("test! ==> "+datas2[0]+"/"+datas2[1]+"/"+datas2[2]+"/"+datas2[3]+"/"+datas2[4]);
+                model.addAttribute("mainbox1",datas2[0]);
+                model.addAttribute("mainbox2",datas2[1]);
+                model.addAttribute("mainbox3",datas2[2]);
+                model.addAttribute("mainbox4",datas2[3]);
+                model.addAttribute("mainbox5",datas2[4]);
             }
             model.addAttribute("changeCheck",changeCheck);
         }
@@ -505,6 +516,28 @@ public class AIvideoController {
             D_video_url.delete();
         }
         return "Vdeletes";
+    }
+
+    // 동영상 데이터 가져오기
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/getVname")
+    public String AiVget(HttpServletRequest request, Model model) {
+        Long alvseq = Long.valueOf(request.getParameter("alvseq")); // 받아온 alvseq
+        String videoname = aivideoALVRepository.findALVvideo(alvseq);
+        File D_video_url = new File("D:/LeeYJ/images/videos/" + videoname); // *****************
+        if(D_video_url.exists()){
+            return videoname;
+        }
+        return "null";
+    }
+
+    // alv state 확인
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/stateCheck")
+    public String AiStateCheck(HttpServletRequest request, Model model) {
+        Long alvseq = Long.valueOf(request.getParameter("alvseq")); // 받아온 alvseq
+        String state = aivideoALVRepository.findALVstate(alvseq);
+        return state;
     }
 }
 

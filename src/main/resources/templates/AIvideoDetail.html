@@ -75,7 +75,7 @@
             </div>
         </div>
         <div id="aiLStart" th:style="${alvstate}!='4' ? 'display:block':'display:none'" class="category display_none height40">
-            <button onclick="labeling_start()" th:style="${changeCheck}=='false' ? 'display:block':'display:none'" class="margin_right20 labelBtn float_right display_none">라벨링 시작</button>
+            <button onclick="labeling_start()" th:style="${changeCheck}=='false' and ${alvstate}==0 ? 'display:block':'display:none'" class="margin_right20 labelBtn float_right display_none">라벨링 시작</button>
         </div>
         <div id="aiLProgress" th:style="${alvstate}!='4' ? 'display:flex':'display:none'" class="category margin_top10 display_none">
             <div>
@@ -128,6 +128,7 @@
     </div>
     <div id="aiinvstart" class="category">
         <button type="button" class="videoinsertbtn" th:style="${changeCheck}=='false' ? 'display:none':'display:block'" id="aiNext" th:onclick="aisavechange([[${alvseq}]],[[${alvstate}]])">저장</button>
+        <button type="button" class="videoinsertbtn" th:style="${changeCheck}=='false' and ${alvstate}==4 ? 'display:block':'display:none'" id="aiNext2" th:onclick="ainext()">확인</button>
         <button type="button" class="videoinsertbtn" th:style="${changeCheck}=='false' ? 'display:block':'display:none'" id="aicorrect" th:onclick="aivideo_change([[${alvseq}]],[[${alvstate}]])">수정</button>
     </div>
 </div>
@@ -143,7 +144,8 @@ window.onload=function(){
     var box5 = document.getElementById('box5XY').value;
     var widths = document.getElementById('aicvs1').width;
     var heights = document.getElementById('aicvs1').height;
-    if(box1!=""&&box1!=null){
+    if(box1!=""&&box1!=null&&box1!="null"){
+        box1 = box1.substr(1,box1.length-2);
         var box1xy1 = box1.split(",")[0]*heights;
         var box1xy2 = box1.split(",")[1]*widths;
         var box1xy3 = box1.split(",")[2]*heights;
@@ -153,7 +155,8 @@ window.onload=function(){
         context1.strokeStyle = "red";
         context1.strokeRect(box1xy2,box1xy1,box1xy4-box1xy2,box1xy3-box1xy1);
     }
-    if(box2!=""&&box2!=null){
+    if(box2!=""&&box2!=null&&box2!="null"){
+        box2 = box2.substr(1,box2.length-2);
         var box2xy1 = box2.split(",")[0]*heights;
         var box2xy2 = box2.split(",")[1]*widths;
         var box2xy3 = box2.split(",")[2]*heights;
@@ -163,7 +166,8 @@ window.onload=function(){
         context2.strokeStyle = "red";
         context2.strokeRect(box2xy2,box2xy1,box2xy4-box2xy2,box2xy3-box2xy1);
     }
-    if(box3!=""&&box3!=null){
+    if(box3!=""&&box3!=null&&box3!="null"){
+        box3 = box3.substr(1,box3.length-2);
         var box3xy1 = box3.split(",")[0]*heights;
         var box3xy2 = box3.split(",")[1]*widths;
         var box3xy3 = box3.split(",")[2]*heights;
@@ -173,7 +177,8 @@ window.onload=function(){
         context3.strokeStyle = "red";
         context3.strokeRect(box3xy2,box3xy1,box3xy4-box3xy2,box3xy3-box3xy1);
     }
-    if(box4!=""&&box4!=null){
+    if(box4!=""&&box4!=null&&box4!="null"){
+        box4 = box4.substr(1,box4.length-2);
         var box4xy1 = box4.split(",")[0]*heights;
         var box4xy2 = box4.split(",")[1]*widths;
         var box4xy3 = box4.split(",")[2]*heights;
@@ -183,7 +188,8 @@ window.onload=function(){
         context4.strokeStyle = "red";
         context4.strokeRect(box4xy2,box4xy1,box4xy4-box4xy2,box4xy3-box4xy1);
     }
-    if(box5!=""&&box5!=null){
+    if(box5!=""&&box5!=null&&box5!="null"){
+        box5 = box5.substr(1,box5.length-2);
         var box5xy1 = box5.split(",")[0]*heights;
         var box5xy2 = box5.split(",")[1]*widths;
         var box5xy3 = box5.split(",")[2]*heights;

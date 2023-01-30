@@ -24,6 +24,9 @@ public interface AivideoALVRepository extends JpaRepository<AivideoALVEntity, Lo
     @Query(value = "SELECT ALV_VIDEO FROM AI_LABELING_VIDEO WHERE ALV_SEQ =:alvseq", nativeQuery = true)
     String findALVvideo(Long alvseq);
 
+    @Query(value = "SELECT ALV_STATE FROM AI_LABELING_VIDEO WHERE ALV_SEQ =:alvseq", nativeQuery = true)
+    String findALVstate(Long alvseq);
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE AI_LABELING_VIDEO SET ALV_STATE =:state WHERE ALV_SEQ =:alvseq", nativeQuery = true)
@@ -31,7 +34,7 @@ public interface AivideoALVRepository extends JpaRepository<AivideoALVEntity, Lo
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE AI_LABELING_VIDEO SET ALV_CLASS =:alvclass, SET ALV_NAME =:alvname WHERE ALV_SEQ =:alvseq", nativeQuery = true)
+    @Query(value = "UPDATE AI_LABELING_VIDEO SET ALV_CLASS =:alvclass, ALV_NAME =:alvname WHERE ALV_SEQ =:alvseq", nativeQuery = true)
     void updateDatas(Long alvseq, String alvclass, String alvname);
 
     @Modifying

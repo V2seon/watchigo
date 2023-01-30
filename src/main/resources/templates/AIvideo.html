@@ -27,7 +27,8 @@
 
         <div class="bigvideo" th:each="Co : ${userlist}">
             <div class="videoview">
-                <img class="imgview" th:src="'/file_dir/img/showImgs/'+${#strings.substring(Co.alvvideo,0,36)}+'1.jpg'">
+                <img class="imgview" th:if="${Co.alvstate!=4}" th:src="'/file_dir/img/showImgs/'+${#strings.substring(Co.alvvideo,0,36)}+'1.jpg'">
+                <img class="imgview" th:if="${Co.alvstate==4}" src="/img/AIvideo/play.png">
             </div>
             <div class="textview">
                 <div class="mt">
@@ -37,7 +38,7 @@
                     <h3 th:text="${Co.alvname}">시설물 이름</h3>
                     <span th:if="${Co.alvstate==0}">라벨링 준비완료</span>
                     <span th:if="${Co.alvstate==1}">라벨링 진행중</span>
-                    <span th:if="${Co.alvstate==2}">ai학습 진행중</span>
+                    <span th:if="${Co.alvstate==2}">라벨링 진행 완료, ai학습 진행중</span>
                     <span th:if="${Co.alvstate==3}">ai학습 완료</span>
                     <span th:if="${Co.alvstate==4}">중간오류-라벨링 준비</span>
                     <span th:if="${Co.alvstate==5}">라벨링 준비중</span>
