@@ -685,3 +685,18 @@ function aisavechange(alvseq,state){
         });
     }
 }
+
+//// 페이징
+//function paging(pageValue){
+//    const myPageQuery = new URLSearchParams(lacation.search);
+//
+//    console.log(pageValue);
+//
+//    $("#load").show();
+//
+//    $.ajax({
+//        url: "/aivideo/ailist_page",
+//
+//    })
+//
+//}

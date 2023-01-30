@@ -6,6 +6,7 @@ import com.example.watchigo.dto.AivideoALDDto;
 import com.example.watchigo.dto.AivideoALVDto;
 import com.example.watchigo.entity.AivideoALDEntity;
 import com.example.watchigo.entity.AivideoALVEntity;
+import com.example.watchigo.entity.ServiceZoneEntity;
 import com.example.watchigo.entity.UserEntity;
 import com.example.watchigo.repository.AivideoALDRepository;
 import com.example.watchigo.repository.AivideoALVRepository;
@@ -78,6 +79,32 @@ public class AIvideoController {
         }
         return returnValue;
     }
+
+
+    @RequestMapping(value = "/ailist_page", method = RequestMethod.POST)
+    public String aiListPage(Model model, HttpServletRequest request,
+                                     @RequestParam(required = false ,defaultValue = "0" , value="page") int page){
+
+        HttpSession session = request.getSession();
+        Optional<UserEntity> s1 = userRepository.findByAid((String) session.getAttribute("userid"));
+        Pageable pageable = PageRequest.of(page, 6,Sort.by("pk").descending());
+        Page<AivideoALVEntity> aivideoALVEntities = aivideoService.selectALVList(s1.get().getAseq(), pageable);
+        Pagination pagination = new Pagination(aivideoALVEntities.getTotalPages(), page);
+
+        model.addAttribute("thisPage", pagination.getPage()); //현재 몇 페이지에 있는지 확인하기 위함
+        model.addAttribute("isNextSection", pagination.isNextSection()); //다음버튼 유무 확인하기 위함
+        model.addAttribute("isPrevSection", pagination.isPrevSection()); //이전버튼 유무 확인하기 위함
+        model.addAttribute("firstBtnIndex", pagination.getFirstBtnIndex()); //버튼 페이징 - 첫시작 인덱스
+        model.addAttribute("lastBtnIndex", pagination.getLastBtnIndex()); //섹션 변경 위함
+        model.addAttribute("totalPage", pagination.getTotalPages()); //끝 버튼 위함
+        model.addAttribute("s1",s1);
+        model.addAttribute("userlist", aivideoALVEntities); //페이지 객체 리스트
+
+        model.addAttribute("nowurl0", "/aivideo");
+        return "AIvideo :: #inList1";
+    }
+
+
 
     @GetMapping("/write")
     public String ailistenter(Model model, HttpServletRequest request) {
