@@ -59,55 +59,51 @@
             </div>
         </div>
 
-
-        <div style="margin-top:20px; " class="card-footer clearfix">
-            <div class="page-item1" th:onclick="|javascript:paging(0)|">
-                <a class="page-link" aria-label="Previous">
-                    <img src="/img/exinsert/1.png">
-                </a>
-            </div>
-
-            <div class="page-item1 prev-page" th:if="${isPrevSection}"
-                 th:value="${thisSection}" th:onclick="|javascript:paging(${firstBtnIndex}-1)|">
-                <a class="page-link" aria-label="Previous">
-                    <img src="/img/exinsert/2.png">
-                </a>
-            </div>
-
-            <!--            onclick 구현-->
-            <div th:each="page: ${#numbers.sequence(firstBtnIndex,lastBtnIndex)}"
-                 id="pageItem" class="page-item" th:onclick="|javascript:paging(${page})|"
-                 th:classappend="${thisPage} ==  ${page} ?  'active'" th:value="${page}">
-                <a class="page-link">
-                    <span th:text="${page+1}"></span>
-                </a>
-            </div>
-            <!--            onclick 구현-->
-
-            <!--다음버튼2-->
-            <div class="page-item1 next-page" th:if="${isNextSection}"
-                 th:onclick="|javascript:paging(${lastBtnIndex}+1)|"
-                 th:value="${thisSection}">
-                <a class="page-link" aria-label="Next">
-                    <img src="/img/exinsert/3.png">
-                </a>
-            </div>
-            <!--다음버튼2-->
-
-            <div class="page-item1" th:onclick="|javascript:paging(${totalPage})|">
-                <a class="page-link" id="pageItem2" aria-label="Previous">
-                    <img src="/img/exinsert/4.png">
-                </a>
+        <!--페이지 이동-->
+        <!--id="inList1"인 div 안쪽에 있어야 함-->
+        <div style="margin-top:20px;" class="card-footer clearfix">
+            <div style="margin-top:20px; " class="card-footer clearfix">
+                <!--이전버튼1-->
+                <div class="page-item1" th:onclick="|javascript:paging(0)|">
+                    <a class="page-link" aria-label="Previous">
+                        <img src="/img/exinsert/1.png">
+                    </a>
+                </div>
+                <!--이전버튼2-->
+                <div class="page-item1 prev-page" th:if="${isPrevSection}"
+                    th:value="${thisSection}" th:onclick="|javascript:paging(${firstBtnIndex}-1)|">
+                    <a class="page-link" aria-label="Previous">
+                        <img src="/img/exinsert/2.png">
+                    </a>
+                </div>
+                <!--숫자페이지 버튼-->
+                <div th:each="page: ${#numbers.sequence(firstBtnIndex,lastBtnIndex)}"
+                    id="pageItem" class="page-item" th:onclick="|javascript:paging(${page})|"
+                    th:classappend="${thisPage} ==  ${page} ?  'active'" th:value="${page}">
+                    <a class="page-link">
+                        <span th:text="${page+1}"></span>
+                    </a>
+                </div>
+                <!--다음버튼1-->
+                <div class="page-item1 next-page" th:if="${isNextSection}"
+                    th:onclick="|javascript:paging(${lastBtnIndex}+1)|"
+                    th:value="${thisSection}">
+                    <a class="page-link" aria-label="Next">
+                        <img src="/img/exinsert/3.png">
+                    </a>
+                </div>
+                <!--다음버튼2-->
+                <div class="page-item1" th:onclick="|javascript:paging(${totalPage})|">
+                    <a class="page-link" id="pageItem2" aria-label="Previous">
+                        <img src="/img/exinsert/4.png">
+                    </a>
+                </div>
             </div>
         </div>
-
-
-
     </div>
 </div>
 
 <div id="load"> <img src="/img/spinner.gif" alt="loading"></div>
-
 
 <script src="/js/ai/videoLabeling.js"></script>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
