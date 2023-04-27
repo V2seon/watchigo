@@ -1,6 +1,5 @@
 package com.example.watchigo.controller;
 
-import com.example.watchigo.dto.ServiceZoneDto;
 import com.example.watchigo.dto.UserDto;
 import com.example.watchigo.entity.UserEntity;
 import com.example.watchigo.repository.UserRepository;

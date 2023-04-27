@@ -8,7 +8,6 @@ import com.example.watchigo.repository.*;
 import com.example.watchigo.service.ExhibitService;
 import com.example.watchigo.service.ServiceZoneService;
 import lombok.AllArgsConstructor;
-import org.apache.poi.sl.draw.geom.GuideIf;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +39,7 @@ public class Exhibitcontroller {
     private ExhibitService exhibitService;
 
 
+    // 전시 시설물 메인 페이지
     @GetMapping("/exhibit")
     public String main(Model model, HttpServletRequest request, Pageable pageable,
                        @RequestParam(required = false, defaultValue = "0", value = "page") int page){
@@ -90,6 +90,7 @@ public class Exhibitcontroller {
     }
 
 
+    // 전시 시설물 메인 검색 및 페이징
     @RequestMapping(value = "/exhibit_search", method = RequestMethod.POST)
     public String servicezone_search(Model model, HttpServletRequest request,
                                      @RequestParam(required = false ,defaultValue = "0" , value="page") int page,
@@ -117,6 +118,7 @@ public class Exhibitcontroller {
         return "ExhibitInsert :: #intable1";
     }
 
+    // 전시 시설물 메인 서비스존 검색 및 페이징
     @RequestMapping(value = "/exhibit_search1", method = RequestMethod.POST)
     public String servicezone_search1(Model model, HttpServletRequest request,
                                      @RequestParam(required = false ,defaultValue = "0" , value="page") int page,
@@ -169,6 +171,7 @@ public class Exhibitcontroller {
         return "ExhibitMain :: #bb1";
     }
 
+    // 전시 시설물 등록 페이지
     @GetMapping("/newexhibit")
     public String newzone(Model model, HttpServletRequest request, Pageable pageable,
                           @RequestParam(required = false, defaultValue = "0", value = "page") int page){
@@ -201,6 +204,7 @@ public class Exhibitcontroller {
         return returnValue;
     }
 
+    // 서비스존 자세히 보기
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/searchzoneview1")
     public Object searchzoneview(Model model, HttpServletRequest request,
@@ -239,6 +243,7 @@ public class Exhibitcontroller {
         return msg;
     }
 
+    // 전시 시설물 저장
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/saveexhibit")
     public Object saveexhibit(Model model, HttpServletRequest request,
@@ -291,6 +296,7 @@ public class Exhibitcontroller {
     }
 
 
+    // 파일 업로드
     @PostMapping("/upload1")
     public String uploadfile(@RequestPart("files") MultipartFile[] file, Model model, HttpServletRequest request) throws IOException {
 
@@ -331,6 +337,7 @@ public class Exhibitcontroller {
         return "ExhibitInsert :: Success";
     }
 
+    // 파일 업로드
     @GetMapping("/file1")
     public StreamingResponseBody img(HttpServletRequest request, @RequestParam("fileName")String fileName) throws Exception {
         HttpSession session = request.getSession();
@@ -357,6 +364,7 @@ public class Exhibitcontroller {
         }
     }
 
+    // 전시 시설물 자세히 보기
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/exhibitview")
     public Object view(Model model, HttpServletRequest request){
@@ -382,6 +390,7 @@ public class Exhibitcontroller {
         return msg;
     }
 
+    // 전시 시설물 위치보기
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/searchexhibit")
     public Object searchexhibit(Model model, HttpServletRequest request, Pageable pageable,
@@ -397,6 +406,7 @@ public class Exhibitcontroller {
         return msg;
     }
 
+    // 전시 시설물 내용보기
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/searchexhibitview")
     public Object searchexhibitview(Model model, HttpServletRequest request,
@@ -438,6 +448,7 @@ public class Exhibitcontroller {
         return "redirect:";
     }
 
+    // 전시시설물 수정페이지 이동
     @GetMapping("/exeditgo1")
     public String exeditgo1(Model model, HttpServletRequest request, Pageable pageable,
                           @RequestParam(required = false, defaultValue = "0", value = "page") int page){
@@ -497,6 +508,7 @@ public class Exhibitcontroller {
         return returnValue;
     }
 
+    // 전시 시설물 수정
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/editexhibit")
     public Object editexhibit(Model model, HttpServletRequest request,

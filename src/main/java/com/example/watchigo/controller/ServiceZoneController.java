@@ -14,21 +14,18 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-import java.util.logging.Logger;
-
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.text.SimpleDateFormat;
-
 import java.util.*;
+import java.util.logging.Logger;
 
 import static java.lang.Float.parseFloat;
 
@@ -108,6 +105,7 @@ public class ServiceZoneController {
 
         //서비스 엔티티 추가후 주석 풀고 사용
         Page<ServiceZoneEntity> pageList = serviceZoneService.selectALLTable(selectKey, titleText,s1.get().getAseq(), pageable);
+
 
         model.addAttribute("userlist", pageList); //페이지 객체 리스트
 
